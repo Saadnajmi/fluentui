@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { JSXElement } from '@fluentui/utilities';
 import {
   IColumn,
   SpinButton,
@@ -24,7 +25,7 @@ function createTableData(rows: number, columns: number) {
   return data;
 }
 
-export const DetailsListColumnResizeExample: React.FC<{}> = (props: {}): JSX.Element => {
+export const DetailsListColumnResizeExample: React.FC<{}> = (props: {}): JSXElement => {
   const [rows, setRowCount] = React.useState<number>(1);
   const [columns, setColumns] = React.useState<number>(4);
 
@@ -58,17 +59,21 @@ export const DetailsListColumnResizeExample: React.FC<{}> = (props: {}): JSX.Ele
     return temp;
   }, [columns]);
 
-  const adjustRows = (modifier = 1) => (val: string) => {
-    const num = Number(val);
-    console.log('num: ', num);
-    setRowCount(num + modifier);
-  };
+  const adjustRows =
+    (modifier = 1) =>
+    (val: string) => {
+      const num = Number(val);
+      console.log('num: ', num);
+      setRowCount(num + modifier);
+    };
 
-  const adjustColumns = (modifier = 1) => (val: string) => {
-    const num = Number(val);
-    console.log('num: ', num);
-    setColumns(num + modifier);
-  };
+  const adjustColumns =
+    (modifier = 1) =>
+    (val: string) => {
+      const num = Number(val);
+      console.log('num: ', num);
+      setColumns(num + modifier);
+    };
 
   const validate = React.useCallback((val: string) => val, []);
 

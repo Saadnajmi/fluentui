@@ -9,18 +9,11 @@ permissions:
 
 jobs:
   label:
+    if: ${{ github.repository_owner == 'microsoft' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/labeler@v3
+      - uses: actions/labeler@b8dd2d9be0f68b860e7dae5dae7d772984eacd6d # v6
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
-  assign-to-current-milestone:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Assign to latest milestone
-        uses: andrefcdias/add-to-milestone@v1.2.4
-        with:
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          use-expression: true
-          milestone: '* Project Cycle *'
-          users-file-path: '.github/MAINTAINERS'
+          sync-labels: true
+          configuration-path: .github/labeler.yml

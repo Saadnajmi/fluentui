@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DetailsList, DetailsListLayoutMode, IColumn, IDetailsColumnProps } from '@fluentui/react/lib/DetailsList';
 import { ActionButton } from '@fluentui/react/lib/Button';
 import { IRenderFunction } from '@fluentui/react/lib/Utilities';
+import type { JSXElement } from '@fluentui/utilities';
 
 export interface IDetailsListProportionalColumnsExampleItem {
   key: number;
@@ -43,7 +44,7 @@ export class DetailsListProportionalColumnsExample extends React.Component<{}, I
         onRenderHeader: (
           colProps?: IDetailsColumnProps,
           defaultRender?: IRenderFunction<IDetailsColumnProps>,
-        ): JSX.Element | null => (
+        ): JSXElement | null => (
           <ActionButton onClick={this._onColumnButtonInvoked}>
             {(defaultRender && defaultRender(colProps)) || <></>}
           </ActionButton>
@@ -75,7 +76,7 @@ export class DetailsListProportionalColumnsExample extends React.Component<{}, I
     clearInterval(this._updateTimer);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { items } = this.state;
 
     return (
@@ -88,7 +89,6 @@ export class DetailsListProportionalColumnsExample extends React.Component<{}, I
         ariaLabelForSelectionColumn="Toggle selection"
         ariaLabelForSelectAllCheckbox="Toggle selection for all items"
         checkButtonAriaLabel="Row checkbox"
-        onItemInvoked={this._onItemInvoked}
         enableUpdateAnimations={true}
         getCellValueKey={this._getCellValueKey}
       />
@@ -97,10 +97,6 @@ export class DetailsListProportionalColumnsExample extends React.Component<{}, I
 
   private _onColumnButtonInvoked = (): void => {
     alert('Custom header button invoked');
-  };
-
-  private _onItemInvoked = (item: IDetailsListProportionalColumnsExampleItem): void => {
-    alert(`Item invoked: ${item.name}`);
   };
 
   private _getValueKey(item: IDetailsListProportionalColumnsExampleItem, index: number, column: IColumn): string {

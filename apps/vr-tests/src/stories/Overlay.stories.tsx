@@ -1,29 +1,23 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import { Overlay } from '@fluentui/react';
 
-storiesOf('Overlay', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story =>
-    // prettier-ignore
-    <Screener
-      steps={new Screener.Steps()
-        .snapshot('default', { cropTo: '.ms-Overlay' })
-        .end()}
-    >
-      {story()}
-    </Screener>,
-  )
-  .addStory(
-    'Root',
-    // prettier-ignore
-    () => <Overlay>Overlay content</Overlay>,
-    { includeRtl: true },
-  )
-  .addStory(
-    'Dark',
-    // prettier-ignore
-    () => <Overlay isDarkThemed>Overlay content</Overlay>,
-  );
+export default {
+  title: 'Overlay',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps().snapshot('default', { cropTo: '.ms-Overlay' }).end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof Overlay>;
+
+export const Root = () => <Overlay>Overlay content</Overlay>;
+
+export const RootRTL = getStoryVariant(Root, RTL);
+
+export const Dark = () => <Overlay isDarkThemed>Overlay content</Overlay>;

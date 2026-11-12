@@ -15,6 +15,8 @@ import type {
   IChoiceGroupOptionStyles,
 } from './ChoiceGroupOption.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IChoiceGroupOptionStyleProps, IChoiceGroupOptionStyles>();
 
 const LARGE_IMAGE_SIZE = 71;
@@ -58,7 +60,7 @@ export const ChoiceGroupOptionBase: React.FunctionComponent<IChoiceGroupOptionPr
 
   const { className, ...nativeProps } = getNativeProps<{ className: string }>(rest, inputProperties);
 
-  const defaultOnRenderLabel = (): JSX.Element => {
+  const defaultOnRenderLabel = (): JSXElement => {
     return (
       <span id={props.labelId} className="ms-ChoiceFieldLabel">
         {props.text}
@@ -66,14 +68,14 @@ export const ChoiceGroupOptionBase: React.FunctionComponent<IChoiceGroupOptionPr
     );
   };
 
-  const defaultOnRenderField = (): JSX.Element => {
+  const defaultOnRenderField = (): JSXElement => {
     const { imageAlt = '', selectedImageSrc } = props;
 
     const onRenderLabel = props.onRenderLabel
       ? composeRenderFunction(props.onRenderLabel, defaultOnRenderLabel)
       : defaultOnRenderLabel;
 
-    const label = onRenderLabel(props);
+    const label = onRenderLabel({ ...props, key: props.itemKey });
 
     return (
       <label htmlFor={id} className={classNames.field}>
@@ -102,7 +104,7 @@ export const ChoiceGroupOptionBase: React.FunctionComponent<IChoiceGroupOptionPr
   const { onRenderField = defaultOnRenderField } = props;
 
   const onChange = (evt: React.FormEvent<HTMLInputElement>): void => {
-    props.onChange?.(evt, props);
+    props.onChange?.(evt, { ...props, key: props.itemKey });
   };
 
   const onBlur = (evt: React.FocusEvent<HTMLElement>) => {
@@ -110,7 +112,7 @@ export const ChoiceGroupOptionBase: React.FunctionComponent<IChoiceGroupOptionPr
   };
 
   const onFocus = (evt: React.FocusEvent<HTMLElement>) => {
-    props.onFocus?.(evt, props);
+    props.onFocus?.(evt, { ...props, key: props.itemKey });
   };
 
   return (
@@ -130,7 +132,7 @@ export const ChoiceGroupOptionBase: React.FunctionComponent<IChoiceGroupOptionPr
           onFocus={onFocus}
           onBlur={onBlur}
         />
-        {onRenderField(props, defaultOnRenderField)}
+        {onRenderField({ ...props, key: props.itemKey }, defaultOnRenderField)}
       </div>
     </div>
   );

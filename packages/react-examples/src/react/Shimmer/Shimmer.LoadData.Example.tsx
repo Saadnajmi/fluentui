@@ -4,6 +4,7 @@ import { Persona, PersonaSize, PersonaPresence } from '@fluentui/react/lib/Perso
 import { Toggle } from '@fluentui/react/lib/Toggle';
 import { mergeStyles } from '@fluentui/react/lib/Styling';
 import { useBoolean } from '@fluentui/react-hooks';
+import type { JSXElement } from '@fluentui/utilities';
 
 const wrapperClass = mergeStyles({
   padding: 2,
@@ -15,7 +16,7 @@ const wrapperClass = mergeStyles({
 });
 const wrapperStyles = { display: 'flex' };
 
-const getCustomElements = (): JSX.Element => {
+const getCustomElements = (): JSXElement => {
   return (
     <div style={wrapperStyles}>
       <ShimmerElementsGroup
@@ -54,7 +55,7 @@ export const ShimmerLoadDataExample: React.FunctionComponent = () => {
       !isDataLoadedTwo
         ? {
             imageUrl:
-              'https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png',
+              'https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/persona-female.png',
             imageInitials: 'AL',
             primaryText: 'Annie Lindqvist',
             secondaryText: 'Software Engineer',

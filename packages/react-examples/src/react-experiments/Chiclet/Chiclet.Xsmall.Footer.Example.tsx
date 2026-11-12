@@ -4,6 +4,7 @@ import { IButtonProps, IconButton } from '@fluentui/react/lib/Button';
 import { Icon, IIconProps } from '@fluentui/react/lib/Icon';
 import { Text } from '@fluentui/react/lib/Text';
 import { mergeStyles } from '@fluentui/react/lib/Styling';
+import type { JSXElement } from '@fluentui/utilities';
 
 const SAMPLE_URL = 'https://contoso.sharepoint.com';
 
@@ -50,7 +51,7 @@ export const ChicletXsmallFooterExample: React.FunctionComponent<{}> = () => {
     <Chiclet
       url={SAMPLE_URL}
       title="Quarterly Results.docx"
-      image="https://static2.sharepointonline.com/files/fabric/assets/item-types/48/docx.svg"
+      image="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/item-types/48/docx.svg"
       itemType="docx"
       size={ChicletSize.xSmall}
       footer={footer}
@@ -59,14 +60,18 @@ export const ChicletXsmallFooterExample: React.FunctionComponent<{}> = () => {
 };
 
 class FooterComponent extends React.Component<IFooterComponent, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { buttonProps, attachProps } = this.props;
     return _renderFooter(buttonProps, attachProps);
   }
 }
 
-// eslint-disable-next-line deprecation/deprecation
-interface IFooterComponent extends React.Props<FooterComponent> {
+type ReactProps<T> = {
+  children?: React.ReactNode;
+  ref?: React.Ref<T>;
+};
+
+interface IFooterComponent extends ReactProps<FooterComponent> {
   buttonProps: IButtonProps[];
   attachProps: IIconProps;
 }

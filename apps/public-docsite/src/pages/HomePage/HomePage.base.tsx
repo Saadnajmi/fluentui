@@ -23,6 +23,7 @@ import {
   windowsLogoColor,
   macLogoColor,
   crossPlatformLogoColor,
+  cdnUrl,
 } from '../../utilities/index';
 import { SiteDefinition } from '../../SiteDefinition/SiteDefinition';
 import { IHomePageProps, IHomePageStyles, IHomePageStyleProps } from './HomePage.types';
@@ -41,7 +42,7 @@ registerIcons({
   },
 });
 
-const fabricUsageIconBaseUrl = 'https://static2.sharepointonline.com/files/fabric/assets/brand-icons/product/svg/';
+const fabricUsageIconBaseUrl = `${cdnUrl}/assets/brand-icons/product/svg/`;
 
 /**
  * List of App/Brand icon names that use Fluent UI.
@@ -105,7 +106,7 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
     const { theme, styles } = this.props;
 
     this._classNames = getClassNames(styles, {
-      theme,
+      theme: theme!,
       isMountedOffset,
     });
 
@@ -120,7 +121,7 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
     );
   }
 
-  private _renderHeroSection = (): JSX.Element => {
+  private _renderHeroSection = (): React.ReactElement => {
     return (
       <section className={this._classNames.heroSection}>
         <div className={this._classNames.sectionContent}>
@@ -159,20 +160,20 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
     );
   };
 
-  private _renderPlatformCardsSection = (): JSX.Element => {
+  private _renderPlatformCardsSection = (): React.ReactElement => {
     const { isMountedOffset } = this.state;
     const { theme, styles } = this.props;
 
     const classNames = getClassNames(styles, {
-      theme,
+      theme: theme!,
       isMountedOffset,
       isInverted: true,
     });
 
-    const { versions, selectedMajorName } = SiteDefinition.versionSwitcherDefinition;
+    const { versions, selectedMajorName } = SiteDefinition.versionSwitcherDefinition!;
 
-    const versionSwitcherColor: IRawStyle = { color: theme.palette.white };
-    const versionSwitcherActiveColor: IRawStyle = { color: theme.palette.white };
+    const versionSwitcherColor: IRawStyle = { color: theme!.palette.white };
+    const versionSwitcherActiveColor: IRawStyle = { color: theme!.palette.white };
 
     return (
       <div className={classNames.platformCardsSection}>
@@ -315,10 +316,10 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
             </TitleStack>
             <ul className={classNames.cardList}>
               <li className={classNames.cardListItem}>
-                {this._renderLink('#/controls/crossplatform', 'Controls', { ariaLabel: 'Controls: Cross-platform' })}
+                {this._renderLink('#/controls/cross', 'Controls', { ariaLabel: 'Controls: Cross-platform' })}
               </li>
               <li className={classNames.cardListItem}>
-                {this._renderLink('#/get-started/crossplatform', 'Get started', {
+                {this._renderLink('#/get-started/cross', 'Get started', {
                   ariaLabel: 'Get started: Cross-platform',
                 })}
               </li>
@@ -329,13 +330,13 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
     );
   };
 
-  private _renderPlatformsSection = (): JSX.Element => {
+  private _renderPlatformsSection = (): React.ReactElement => {
     const { isMountedOffset } = this.state;
     const { theme, styles } = this.props;
 
     // We need to get classNames within this method for offset transitions and inverted sections.
     const classNames = getClassNames(styles, {
-      theme,
+      theme: theme!,
       isMountedOffset,
       isInverted: true,
     });
@@ -357,14 +358,17 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
     );
   };
 
-  private _renderResourcesSection = (): JSX.Element => {
+  private _renderResourcesSection = (): React.ReactElement => {
     return (
       <section className={this._classNames.resourcesSection}>
         <div className={this._classNames.sectionContent}>
           <div className={this._classNames.oneHalf}>
             <Image
-              src="https://static2.sharepointonline.com/files/fabric/fabric-website/images/discover-resources-1x.png"
-              srcSet="https://static2.sharepointonline.com/files/fabric/fabric-website/images/discover-resources-1x.png 1x, https://static2.sharepointonline.com/files/fabric/fabric-website/images/discover-resources-2x.png 2x"
+              src={`${cdnUrl}/fabric-website/images/discover-resources-1x.png`}
+              srcSet={
+                `${cdnUrl}/fabric/fabric-website/images/discover-resources-1x.png 1x` +
+                `, ${cdnUrl}/fabric-website/images/discover-resources-2x.png 2x`
+              }
               alt="Resources illustration"
               className={this._classNames.illustration}
             />
@@ -382,7 +386,7 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
     );
   };
 
-  private _renderUsageSection = (): JSX.Element => {
+  private _renderUsageSection = (): React.ReactElement => {
     return (
       <section className={this._classNames.usageSection}>
         <div className={this._classNames.sectionContent} style={{ justifyContent: 'space-between' }}>
@@ -404,7 +408,7 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
   };
 
   /** Renders a link with an icon */
-  private _renderLink = (url: string, text: React.ReactNode, options: IRenderLinkOptions = {}): JSX.Element => {
+  private _renderLink = (url: string, text: React.ReactNode, options: IRenderLinkOptions = {}): React.ReactElement => {
     const { disabled, isCTA, icon = 'Forward', dark = true, ariaLabel } = options;
     return (
       <Link
@@ -421,7 +425,7 @@ export class HomePageBase extends React.Component<IHomePageProps, IHomePageState
   };
 
   /** Renders list of app/brand icons that use Fabric. */
-  private _renderUsageIconList = (): JSX.Element[] => {
+  private _renderUsageIconList = (): React.ReactElement[] => {
     return fabricUsageIcons.map((icon, iconIndex) => (
       <li key={icon.title + iconIndex} className={this._classNames.usageIconListItem}>
         <TooltipHost content={icon.title} id={icon.title + iconIndex} styles={{ root: { display: 'inline-block' } }}>

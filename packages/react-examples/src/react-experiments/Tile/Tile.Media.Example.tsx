@@ -12,8 +12,9 @@ import {
 } from '@fluentui/react-experiments';
 import { lorem } from '@fluentui/example-data';
 import * as TileExampleStylesModule from './Tile.Example.scss';
+import type { JSXElement } from '@fluentui/utilities';
 
-const ITEMS: { name: JSX.Element; activity: JSX.Element }[] = [
+const ITEMS: { name: JSXElement; activity: JSXElement }[] = [
   {
     name: <>{lorem(2)}</>,
     activity: (
@@ -105,10 +106,10 @@ interface IImageTileProps {
   nameplateOnlyOnHover: boolean;
   linkHref?: string;
   linkTarget?: string;
-  item: typeof ITEMS[0];
+  item: (typeof ITEMS)[0];
 }
 
-const ImageTile: React.FunctionComponent<IImageTileProps> = (props: IImageTileProps): JSX.Element => {
+const ImageTile: React.FunctionComponent<IImageTileProps> = (props: IImageTileProps): JSXElement => {
   const tile = (
     <Tile
       contentSize={props.tileSize}
@@ -145,7 +146,9 @@ const ImageTile: React.FunctionComponent<IImageTileProps> = (props: IImageTilePr
         background: (
           <img
             className={css(TileExampleStyles.tileImage)}
-            src={`//via.placeholder.com/${Math.round(imageSize.width)}x${Math.round(imageSize.height)}`}
+            src="https://res.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/fluent-placeholder.svg"
+            height={Math.round(imageSize.height)}
+            width={Math.round(imageSize.width)}
           />
         ),
       })}
@@ -172,7 +175,7 @@ export class TileMediaExample extends React.Component<{}, ITileMediaExampleState
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { imagesLoaded, nameplateOnlyOnHover, generateLinks, linkInNewTab } = this.state;
     const exampleUrl = 'http://www.contoso.com/';
     const linkHref = generateLinks ? exampleUrl : undefined;

@@ -1,1 +1,5 @@
-This test package was created to ensure that `@fluentui/react` remains compatible with Typescript 3.9 and no non TS 3.9 compatible code are introduced.
+# ts-minbar-test-react
+
+This test app ensures that `@fluentui/react` is compatible back to Typescript 5.4.
+
+> TS support is based [Fluent UI TypeScript support](/docs/react-v9/contributing/rfcs/shared/types-contract.md)

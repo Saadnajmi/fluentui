@@ -1,17 +1,20 @@
 // @ts-check
 const createRule = require('../utils/createRule');
-const { ESLintUtils } = require('@typescript-eslint/experimental-utils');
+const { ESLintUtils } = require('@typescript-eslint/utils');
+
+/**
+ * @import { TSESLint } from "@typescript-eslint/utils"
+ * @import { TypeChecker } from "typescript"
+ */
 
 module.exports = createRule({
   name: 'deprecated-keyboard-event-props',
   meta: {
     type: 'problem',
-    docs: {
+    docs: /** @type {TSESLint.RuleMetaDataDocs} */ ({
       description: 'Forbid use of deprecated KeyboardEvent props "which" and "keyCode".',
-      category: 'Best Practices',
-      recommended: 'error',
       requiresTypeChecking: true,
-    },
+    }),
     messages: {
       deprecatedProp: 'KeyboardEvent prop "{{name}}" is deprecated (consider using @fluentui/keyboard-key instead)',
     },
@@ -23,7 +26,7 @@ module.exports = createRule({
     const ts = require('typescript');
 
     const { program, esTreeNodeToTSNodeMap } = ESLintUtils.getParserServices(context);
-    /** @type {import("typescript").TypeChecker | undefined} */
+    /** @type {TypeChecker | undefined} */
     let typeChecker;
 
     return {

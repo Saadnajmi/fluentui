@@ -1,7 +1,6 @@
-import * as React from 'react';
+import type * as React from 'react';
 
 /**
- * @internal
  * Allows a component to be tagged as a FluentUI trigger component.
  *
  * Triggers are special-case components: they attach event listeners and other props on their child,
@@ -13,13 +12,14 @@ import * as React from 'react';
  *
  * MyComponent.isFluentTriggerComponent = true; // MUST also set this to true
  * ```
+ *
+ * @internal
  */
 export type FluentTriggerComponent = {
   isFluentTriggerComponent?: boolean;
 };
 
 /**
- * @internal
  * A trigger may have a children that could be either:
  * 1. A single element
  * 2. A render function that will receive properties and must return a valid element or null

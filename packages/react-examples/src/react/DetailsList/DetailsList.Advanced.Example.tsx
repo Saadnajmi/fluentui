@@ -26,6 +26,7 @@ import {
 import { createListItems, isGroupable, IExampleItem } from '@fluentui/example-data';
 import { memoizeFunction } from '@fluentui/react/lib/Utilities';
 import { getTheme, mergeStyleSets } from '@fluentui/react/lib/Styling';
+import type { JSXElement } from '@fluentui/utilities';
 
 const theme = getTheme();
 const headerDividerClass = 'DetailsListAdvancedExample-divider';
@@ -137,7 +138,7 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       canResizeColumns,
       checkboxVisibility,
@@ -204,12 +205,11 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
           constrainMode={constrainMode}
           groupProps={groupProps}
           enterModalSelectionOnTouch={true}
-          onItemInvoked={this._onItemInvoked}
           onItemContextMenu={this._onItemContextMenu}
           selectionZoneProps={{
             selection: this._selection,
             disableAutoSelectOnInputElements: true,
-            selectionMode: selectionMode,
+            selectionMode,
           }}
           ariaLabelForListHeader="Column headers. Click to sort."
           ariaLabelForSelectAllCheckbox="Toggle selection for all items"
@@ -225,8 +225,8 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
 
   private _onRenderDivider = (
     columnProps: IDetailsColumnProps,
-    defaultRenderer: (props?: IDetailsColumnProps) => JSX.Element | null,
-  ): JSX.Element => {
+    defaultRenderer: (props?: IDetailsColumnProps) => JSXElement | null,
+  ): JSXElement => {
     const { columnIndex } = columnProps;
     return (
       <React.Fragment key={`divider-wrapper-${columnIndex}`}>
@@ -266,7 +266,7 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
     isLazyLoaded = !isLazyLoaded;
 
     this.setState({
-      isLazyLoaded: isLazyLoaded,
+      isLazyLoaded,
       items: isLazyLoaded
         ? this._allItems.slice(0, PAGING_SIZE).concat(new Array(ITEMS_COUNT - PAGING_SIZE))
         : this._allItems,
@@ -284,7 +284,7 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
     canResizeColumns = !canResizeColumns;
 
     this.setState({
-      canResizeColumns: canResizeColumns,
+      canResizeColumns,
       columns: this._buildColumns(items, canResizeColumns, this._onColumnClick, sortedColumnKey, isSortedDescending),
     });
   };
@@ -514,7 +514,7 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
       });
     }
     return {
-      items: items,
+      items,
       target: ev.currentTarget as HTMLElement,
       directionalHint: DirectionalHint.bottomLeftEdge,
       gapSpace: 10,
@@ -522,10 +522,6 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
       onDismiss: this._onContextualMenuDismissed,
     };
   }
-
-  private _onItemInvoked = (item: IExampleItem, index: number): void => {
-    console.log('Item invoked', item, index);
-  };
 
   private _onItemContextMenu = (item: IExampleItem, index: number, ev: MouseEvent): boolean => {
     const contextualMenuProps: IContextualMenuProps = {
@@ -545,7 +541,7 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
 
     if (index > -1) {
       this.setState({
-        contextualMenuProps: contextualMenuProps,
+        contextualMenuProps,
       });
     }
 
@@ -590,7 +586,7 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
         undefined,
         this._onColumnContextMenu,
       ),
-      isSortedDescending: isSortedDescending,
+      isSortedDescending,
       sortedColumnKey: columnKey,
     });
   };
@@ -733,14 +729,14 @@ export class DetailsListAdvancedExample extends React.Component<{}, IDetailsList
         column.minWidth = 200;
       } else if (column.key === 'name') {
         column.onRender = (item: IExampleItem) => (
-          <Link href="#" data-selection-invoke={true}>
+          <Link href="#" data-selection-invoke={true} underline>
             {item.name}
           </Link>
         );
       } else if (column.key === 'key') {
         column.columnActionsMode = ColumnActionsMode.disabled;
         column.onRender = (item: IExampleItem) => (
-          <Link className={classNames.linkField} href="https://microsoft.com" target="_blank" rel="noopener">
+          <Link className={classNames.linkField} href="https://microsoft.com" target="_blank" rel="noopener" underline>
             {item.key}
           </Link>
         );

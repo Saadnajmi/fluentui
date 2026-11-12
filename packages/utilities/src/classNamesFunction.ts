@@ -1,7 +1,13 @@
 import { mergeCssSets, Stylesheet } from '@fluentui/merge-styles';
 import { getRTL } from './rtl';
 import { getWindow } from './dom';
-import type { IStyleSet, IProcessedStyleSet, IStyleFunctionOrObject } from '@fluentui/merge-styles';
+import type {
+  IStyleSet,
+  IStyleSetBase,
+  IProcessedStyleSet,
+  IStyleFunctionOrObject,
+  IStyleFunction,
+} from '@fluentui/merge-styles';
 import type { StyleFunction } from './styled';
 
 const MAX_CACHE_COUNT = 50;
@@ -54,7 +60,7 @@ export interface IClassNamesFunctionOptions {
  * immutable (numbers, strings, and booleans). This will allow the results to be memoized. Violating
  * these will cause extra recalcs to occur.
  */
-export function classNamesFunction<TStyleProps extends {}, TStyleSet extends IStyleSet<TStyleSet>>(
+export function classNamesFunction<TStyleProps extends {}, TStyleSet extends IStyleSetBase>(
   options: IClassNamesFunctionOptions = {},
 ): (
   getStyles: IStyleFunctionOrObject<TStyleProps, TStyleSet> | undefined,
@@ -67,7 +73,8 @@ export function classNamesFunction<TStyleProps extends {}, TStyleSet extends ISt
   // To derive the response, we can simply ensure the arguments are added or already
   // exist in the trie. At the last node, if there is a `__retval__` we return that. Otherwise
   // we call the `getStyles` api to evaluate, cache on the property, and return that.
-  let map: IRecursiveMemoNode = new Map();
+  // let map: IRecursiveMemoNode = new Map();
+  let windowMap: Map<'__default__' | Window, IRecursiveMemoNode> = new Map();
   let styleCalcCount = 0;
   let getClassNamesCount = 0;
   let currentMemoizedClassNames = _memoizedClassNames;
@@ -84,11 +91,23 @@ export function classNamesFunction<TStyleProps extends {}, TStyleSet extends ISt
       typeof styleFunctionOrObject === 'function' &&
       (styleFunctionOrObject as StyleFunction<TStyleProps, TStyleSet>).__noStyleOverride__
     ) {
-      return styleFunctionOrObject(styleProps) as IProcessedStyleSet<TStyleSet>;
+      return (styleFunctionOrObject as IStyleFunction<TStyleProps, TStyleSet>)(
+        styleProps,
+      ) as IProcessedStyleSet<TStyleSet>;
     }
 
     getClassNamesCount++;
-    let current: Map<any, any> = map;
+    const shadowConfig = styleFunctionOrObject
+      ? (styleFunctionOrObject as StyleFunction<TStyleProps, TStyleSet>).__shadowConfig__
+      : undefined;
+    const key = shadowConfig && shadowConfig.window ? shadowConfig.window : '__default__';
+
+    if (!windowMap.has(key)) {
+      windowMap.set(key, new Map());
+    }
+    let current: Map<any, any> = windowMap.get(key)!;
+
+    // let current: Map<any, any> = map;
     const { theme } = styleProps as any;
     const rtl = theme && theme.rtl !== undefined ? theme.rtl : getRTL();
 
@@ -97,12 +116,14 @@ export function classNamesFunction<TStyleProps extends {}, TStyleSet extends ISt
     // On reset of our stylesheet, reset memoized cache.
     if (currentMemoizedClassNames !== _memoizedClassNames) {
       currentMemoizedClassNames = _memoizedClassNames;
-      map = new Map();
+      // map = new Map();
+      windowMap.set(key, new Map());
+      current = windowMap.get(key)!;
       styleCalcCount = 0;
     }
 
     if (!options.disableCaching) {
-      current = _traverseMap(map, styleFunctionOrObject as any);
+      current = _traverseMap(windowMap.get(key)!, styleFunctionOrObject as any);
       current = _traverseMap(current, styleProps);
     }
 
@@ -113,10 +134,14 @@ export function classNamesFunction<TStyleProps extends {}, TStyleSet extends ISt
         (current as any)[retVal] = mergeCssSets(
           [
             (typeof styleFunctionOrObject === 'function'
-              ? styleFunctionOrObject(styleProps)
+              ? (styleFunctionOrObject as IStyleFunction<TStyleProps, TStyleSet>)(styleProps)
               : styleFunctionOrObject) as IStyleSet<TStyleSet>,
           ],
-          { rtl: !!rtl, specificityMultiplier: options.useStaticStyles ? DEFAULT_SPECIFICITY_MULTIPLIER : undefined },
+          {
+            shadowConfig: (styleFunctionOrObject as StyleFunction<TStyleProps, TStyleSet>).__shadowConfig__,
+            rtl: !!rtl,
+            specificityMultiplier: options.useStaticStyles ? DEFAULT_SPECIFICITY_MULTIPLIER : undefined,
+          },
         );
       }
 
@@ -136,7 +161,7 @@ export function classNamesFunction<TStyleProps extends {}, TStyleSet extends ISt
         console.trace();
       }
 
-      map.clear();
+      windowMap.get(key)!.clear();
       styleCalcCount = 0;
 
       // Mutate the options passed in, that's all we can do.

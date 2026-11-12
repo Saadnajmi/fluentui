@@ -5,6 +5,8 @@ import { DirectionalHint } from '../../common/DirectionalHint';
 import type { IProcessedStyleSet } from '../../Styling';
 import type { ITooltipProps, ITooltipStyleProps, ITooltipStyles } from './Tooltip.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<ITooltipStyleProps, ITooltipStyles>();
 
 export class TooltipBase extends React.Component<ITooltipProps, any> {
@@ -23,7 +25,7 @@ export class TooltipBase extends React.Component<ITooltipProps, any> {
 
   private _classNames: IProcessedStyleSet<ITooltipStyles>;
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       className,
       calloutProps,
@@ -40,7 +42,7 @@ export class TooltipBase extends React.Component<ITooltipProps, any> {
     this._classNames = getClassNames(styles!, {
       theme: theme!,
       className: className || (calloutProps && calloutProps.className),
-      beakWidth: calloutProps && calloutProps.beakWidth,
+      beakWidth: calloutProps && calloutProps.isBeakVisible ? calloutProps.beakWidth : 0,
       gapSpace: calloutProps && calloutProps.gapSpace,
       maxWidth: maxWidth!,
     });
@@ -67,7 +69,7 @@ export class TooltipBase extends React.Component<ITooltipProps, any> {
     );
   }
 
-  private _onRenderContent = (props: ITooltipProps): JSX.Element => {
+  private _onRenderContent = (props: ITooltipProps): JSXElement => {
     if (typeof props.content === 'string') {
       return <p className={this._classNames.subText}>{props.content}</p>;
     } else {

@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { initializeComponentRef, classNamesFunction, KeyCodes, getRTLSafeKeyCode, css } from '../../Utilities';
+import {
+  initializeComponentRef,
+  classNamesFunction,
+  FocusRects,
+  KeyCodes,
+  getRTLSafeKeyCode,
+  css,
+} from '../../Utilities';
 import { GroupedListSection } from './GroupedListSection';
 import { List, ScrollToMode } from '../../List';
 import { SelectionMode } from '../../Selection';
@@ -17,6 +24,8 @@ import type { IListProps } from '../../List';
 import type { IGroupHeaderProps } from './GroupHeader';
 import type { IGroupShowAllProps } from './GroupShowAll.styles';
 import type { IGroupFooterProps } from './GroupFooter.types';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 const getClassNames = classNamesFunction<IGroupedListStyleProps, IGroupedListStyles>();
 const { rowHeight: ROW_HEIGHT, compactRowHeight: COMPACT_ROW_HEIGHT } = DEFAULT_ROW_HEIGHTS;
@@ -114,7 +123,7 @@ export class GroupedListBase extends React.Component<IGroupedListProps, IGrouped
     return this._list.current!.getStartItemIndexInView() || 0;
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     const { groupProps, groups = [] } = this.props;
 
     if (groupProps && groupProps.isAllGroupsCollapsed) {
@@ -122,7 +131,7 @@ export class GroupedListBase extends React.Component<IGroupedListProps, IGrouped
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       className,
       usePageCache,
@@ -139,7 +148,7 @@ export class GroupedListBase extends React.Component<IGroupedListProps, IGrouped
     this._classNames = getClassNames(styles, {
       theme: theme!,
       className,
-      compact: compact,
+      compact,
     });
 
     const { shouldEnterInnerZone = this._isInnerZoneKeystroke } = focusZoneProps;
@@ -154,6 +163,7 @@ export class GroupedListBase extends React.Component<IGroupedListProps, IGrouped
         shouldEnterInnerZone={shouldEnterInnerZone}
         className={css(this._classNames.root, focusZoneProps.className)}
       >
+        <FocusRects />
         {!groups ? (
           this._renderGroup(undefined, 0)
         ) : (
@@ -175,7 +185,7 @@ export class GroupedListBase extends React.Component<IGroupedListProps, IGrouped
     );
   }
 
-  public forceUpdate() {
+  public forceUpdate(): void {
     super.forceUpdate();
     this._forceListUpdates();
   }
@@ -348,7 +358,7 @@ export class GroupedListBase extends React.Component<IGroupedListProps, IGrouped
   };
 
   private _isInnerZoneKeystroke = (ev: React.KeyboardEvent<HTMLElement>): boolean => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return ev.which === getRTLSafeKeyCode(KeyCodes.right);
   };
 

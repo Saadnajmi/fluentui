@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { TestWrapperDecorator } from '../utilities';
 import {
   DetailsList,
   DetailsListLayoutMode,
@@ -114,7 +115,7 @@ export class ScrollablePaneStickyBreadcrumbExample extends React.Component<{}, {
     this._selection = new Selection();
   }
 
-  public render(): JSX.Element {
+  public render(): React.ReactElement {
     const breadcrumbStyle = {
       root: [
         {
@@ -178,7 +179,7 @@ export class ScrollablePaneStickyBreadcrumbExample extends React.Component<{}, {
 function onRenderDetailsHeader(
   props: IDetailsHeaderProps,
   defaultRender?: IRenderFunction<IDetailsHeaderProps>,
-): JSX.Element {
+): React.ReactElement {
   return (
     <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
       {defaultRender!({
@@ -191,7 +192,7 @@ function onRenderDetailsHeader(
   );
 }
 
-function onRenderDetailsFooter(props: IDetailsFooterProps): JSX.Element {
+function onRenderDetailsFooter(props: IDetailsFooterProps): React.ReactElement {
   return (
     <Sticky stickyPosition={StickyPositionType.Footer} isScrollSynced={true}>
       <div style={{ display: 'inline-block' }}>
@@ -219,11 +220,13 @@ function onRenderDetailsFooter(props: IDetailsFooterProps): JSX.Element {
 const getElement = "document.getElementsByClassName('ms-ScrollablePane--contentContainer')[0]";
 const cropTo = { cropTo: '.testWrapper' };
 
-storiesOf('Sticky breadcrumb and sticky details list header', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'Sticky breadcrumb and sticky details list header',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', cropTo)
         .executeScript(`${getElement}.scrollTop = 5`)
         .snapshot(
@@ -240,11 +243,15 @@ storiesOf('Sticky breadcrumb and sticky details list header', module)
         .snapshot('scroll down when horizontal scroll is non-zero', cropTo)
         .executeScript(`${getElement}.scrollTop = 0`)
         .snapshot('scroll back to the top when horizontal scroll is non-zero', cropTo)
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory('ScrollablePane Sticky Breadcrumb Details List', () => (
-    <ScrollablePaneStickyBreadcrumbExample />
-  ));
+        .end(),
+    },
+  } satisfies StoryParameters,
+  excludeStories: ['ScrollablePaneStickyBreadcrumbExample'],
+} satisfies Meta<typeof ScrollablePaneStickyBreadcrumbExample>;
+
+export const ScrollablePaneStickyBreadcrumbDetailsList = () => (
+  <ScrollablePaneStickyBreadcrumbExample />
+);
+
+ScrollablePaneStickyBreadcrumbDetailsList.storyName =
+  'ScrollablePane Sticky Breadcrumb Details List';

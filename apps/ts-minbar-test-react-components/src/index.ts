@@ -1,13 +1,15 @@
-import config from '@fluentui/scripts/config';
-import * as fs from 'fs-extra';
 import * as path from 'path';
 import {
+  prepareTempDirs,
+  log,
+  shEcho,
+  TempPaths,
+  generateFiles,
   addResolutionPathsForProjectPackages,
   packProjectPackages,
-} from '@fluentui/scripts/projects-test/packPackages';
-import { prepareTempDirs, log, shEcho, TempPaths } from '@fluentui/scripts/projects-test/utils';
+} from '@fluentui/scripts-projects-test';
 
-const tsVersion = '3.9';
+const tsVersion = '5.4';
 const testName = 'ts-minbar-react-components';
 
 async function performTest() {
@@ -15,7 +17,7 @@ async function performTest() {
   const logger = log(`test:${testName}`);
 
   try {
-    const scaffoldPath = config.paths.withRootAt(path.resolve(__dirname, '../assets/'));
+    const scaffoldPathRoot = path.resolve(__dirname, '../files');
 
     tempPaths = prepareTempDirs(`${testName}-`);
     logger(`✔️ Temporary directories created under ${tempPaths.root}`);
@@ -31,32 +33,29 @@ async function performTest() {
     await shEcho(`yarn add ${dependencies}`, tempPaths.testApp);
     logger(`✔️ Dependencies were installed`);
 
-    const lernaRoot = config.paths.allPackages();
-    const packedPackages = await packProjectPackages(logger, lernaRoot, ['@fluentui/react-components']);
+    const packedPackages = await packProjectPackages(logger, '@fluentui/react-components');
     await addResolutionPathsForProjectPackages(tempPaths.testApp);
 
     await shEcho(`yarn add ${packedPackages['@fluentui/react-components']}`, tempPaths.testApp);
     logger(`✔️ Fluent UI packages were added to dependencies`);
 
-    fs.mkdirSync(path.join(tempPaths.testApp, 'src'));
-    fs.copyFileSync(scaffoldPath('index.tsx'), path.join(tempPaths.testApp, 'src/index.tsx'));
-    fs.copyFileSync(scaffoldPath('tsconfig.json'), path.join(tempPaths.testApp, 'tsconfig.json'));
+    generateFiles(scaffoldPathRoot, tempPaths.testApp);
     logger(`✔️ Source and configs were copied`);
 
-    await shEcho(`npx npm-which yarn`);
+    await shEcho(`which yarn`);
 
     await shEcho(`yarn --version`);
-    await shEcho(`yarn tsc --version`);
-    await shEcho(`yarn tsc --version`, tempPaths.testApp);
-  } catch (e) {
+    await shEcho(`yarn run tsc --version`, tempPaths.testApp);
+  } catch (err) {
     console.error('Something went wrong setting up the test:');
-    console.error(e?.stack || e);
+    console.error(err instanceof Error ? err?.stack : err);
     process.exit(1);
   }
 
   try {
-    await shEcho(`yarn tsc --noEmit`, tempPaths.testApp);
+    await shEcho(`yarn run tsc --noEmit`, tempPaths.testApp);
     logger(`✔️ Example project was successfully built with typescript@${tsVersion}`);
+    process.exit(0);
   } catch (e) {
     console.error(e);
 

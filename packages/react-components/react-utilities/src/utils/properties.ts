@@ -19,6 +19,8 @@ const toObjectMap = (...items: (string[] | Record<string, number>)[]) => {
  */
 export const baseElementEvents = toObjectMap([
   'onAuxClick',
+  'onAnimationEnd',
+  'onAnimationStart',
   'onCopy',
   'onCut',
   'onPaste',
@@ -116,6 +118,9 @@ export const baseElementProperties = toObjectMap([
   'htmlFor', // global
   'id', // global
   'lang', // global
+  'popover', // global
+  'focusgroup', // global
+  'focusgroupstart', // global
   'ref', // global
   'role', // global
   'style', // global
@@ -206,6 +211,7 @@ export const anchorProperties = toObjectMap(htmlElementProperties, [
   'href', // a, area, base, link
   'hrefLang', // a, area, link
   'media', // a, area, link, source, style
+  'referrerPolicy', // a, area
   'rel', // a, area, link
   'target', // a, area, base, form
   'type', // a, button, input, link, menu, object, script, source, style
@@ -234,6 +240,8 @@ export const buttonProperties = toObjectMap(htmlElementProperties, [
   'formMethod', // input, button
   'formNoValidate', // input, button
   'formTarget', // input, button
+  'popoverTarget', // input, button
+  'popoverTargetAction', // input, button
   'type', // a, button, input, link, menu, object, script, source, style
   'value', // button, input, li, option, meter, progress, param,
 ]);
@@ -246,6 +254,7 @@ export const buttonProperties = toObjectMap(htmlElementProperties, [
 export const inputProperties = toObjectMap(buttonProperties, [
   'accept', // input
   'alt', // area, img, input
+  'autoCorrect', // input, textarea
   'autoCapitalize', // input, textarea
   'autoComplete', // form, input
   'checked', // input
@@ -257,6 +266,7 @@ export const inputProperties = toObjectMap(buttonProperties, [
   'max', // input, meter
   'maxLength', // input, textarea
   'min', // input, meter
+  'minLength', // input, textarea
   'multiple', // input, select
   'pattern', // input
   'placeholder', // input, textarea
@@ -327,6 +337,7 @@ export const trProperties = htmlElementProperties;
  * @public
  */
 export const thProperties = toObjectMap(htmlElementProperties, [
+  'colSpan', // td, th
   'rowSpan', // td, th
   'scope', // th
 ]);
@@ -405,6 +416,7 @@ export const imgProperties = toObjectMap(htmlElementProperties, [
   'alt', // area, img, input
   'crossOrigin', // img
   'height', // canvas, embed, iframe, img, input, object, video
+  'loading', // img, iframe
   'src', // audio, embed, iframe, img, input, script, source, track, video
   'srcSet', // img, source
   'useMap', // img, object,
@@ -460,14 +472,14 @@ export function getNativeProps<T extends Record<string, any>>(
 
   for (const key of keys) {
     const isNativeProp =
-      (!isArray && (allowedPropNames as Record<string, number>)[key]) ||
+      (!isArray && Object.prototype.hasOwnProperty.call(allowedPropNames, key)) ||
       (isArray && (allowedPropNames as string[]).indexOf(key) >= 0) ||
       key.indexOf('data-') === 0 ||
       key.indexOf('aria-') === 0;
 
-    if (isNativeProp && (!excludedPropNames || excludedPropNames?.indexOf(key) === -1)) {
+    if (key !== '__proto__' && isNativeProp && (!excludedPropNames || excludedPropNames?.indexOf(key) === -1)) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      result[key] = props![key] as any;
+      result[key] = props[key] as any;
     }
   }
 

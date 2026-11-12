@@ -25,6 +25,8 @@ import type {
 } from './Breadcrumb.types';
 import { composeRenderFunction } from '../../Utilities';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 /** @deprecated Use IBreadcrumbData */
 export type IBreadCrumbData = IBreadcrumbData;
 
@@ -77,7 +79,7 @@ export class BreadcrumbBase extends React.Component<IBreadcrumbProps, any> {
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     this._validateProps(this.props);
 
     const {
@@ -167,27 +169,25 @@ export class BreadcrumbBase extends React.Component<IBreadcrumbProps, any> {
     } = data.props;
     const { renderedOverflowItems, renderedItems } = data;
 
-    const contextualItems = renderedOverflowItems.map(
-      (item): IContextualMenuItem => {
-        const isActionable = !!(item.onClick || item.href);
-        return {
-          text: item.text,
-          name: item.text,
-          key: item.key,
-          onClick: item.onClick ? this._onBreadcrumbClicked.bind(this, item) : null,
-          href: item.href,
-          disabled: !isActionable,
-          itemProps: isActionable ? undefined : nonActionableItemProps,
-        };
-      },
-    );
+    const contextualItems = renderedOverflowItems.map((item): IContextualMenuItem => {
+      const isActionable = !!(item.onClick || item.href);
+      return {
+        text: item.text,
+        name: item.text,
+        key: item.key,
+        onClick: item.onClick ? this._onBreadcrumbClicked.bind(this, item) : null,
+        href: item.href,
+        disabled: !isActionable,
+        itemProps: isActionable ? undefined : nonActionableItemProps,
+      };
+    });
 
     // Find index of last rendered item so the divider icon
     // knows not to render on that item
     const lastItemIndex = renderedItems.length - 1;
     const hasOverflowItems = renderedOverflowItems && renderedOverflowItems.length !== 0;
 
-    const itemElements: JSX.Element[] = renderedItems.map((item, index) => {
+    const itemElements: JSXElement[] = renderedItems.map((item, index) => {
       let finalOnRenderItem = this._onRenderItem;
 
       if (item.onRender) {
@@ -328,6 +328,6 @@ export class BreadcrumbBase extends React.Component<IBreadcrumbProps, any> {
   }
 }
 
-function defaultOnRenderCrumbContent(item?: IBreadcrumbItem): JSX.Element | null {
+function defaultOnRenderCrumbContent(item?: IBreadcrumbItem): JSXElement | null {
   return item ? <>{item.text}</> : null;
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 
 import { render, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -10,6 +9,13 @@ import { SelectableOptionMenuItemType } from '../../SelectableOption';
 import { resetIds } from '../../Utilities';
 import { ComboBox } from './ComboBox';
 import type { IComboBox, IComboBoxOption } from './ComboBox.types';
+
+jest.mock('react-dom', () => {
+  return {
+    ...jest.requireActual('react-dom'),
+    createPortal: jest.fn((node: any) => node),
+  };
+});
 
 const RENDER_OPTIONS: IComboBoxOption[] = [
   { key: 'header', text: 'Header', itemType: SelectableOptionMenuItemType.Header },
@@ -35,6 +41,11 @@ const DEFAULT_OPTIONS3: IComboBoxOption[] = [
   { key: '2', text: 'Foo' },
   { key: '3', text: 'Bar' },
 ];
+const DEFAULT_OPTIONS4: IComboBoxOption[] = [
+  { key: '1', text: 'One' },
+  { key: '2', text: 'Foo', disabled: true },
+  { key: '3', text: 'Bar' },
+];
 
 const RUSSIAN_OPTIONS: IComboBoxOption[] = [
   { key: '0', text: 'сестра' },
@@ -46,18 +57,8 @@ const RUSSIAN_OPTIONS: IComboBoxOption[] = [
 const returnUndefined = () => undefined;
 
 describe('ComboBox', () => {
-  const createPortal = ReactDOM.createPortal;
-
-  function mockCreatePortal() {
-    (ReactDOM as any).createPortal = (node: any) => node;
-  }
-
   beforeEach(() => {
     resetIds();
-  });
-
-  afterEach(() => {
-    (ReactDOM as any).createPortal = createPortal;
   });
 
   isConformant({
@@ -71,9 +72,6 @@ describe('ComboBox', () => {
   });
 
   it('Renders correctly when open', () => {
-    // Mock createPortal so that the options list ends up inside the wrapper for snapshotting.
-    mockCreatePortal();
-
     const ref = React.createRef<IComboBox>();
     const { container, getByRole } = render(
       <ComboBox options={RENDER_OPTIONS} defaultSelectedKey="2" componentRef={ref} />,
@@ -83,7 +81,6 @@ describe('ComboBox', () => {
   });
 
   it('Renders correctly when opened in multi-select mode', () => {
-    mockCreatePortal();
     const ref = React.createRef<IComboBox>();
     const { container, getByRole } = render(
       <ComboBox multiSelect options={RENDER_OPTIONS} defaultSelectedKey="2" componentRef={ref} />,
@@ -115,6 +112,15 @@ describe('ComboBox', () => {
 
     rerender(<ComboBox disabled={true} options={DEFAULT_OPTIONS} />);
     expect(combobox.getAttribute('aria-disabled')).toEqual('true');
+  });
+
+  it('sets alert message and aria-invalid when errorMessage is set', () => {
+    const { getByRole } = render(
+      <ComboBox label="Test label" options={DEFAULT_OPTIONS} errorMessage="This is an example error." />,
+    );
+    const alert = getByRole('alert');
+    expect(alert.textContent).toBe('This is an example error.');
+    expect(getByRole('combobox').getAttribute('aria-invalid')).toBe('true');
   });
 
   it('Renders no selected item in default case', () => {
@@ -165,6 +171,28 @@ describe('ComboBox', () => {
     expect(getByRole('combobox').getAttribute('value')).toEqual('');
   });
 
+  it('Respects a user provided id for an option', () => {
+    const options: IComboBoxOption[] = [
+      { key: 0, text: 'zero' },
+      { key: 1, text: 'one', id: 'one' },
+      { key: 2, text: 'two' },
+    ];
+
+    const { getByRole, getAllByRole } = render(<ComboBox options={options} />);
+    const combobox = getByRole('combobox');
+    // open combobox
+    userEvent.click(combobox);
+
+    const optionArray = getAllByRole('option');
+    expect(optionArray.length).toEqual(3);
+
+    const regex = new RegExp(/ComboBox[0-9]+-list[0-9]+/);
+    expect(regex.test(optionArray[0].getAttribute('id')!)).toEqual(true);
+    expect(regex.test(optionArray[1].getAttribute('id')!)).toEqual(false);
+    expect(optionArray[1].getAttribute('id')).toEqual('one');
+    expect(regex.test(optionArray[2].getAttribute('id')!)).toEqual(true);
+  });
+
   it('Applies correct attributes to the selected option', () => {
     const { getByRole, getAllByRole } = render(<ComboBox options={DEFAULT_OPTIONS} defaultSelectedKey="2" />);
 
@@ -194,7 +222,7 @@ describe('ComboBox', () => {
     const combobox = getByRole('combobox');
     userEvent.type(combobox, 'f{enter}');
 
-    const caretdownButton = getByRole('presentation', { hidden: true });
+    const caretdownButton = getByRole('button');
     userEvent.click(caretdownButton);
 
     expect(getAllByRole('option')).toHaveLength(DEFAULT_OPTIONS.length);
@@ -206,7 +234,7 @@ describe('ComboBox', () => {
     const combobox = getByRole('combobox');
     userEvent.type(combobox, 'f{enter}');
 
-    const caretdownButton = getByRole('presentation', { hidden: true });
+    const caretdownButton = getByRole('button');
     userEvent.click(caretdownButton);
 
     const options = getAllByRole('option');
@@ -279,6 +307,16 @@ describe('ComboBox', () => {
     expect(combobox.getAttribute('value')).toEqual('Foo');
   });
 
+  it('Can insert text in uncontrolled case with autoComplete and allowFreeInput on', () => {
+    const { getByRole } = render(
+      <ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS2} autoComplete="on" allowFreeInput />,
+    );
+
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'f');
+    expect(combobox.getAttribute('value')).toEqual('Foo');
+  });
+
   it('Can insert text in uncontrolled case with autoComplete on and allowFreeform off', () => {
     const { getByRole } = render(<ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS2} autoComplete="on" />);
 
@@ -305,12 +343,42 @@ describe('ComboBox', () => {
     expect(combobox.getAttribute('value')).toEqual('f');
   });
 
+  it('Can insert text in uncontrolled case with autoComplete off and allowFreeInput on', () => {
+    const { getByRole } = render(
+      <ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS2} autoComplete="off" allowFreeInput />,
+    );
+
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'xyz');
+    expect(combobox.getAttribute('value')).toEqual('xyz');
+  });
+
   it('Can insert text in uncontrolled case with autoComplete and allowFreeform off', () => {
     const { getByRole } = render(<ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS2} autoComplete="off" />);
 
     const combobox = getByRole('combobox');
     userEvent.type(combobox, 'f');
     expect(combobox.getAttribute('value')).toEqual('One');
+  });
+
+  it(`Cannot insert text that matches disabled option in uncontrolled case with autoComplete on and allowFreeform
+      off`, () => {
+    const { getByRole } = render(<ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS4} autoComplete="on" />);
+
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'f');
+    expect(combobox.getAttribute('value')).toEqual('One');
+  });
+
+  it(`Can insert text in uncontrolled case with autoComplete and allowFreeform on but does not autocomplete to disabled
+      matching option`, () => {
+    const { getByRole } = render(
+      <ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS4} autoComplete="on" allowFreeform />,
+    );
+
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'f');
+    expect(combobox.getAttribute('value')).toEqual('f');
   });
 
   it('Can insert an empty string in uncontrolled case with autoComplete and allowFreeform on', () => {
@@ -463,6 +531,25 @@ describe('ComboBox', () => {
     expect(combobox.getAttribute('value')).toEqual('One');
   });
 
+  it('Updates aria-activedescendant with keyboard', () => {
+    const options: IComboBoxOption[] = [
+      { key: '1', text: '1', id: 'one' },
+      { key: '2', text: '2', id: 'two' },
+      { key: '3', text: '3', id: 'three' },
+    ];
+    const { getByRole } = render(<ComboBox defaultSelectedKey="1" options={options} />);
+    const combobox = getByRole('combobox');
+    // open combobox
+    userEvent.tab();
+    userEvent.keyboard('{enter}');
+    expect(combobox.getAttribute('aria-expanded')).toEqual('true');
+    expect(combobox.getAttribute('aria-activedescendant')).toEqual('one');
+
+    // arrow down
+    userEvent.keyboard('{arrowdown}');
+    expect(combobox.getAttribute('aria-activedescendant')).toEqual('two');
+  });
+
   it('Cannot insert text while disabled', () => {
     const { getByRole } = render(<ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS2} disabled />);
     const combobox = getByRole('combobox');
@@ -488,7 +575,7 @@ describe('ComboBox', () => {
     const { getByRole, queryAllByRole } = render(
       <ComboBox defaultSelectedKey="1" options={DEFAULT_OPTIONS2} disabled />,
     );
-    const caretdownButton = getByRole('presentation', { hidden: true });
+    const caretdownButton = getByRole('button');
     userEvent.click(caretdownButton);
     expect(queryAllByRole('option')).toHaveLength(0);
   });
@@ -587,6 +674,58 @@ describe('ComboBox', () => {
 
     userEvent.clear(combobox);
     expect(changedValue).toEqual('');
+  });
+
+  it('onInputValueChange is called when the input changes with allowFreeInput', () => {
+    let changedValue: string | undefined = undefined;
+    const onInputValueChangeHandler = (value: string) => {
+      changedValue = value;
+    };
+
+    const { getByRole } = render(
+      <ComboBox options={DEFAULT_OPTIONS} allowFreeInput onInputValueChange={onInputValueChangeHandler} />,
+    );
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'a');
+    expect(changedValue).toEqual('a');
+
+    userEvent.type(combobox, 'bcd');
+    expect(changedValue).toEqual('abcd');
+
+    userEvent.clear(combobox);
+    expect(changedValue).toEqual('');
+  });
+
+  it('onChange is called when a full matching option is typed and submitted with allowFreeInput', () => {
+    const onChange = jest.fn();
+
+    const { getByRole } = render(<ComboBox options={DEFAULT_OPTIONS2} allowFreeInput onChange={onChange} />);
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'foo');
+    expect(onChange).not.toHaveBeenCalled();
+
+    userEvent.type(combobox, '{enter}');
+    expect(onChange).toHaveBeenCalledWith(expect.anything(), DEFAULT_OPTIONS2[1], 1, 'Foo');
+  });
+
+  it('onChange is not called when a non-matching string is typed and submitted with allowFreeInput', () => {
+    const onChange = jest.fn();
+
+    const { getByRole } = render(<ComboBox options={DEFAULT_OPTIONS2} allowFreeInput onChange={onChange} />);
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'abc{enter}');
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('onPendingValueChanged is called when a full matching option is typed with allowFreeInput', () => {
+    const onPendingValueChanged = jest.fn();
+
+    const { getByRole } = render(
+      <ComboBox options={DEFAULT_OPTIONS2} allowFreeInput onPendingValueChanged={onPendingValueChanged} />,
+    );
+    const combobox = getByRole('combobox');
+    userEvent.type(combobox, 'foo');
+    expect(onPendingValueChanged).toHaveBeenCalledWith(DEFAULT_OPTIONS2[1], 1, undefined);
   });
 
   it('suggestedDisplayValue is set to undefined when the selected input is cleared', () => {
@@ -1070,7 +1209,7 @@ describe('ComboBox', () => {
       <ComboBox multiSelect options={DEFAULT_OPTIONS} allowFreeform />,
     );
     const combobox = getByRole('combobox');
-    const caretdownButton = getByRole('presentation', { hidden: true });
+    const caretdownButton = getByRole('button');
     userEvent.type(combobox, comboBoxOption.text);
     //click on container to trigger onBlur
     userEvent.click(container);
@@ -1096,7 +1235,7 @@ describe('ComboBox', () => {
 
     const { container, getByRole, getAllByRole } = render(<ComboBox options={DEFAULT_OPTIONS} allowFreeform />);
     const combobox = getByRole('combobox');
-    const caretdownButton = getByRole('presentation', { hidden: true });
+    const caretdownButton = getByRole('button');
     userEvent.type(combobox, comboBoxOption.text);
     userEvent.click(container);
     expect(combobox.getAttribute('value')).toEqual(comboBoxOption.text);

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import { ResizeGroup, OverflowSet } from '@fluentui/react';
 import { DefaultButton } from '@fluentui/react/lib/Button';
 
@@ -25,48 +26,48 @@ const list = {
 
 const noop = () => null;
 
-storiesOf('ResizeGroup', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'ResizeGroup',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.testWrapper' })
         .click('.OverflowButton')
         .hover('.OverflowButton')
         .snapshot('click overflow')
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory(
-    'Root',
-    () => (
-      <ResizeGroup
-        data={list}
-        onReduceData={noop}
-        onRenderData={data => {
-          return (
-            <OverflowSet
-              items={data.primary}
-              overflowItems={data.overflow.length ? data.overflow : null}
-              onRenderItem={item => {
-                return (
-                  <DefaultButton
-                    text={item.name}
-                    iconProps={item.iconProps}
-                    onClick={item.onClick}
-                    checked={item.checked}
-                  />
-                );
-              }}
-              onRenderOverflowButton={overflowItems => (
-                <DefaultButton className="OverflowButton" menuProps={{ items: overflowItems! }} />
-              )}
-            />
-          );
-        }}
-      />
-    ),
-    { includeRtl: true },
-  );
+        .end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof ResizeGroup>;
+
+export const Root = () => (
+  <ResizeGroup
+    data={list}
+    onReduceData={noop}
+    onRenderData={data => {
+      return (
+        <OverflowSet
+          items={data.primary}
+          overflowItems={data.overflow.length ? data.overflow : null}
+          onRenderItem={item => {
+            return (
+              <DefaultButton
+                text={item.name}
+                iconProps={item.iconProps}
+                onClick={item.onClick}
+                checked={item.checked}
+              />
+            );
+          }}
+          onRenderOverflowButton={overflowItems => (
+            <DefaultButton className="OverflowButton" menuProps={{ items: overflowItems! }} />
+          )}
+        />
+      );
+    }}
+  />
+);
+
+export const RootRTL = getStoryVariant(Root, RTL);

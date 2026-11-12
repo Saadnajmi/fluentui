@@ -34,10 +34,11 @@ function createCompilerHost(): ts.CompilerHost {
     ...originalHost,
 
     readFile: () => {
-      throw new Error('Not supported');
+      //   throw new Error('Not supported');
+      return '';
     },
     writeFile: () => {
-      throw new Error('Not supported');
+      //   throw new Error('Not supported');
     },
 
     getSourceFile,
@@ -250,7 +251,7 @@ describe('getCallbackArguments', () => {
         './Accordion.types.ts': 'export interface AccordionProps { onToggle: (e: null) => void; }',
       });
 
-      expect(() => getCallbackArguments(program, 'Button.types.ts', 'AccordionProps', 'onToggle')).toThrowError(
+      expect(() => getCallbackArguments(program, 'Button.types.ts', 'AccordionProps', 'onToggle')).toThrow(
         [
           'A file (Button.types.ts) was not found in TS program, this looks like an invocation problem,',
           'check your params',
@@ -291,13 +292,11 @@ describe('getCallbackArguments', () => {
         export interface AccordionProps { onToggle: (a: TypeB) => void; }`,
       });
 
-      /* eslint-disable @fluentui/max-len */
       expect(() =>
         getCallbackArguments(program, 'Accordion.types.ts', 'AccordionProps', 'onToggle'),
       ).toThrowErrorMatchingInlineSnapshot(
         `"We received a type \\"TypeB\\" that is too complex to resolve. Please simply it, for example remove usage of \\"Pick\\"."`,
       );
-      /* eslint-enable @fluentui/max-len */
     });
   });
 });

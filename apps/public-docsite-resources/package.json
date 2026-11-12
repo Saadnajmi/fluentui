@@ -5,6 +5,18 @@
   "description": "Fluent UI React local demo app",
   "main": "lib-commonjs/index.js",
   "module": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib-commonjs/index.js"
+    },
+    "./lib/AppDefinition": {
+      "types": "./lib/AppDefinition.d.ts",
+      "import": "./lib/AppDefinition.js",
+      "require": "./lib-commonjs/AppDefinition.js"
+    }
+  },
   "sideEffects": [
     "*.global.*",
     "*Examples.*",
@@ -17,33 +29,29 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "just-scripts build",
-    "bundle": "just-scripts bundle",
-    "lint": "just-scripts lint",
-    "just": "just-scripts",
-    "clean": "just-scripts clean",
-    "code-style": "just-scripts code-style",
-    "start": "just-scripts dev",
-    "update-snapshots": "just-scripts jest -u"
-  },
-  "devDependencies": {
-    "@fluentui/api-docs": "^8.2.3",
-    "@fluentui/eslint-plugin": "*",
-    "@fluentui/scripts": "^1.0.0"
+    "build": "yarn run -T just-scripts build",
+    "bundle": "yarn run -T just-scripts bundle",
+    "lint": "yarn run -T eslint --ext .js,.ts,.tsx ./src",
+    "just": "yarn run -T just-scripts",
+    "clean": "yarn run -T just-scripts clean",
+    "code-style": "yarn run -T just-scripts code-style",
+    "start": "yarn run -T just-scripts dev",
+    "update-snapshots": "yarn run -T just-scripts jest -u"
   },
   "dependencies": {
-    "@fluentui/react": "^8.98.2",
-    "@fluentui/react-examples": "^8.34.4",
+    "@fluentui/azure-themes": "*",
+    "@fluentui/font-icons-mdl2": "*",
+    "@fluentui/react": "*",
+    "@fluentui/react-charting": "*",
+    "@fluentui/react-docsite-components": "*",
+    "@fluentui/react-examples": "*",
+    "@fluentui/react-monaco-editor": "*",
+    "@fluentui/set-version": "*",
+    "@fluentui/theme-samples": "*",
     "@microsoft/load-themed-styles": "^1.10.26",
-    "@fluentui/azure-themes": "^8.5.11",
-    "@fluentui/react-docsite-components": "^8.10.11",
-    "@fluentui/font-icons-mdl2": "^8.5.1",
-    "@fluentui/set-version": "^8.2.2",
-    "@fluentui/theme-samples": "^8.7.11",
-    "@fluentui/react-monaco-editor": "^1.7.11",
     "office-ui-fabric-core": "^11.0.0",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "tslib": "^2.1.0"
   }
 }

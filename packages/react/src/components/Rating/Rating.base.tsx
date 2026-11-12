@@ -1,10 +1,20 @@
 import * as React from 'react';
-import { classNamesFunction, css, format, divProperties, getNativeProps, useFocusRects } from '../../Utilities';
+import {
+  classNamesFunction,
+  css,
+  format,
+  divProperties,
+  getNativeProps,
+  KeyCodes,
+  useFocusRects,
+} from '../../Utilities';
 import { Icon } from '../../Icon';
 import { FocusZone, FocusZoneDirection } from '../../FocusZone';
 import { RatingSize } from './Rating.types';
 import { useId, useWarnings, useControllableValue, useMergedRefs } from '@fluentui/react-hooks';
 import type { IRatingProps, IRatingStyleProps, IRatingStyles, IRating, IRatingStarProps } from './Rating.types';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 const getClassNames = classNamesFunction<IRatingStyleProps, IRatingStyles>();
 
@@ -26,7 +36,7 @@ const RatingStar = (props: IRatingStarProps) => {
   );
 };
 
-const useComponentRef = (componentRef: React.Ref<IRating> | undefined, rating: number) => {
+const useComponentRef = (componentRef: React.Ref<IRating | null> | undefined, rating: number) => {
   React.useImperativeHandle(
     componentRef,
     () => ({
@@ -84,7 +94,7 @@ export const RatingBase: React.FunctionComponent<IRatingProps> = React.forwardRe
       disabled,
       getAriaLabel,
       styles,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       min: minFromProps = props.allowZeroStars ? 0 : 1,
       max = 5,
       readOnly,
@@ -121,7 +131,7 @@ export const RatingBase: React.FunctionComponent<IRatingProps> = React.forwardRe
     const readOnlyAriaLabel = getAriaLabel?.(displayRating, max);
     const normalModeAriaLabel = ariaLabel ? ariaLabel : readOnlyAriaLabel;
 
-    const stars: JSX.Element[] = [];
+    const stars: JSXElement[] = [];
 
     const renderStar = (starProps: IRatingStarProps, renderer?: IRatingProps['onRenderStar']) =>
       renderer ? renderer(starProps) : <RatingStar {...starProps} />;
@@ -137,6 +147,34 @@ export const RatingBase: React.FunctionComponent<IRatingProps> = React.forwardRe
         }
       };
 
+      const onStarKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const { which } = event;
+        let newRating = starNum;
+        switch (which) {
+          case KeyCodes.right:
+          case KeyCodes.down:
+            newRating = Math.min(max, newRating + 1);
+            break;
+          case KeyCodes.left:
+          case KeyCodes.up:
+            newRating = Math.max(1, newRating - 1);
+            break;
+          case KeyCodes.home:
+          case KeyCodes.pageUp:
+            newRating = 1;
+            break;
+          case KeyCodes.end:
+          case KeyCodes.pageDown:
+            newRating = max;
+            break;
+        }
+
+        if (newRating !== starNum && (rating === undefined || Math.ceil(rating) !== newRating)) {
+          setRating(newRating, event);
+        }
+      };
+
       stars.push(
         <button
           className={css(
@@ -146,8 +184,8 @@ export const RatingBase: React.FunctionComponent<IRatingProps> = React.forwardRe
           id={getStarId(id, starNum)}
           key={starNum}
           {...(starNum === Math.ceil(displayRating) && { 'data-is-current': true })}
-          onFocus={onSelectStar}
-          onClick={onSelectStar} // For Safari & Firefox on OSX
+          onKeyDown={onStarKeyDown}
+          onClick={onSelectStar}
           disabled={!!(disabled || readOnly)}
           role="radio"
           aria-hidden={readOnly ? 'true' : undefined}
@@ -186,6 +224,7 @@ export const RatingBase: React.FunctionComponent<IRatingProps> = React.forwardRe
         <FocusZone
           direction={FocusZoneDirection.bidirectional}
           className={css(classNames.ratingFocusZone, rootSizeClass)}
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           defaultActiveElement={'#' + getStarId(id, Math.ceil(displayRating))}
           // When in read-only mode, we allow focus (per ARIA standards) and set up ARIA attributes to indicate element
           // is read-only. https://www.w3.org/TR/wai-aria-1.1/#aria-readonly

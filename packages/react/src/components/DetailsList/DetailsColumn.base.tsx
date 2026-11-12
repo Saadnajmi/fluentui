@@ -13,6 +13,9 @@ import type {
   IDetailsColumnRenderTooltipProps,
   IDetailsColumnFilterIconProps,
 } from './DetailsColumn.types';
+import { ITooltipHost } from '../Tooltip/TooltipHost.types';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 const MOUSEDOWN_PRIMARY_BUTTON = 0; // for mouse down event we are using ev.button property, 0 means left button
 
@@ -21,19 +24,19 @@ const TRANSITION_DURATION_DRAG = 200; // ms
 const TRANSITION_DURATION_DROP = 1500; // ms
 const CLASSNAME_ADD_INTERVAL = 20; // ms
 
-const defaultOnRenderHeader = (classNames: IProcessedStyleSet<IDetailsColumnStyles>) => (
-  props?: IDetailsColumnProps,
-): JSX.Element | null => {
-  if (!props) {
-    return null;
-  }
+const defaultOnRenderHeader =
+  (classNames: IProcessedStyleSet<IDetailsColumnStyles>) =>
+  (props?: IDetailsColumnProps): JSXElement | null => {
+    if (!props) {
+      return null;
+    }
 
-  if (props.column.isIconOnly) {
-    return <span className={classNames.accessibleLabel}>{props.column.name}</span>;
-  }
+    if (props.column.isIconOnly) {
+      return <span className={classNames.accessibleLabel}>{props.column.name}</span>;
+    }
 
-  return <>{props.column.name}</>;
-};
+    return <>{props.column.name}</>;
+  };
 
 /**
  * Component for rendering columns in a `DetailsList`.
@@ -46,6 +49,7 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
   private _root = React.createRef<HTMLDivElement>();
   private _dragDropSubscription?: IDisposable;
   private _classNames: IProcessedStyleSet<IDetailsColumnStyles>;
+  private _tooltipRef = React.createRef<ITooltipHost>();
 
   constructor(props: IDetailsColumnProps) {
     super(props);
@@ -54,7 +58,7 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
     this._events = new EventGroup(this);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       column,
       parentId,
@@ -94,13 +98,14 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
     const hasInnerButton =
       column.columnActionsMode !== ColumnActionsMode.disabled &&
       (column.onColumnClick !== undefined || this.props.onColumnClick !== undefined);
+    // use aria-describedby to point to the tooltip if the tooltip is not using the ariaLabel string
+    const shouldAssociateTooltip = this.props.onRenderColumnHeaderTooltip
+      ? !column.ariaLabel
+      : this._hasAccessibleDescription();
     const accNameDescription = {
       'aria-label': column.ariaLabel ? column.ariaLabel : column.isIconOnly ? column.name : undefined,
       'aria-labelledby': column.ariaLabel || column.isIconOnly ? undefined : `${parentId}-${column.key}-name`,
-      'aria-describedby':
-        !this.props.onRenderColumnHeaderTooltip && this._hasAccessibleDescription()
-          ? `${parentId}-${column.key}-tooltip`
-          : undefined,
+      'aria-describedby': shouldAssociateTooltip ? `${parentId}-${column.key}-tooltip` : undefined,
     };
 
     return (
@@ -120,13 +125,15 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
           draggable={isDraggable}
           style={{
             width:
-              column.calculatedWidth! +
+              (column.calculatedWidth || 0) +
               cellStyleProps.cellLeftPadding +
               cellStyleProps.cellRightPadding +
               (column.isPadded ? cellStyleProps.cellExtraRightPadding : 0),
           }}
           data-automationid={'ColumnsHeaderColumn'}
           data-item-key={column.key}
+          onBlur={this._onColumnBlur}
+          onFocus={this._onColumnFocus}
         >
           {isDraggable && (
             <IconComponent iconName="GripperBarVertical" className={classNames.gripperBarVerticalStyle} />
@@ -137,6 +144,7 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
               id: `${parentId}-${column.key}-tooltip`,
               setAriaDescribedBy: false,
               column,
+              componentRef: this._tooltipRef,
               content: column.columnActionsMode !== ColumnActionsMode.disabled ? column.ariaLabel : '',
               children: (
                 <span
@@ -150,6 +158,7 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
                   {...(hasInnerButton && accNameDescription)}
                   onContextMenu={this._onColumnContextMenu}
                   onClick={this._onColumnClick}
+                  onKeyDown={this._onColumnKeyDown}
                   aria-haspopup={column.columnActionsMode === ColumnActionsMode.hasDropdown ? 'menu' : undefined}
                   aria-expanded={
                     column.columnActionsMode === ColumnActionsMode.hasDropdown ? !!column.isMenuOpen : undefined
@@ -241,16 +250,16 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
     }
   }
 
-  private _onRenderFilterIcon = (classNames: IProcessedStyleSet<IDetailsColumnStyles>) => (
-    props: IDetailsColumnFilterIconProps,
-  ): JSX.Element => {
-    const { columnProps, ...iconProps } = props;
-    const IconComponent = columnProps?.useFastIcons ? FontIcon : Icon;
+  private _onRenderFilterIcon =
+    (classNames: IProcessedStyleSet<IDetailsColumnStyles>) =>
+    (props: IDetailsColumnFilterIconProps): JSXElement => {
+      const { columnProps, ...iconProps } = props;
+      const IconComponent = columnProps?.useFastIcons ? FontIcon : Icon;
 
-    return <IconComponent {...iconProps} />;
-  };
+      return <IconComponent {...iconProps} />;
+    };
 
-  private _onRenderColumnHeaderTooltip = (tooltipHostProps: IDetailsColumnRenderTooltipProps): JSX.Element => {
+  private _onRenderColumnHeaderTooltip = (tooltipHostProps: IDetailsColumnRenderTooltipProps): JSXElement => {
     return <span className={tooltipHostProps.hostClassName}>{tooltipHostProps.children}</span>;
   };
 
@@ -268,6 +277,26 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
     if (onColumnClick) {
       onColumnClick(ev, column);
     }
+  };
+
+  private _onColumnKeyDown = (ev: React.KeyboardEvent): void => {
+    const { onColumnKeyDown, column } = this.props;
+
+    if (column.onColumnKeyDown) {
+      column.onColumnKeyDown(ev, column);
+    }
+
+    if (onColumnKeyDown) {
+      onColumnKeyDown(ev, column);
+    }
+  };
+
+  private _onColumnBlur = () => {
+    this._tooltipRef.current && this._tooltipRef.current.dismiss();
+  };
+
+  private _onColumnFocus = () => {
+    this._tooltipRef.current && this._tooltipRef.current.show();
   };
 
   private _getColumnDragDropOptions(): IDragDropOptions {
@@ -297,7 +326,7 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
     );
   }
 
-  private _renderAccessibleDescription(): JSX.Element | null {
+  private _renderAccessibleDescription(): JSXElement | null {
     const { column, parentId } = this.props;
     const classNames = this._classNames;
 
@@ -344,11 +373,11 @@ export class DetailsColumnBase extends React.Component<IDetailsColumnProps> {
   };
 
   private _updateHeaderDragInfo = (itemIndex: number, event?: MouseEvent) => {
-    /* eslint-disable deprecation/deprecation */
+    /* eslint-disable @typescript-eslint/no-deprecated */
     if (this.props.setDraggedItemIndex) {
       this.props.setDraggedItemIndex(itemIndex);
     }
-    /* eslint-enable deprecation/deprecation */
+    /* eslint-enable @typescript-eslint/no-deprecated */
     if (this.props.updateDragInfo) {
       this.props.updateDragInfo({ itemIndex }, event);
     }

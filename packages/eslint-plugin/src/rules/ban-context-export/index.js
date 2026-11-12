@@ -1,12 +1,15 @@
 // @ts-check
-const { AST_NODE_TYPES } = require('@typescript-eslint/experimental-utils');
+const { AST_NODE_TYPES } = require('@typescript-eslint/utils');
 const minimatch = require('minimatch');
 
 const createRule = require('../../utils/createRule');
 const { getTypeServices } = require('../../utils/type-services');
 
-/** @typedef { import('@typescript-eslint/experimental-utils').TSESTree.VariableDeclarator } VariableDeclarator*/
-/** @typedef { import('@typescript-eslint/experimental-utils').TSESTree.ExportSpecifier} ExportSpecifier */
+/**
+ * @import { TSESTree } from '@typescript-eslint/utils'
+ * @import { Type } from "typescript"
+ */
+
 /**
  * @typedef {{
  *  exclude?: string[];
@@ -35,23 +38,23 @@ module.exports = createRule({
     type: 'problem',
     docs: {
       description: 'Ban export of React context or context selector objects',
-      category: 'Best Practices',
-      recommended: 'error',
     },
     messages: {
-      nativeContext: '{{exportName}} should not be exported directly',
-      contextSelector: '{{exportName}} should not be exported directly',
+      nativeContext:
+        '{{exportName}} should not be exported directly. Export a Provider component and a use*Context hook instead. See docs/architecture/component-patterns.md',
+      contextSelector:
+        '{{exportName}} should not be exported directly. Export a Provider component and a use*Context hook instead. See docs/architecture/component-patterns.md',
     },
   },
   create(context) {
     const [{ exclude = /** @type string[]*/ ([]) } = {}] = context.options;
 
     /**
-     * @param { ExportSpecifier | VariableDeclarator } node
-     * @param {string} exportName
+     * @param { TSESTree.ExportSpecifier | TSESTree.VariableDeclarator } node
+     * @param { string } exportName
      */
     function checkContextType(node, exportName) {
-      const currentFileName = context.getFilename();
+      const currentFileName = context.filename;
       if (exclude.some(pattern => minimatch(currentFileName, pattern))) {
         return;
       }
@@ -75,7 +78,7 @@ module.exports = createRule({
        * - `createContext` from `@fluentui/react-context-selector` return type is `type Context` we use `aliasSymbol`
        *
        * @see https://github.com/microsoft/TypeScript/issues/46921#issuecomment-985048637
-       * @typedef {Extract<keyof import('typescript').Type, 'symbol' | 'aliasSymbol'>} TypeProperty
+       * @typedef {Extract<keyof Type, 'symbol' | 'aliasSymbol'>} TypeProperty
        */
 
       /**
@@ -103,7 +106,7 @@ module.exports = createRule({
               messageId: options.messageId,
               data: {
                 exportName,
-                filename: context.getFilename(),
+                filename: context.filename,
               },
             });
           }

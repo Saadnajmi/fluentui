@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import { Nav, INavLink } from '@fluentui/react/lib/Nav';
 
 const links: INavLink[] = [
@@ -86,37 +87,36 @@ const disabledLinks: INavLink[] = [
   },
 ];
 
-storiesOf('Nav', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'Nav',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.testWrapper' })
         .hover('.ms-Nav-compositeLink')
         .snapshot('hover', { cropTo: '.testWrapper' })
         .click('.ms-Nav-chevronButton')
         .hover('.ms-Nav-compositeLink')
         .snapshot('click', { cropTo: '.testWrapper' })
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory(
-    'Root',
-    () => (
-      <div style={{ width: '208px' }}>
-        <Nav groups={[{ links: links }]} selectedKey="key3" />
-      </div>
-    ),
-    { includeRtl: true },
-  )
-  .addStory(
-    'Disabled',
-    () => (
-      <div style={{ width: '208px' }}>
-        <Nav groups={[{ links: disabledLinks }]} selectedKey="key3" />
-      </div>
-    ),
-    { includeRtl: true },
-  );
+        .end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof Nav>;
+
+export const Root = () => (
+  <div style={{ width: '208px' }}>
+    <Nav groups={[{ links }]} selectedKey="key3" />
+  </div>
+);
+
+export const RootRTL = getStoryVariant(Root, RTL);
+
+export const Disabled = () => (
+  <div style={{ width: '208px' }}>
+    <Nav groups={[{ links: disabledLinks }]} selectedKey="key3" />
+  </div>
+);
+
+export const DisabledRTL = getStoryVariant(Disabled, RTL);

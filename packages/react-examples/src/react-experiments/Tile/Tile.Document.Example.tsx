@@ -12,6 +12,7 @@ import {
 } from '@fluentui/react-experiments';
 import { lorem } from '@fluentui/example-data';
 import * as TileExampleStylesModule from './Tile.Example.scss';
+import type { JSXElement } from '@fluentui/utilities';
 
 const TileExampleStyles = TileExampleStylesModule as any;
 
@@ -41,12 +42,12 @@ const ITEMS: { name: string; activity: string }[] = [
 interface IDocumentTileWithThumbnailProps {
   originalImageSize: ISize;
   showForeground: boolean;
-  item: typeof ITEMS[0];
+  item: (typeof ITEMS)[0];
 }
 
 const DocumentTileWithThumbnail: React.FunctionComponent<IDocumentTileWithThumbnailProps> = (
   props: IDocumentTileWithThumbnailProps,
-): JSX.Element => {
+): JSXElement => {
   const tile = (
     <Tile
       contentSize={{
@@ -74,8 +75,10 @@ const DocumentTileWithThumbnail: React.FunctionComponent<IDocumentTileWithThumbn
       {renderTileWithLayout(tile, {
         foreground: (
           <img
-            src={`//via.placeholder.com/${Math.round(imageSize.width)}x${Math.round(imageSize.height)}`}
+            src="https://res.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/fluent-placeholder.svg"
             className={css(TileExampleStyles.tileImage)}
+            height={Math.round(imageSize.height)}
+            width={Math.round(imageSize.width)}
           />
         ),
       })}
@@ -96,7 +99,7 @@ export class TileDocumentExample extends React.Component<{}, ITileDocumentExampl
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { imagesLoaded } = this.state;
 
     return (
@@ -142,7 +145,7 @@ export class TileDocumentExample extends React.Component<{}, ITileDocumentExampl
             itemActivity={<SignalField before={<SharedSignal />}>{ITEMS[3].activity}</SignalField>}
             foreground={
               <img
-                src={`https://static2.sharepointonline.com/files/fabric/assets/item-types/64/docx.svg`}
+                src={`https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/item-types/64/docx.svg`}
                 style={{
                   display: 'block',
                   width: '64px',

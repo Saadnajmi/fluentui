@@ -1,20 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ImageIcon renders ImageIcon correctly 1`] = `
 <div
-  aria-hidden={true}
-  className=
+  aria-hidden="true"
+  class=
       ms-Icon
       ms-Icon-imageContainer
       {
         display: inline-block;
+        text-decoration: inherit;
       }
       {
         overflow: hidden;
       }
 >
   <div
-    className=
+    class=
         ms-Image
         {
           -moz-osx-font-smoothing: grayscale;
@@ -24,16 +25,10 @@ exports[`ImageIcon renders ImageIcon correctly 1`] = `
           font-weight: 400;
           overflow: hidden;
         }
-    style={
-      Object {
-        "height": undefined,
-        "width": undefined,
-      }
-    }
   >
     <img
       alt=""
-      className=
+      class=
           ms-Image-image
           ms-Image-image--portrait
           is-notLoaded
@@ -42,9 +37,7 @@ exports[`ImageIcon renders ImageIcon correctly 1`] = `
             display: block;
             opacity: 0;
           }
-      onError={[Function]}
-      onLoad={[Function]}
-      src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/icon-one.png"
+      src="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/icon-one.png"
     />
   </div>
 </div>

@@ -26,6 +26,7 @@ import {
 import { IButtonProps } from '@fluentui/react/lib/Button';
 import { mergeStyles } from '@fluentui/react/lib/Styling';
 import { useBoolean } from '@fluentui/react-hooks';
+import type { JSXElement } from '@fluentui/utilities';
 
 export interface IFullDocumentCardProps {
   documentCardProps?: IDocumentCardProps;
@@ -56,13 +57,14 @@ const rootClass = mergeStyles({
   maxWidth: 500,
 });
 
-const baseProductionCdnUrl = 'https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/';
+const baseProductionCdnUrl =
+  'https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/';
 
 const TestImages = {
   documentPreview: baseProductionCdnUrl + 'document-preview.png',
   documentPreviewTwo: baseProductionCdnUrl + 'document-preview2.png',
   documentPreviewThree: baseProductionCdnUrl + 'document-preview3.png',
-  iconPpt: 'https://static2.sharepointonline.com/files/fabric/assets/item-types/32/pptx.png',
+  iconPpt: 'https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/item-types/32/pptx.png',
   personaFemale: baseProductionCdnUrl + 'persona-female.png',
 };
 
@@ -289,7 +291,7 @@ const data: IFullDocumentCardProps[] = [
   },
 ];
 
-const SuggestedBigItem: (documentProps: IFullDocumentCardProps, itemProps: ISuggestionItemProps<any>) => JSX.Element = (
+const SuggestedBigItem: (documentProps: IFullDocumentCardProps, itemProps: ISuggestionItemProps<any>) => JSXElement = (
   documentProps: IFullDocumentCardProps,
   itemProps: ISuggestionItemProps<any>,
 ) => {
@@ -304,9 +306,12 @@ const SuggestedBigItem: (documentProps: IFullDocumentCardProps, itemProps: ISugg
   );
 };
 
-const log = (text: string): (() => void) => (): void => console.log(text);
+const log =
+  (text: string): (() => void) =>
+  (): void =>
+    console.log(text);
 
-const SelectedDocumentItem: (documentProps: IPickerItemProps<IFullDocumentCardProps>) => JSX.Element = (
+const SelectedDocumentItem: (documentProps: IPickerItemProps<IFullDocumentCardProps>) => JSXElement = (
   documentProps: IPickerItemProps<IFullDocumentCardProps>,
 ) => {
   const { documentActionsProps, documentPreviewProps, documentActivityProps, documentTitleProps } = documentProps.item;

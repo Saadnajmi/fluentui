@@ -8,19 +8,27 @@ import type {
   ITagItemSuggestionStyles,
 } from './TagPicker.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<ITagItemSuggestionStyleProps, ITagItemSuggestionStyles>();
 
 /**
  * {@docCategory TagPicker}
  */
-export const TagItemSuggestionBase = (props: ITagItemSuggestionProps) => {
-  const { styles, theme, children } = props;
+
+export const TagItemSuggestionBase = (props: ITagItemSuggestionProps): JSXElement => {
+  const { styles, theme, children, ...rest } = props;
 
   const classNames = getClassNames(styles, {
     theme: theme!,
   });
 
-  return <div className={classNames.suggestionTextOverflow}> {children} </div>;
+  return (
+    <div className={classNames.suggestionTextOverflow} {...rest}>
+      {' '}
+      {children}{' '}
+    </div>
+  );
 };
 
 export const TagItemSuggestion = styled<

@@ -5,14 +5,17 @@ import {
   ExampleCard,
   IComponentDemoPageProps,
   PropertiesTableSet,
+  Markdown,
 } from '@fluentui/react-docsite-components';
 
 import { SparklineChartBasicExample } from './SparklineChart.Basic.Example';
+import type { JSXElement } from '@fluentui/utilities';
 
-const SparklineChartBasicExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/SparklineChart/SparklineChart.Basic.Example.tsx') as string;
+const SparklineChartBasicExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/SparklineChart/SparklineChart.Basic.Example.tsx') as string;
 
 export class SparklineChartPage extends React.Component<IComponentDemoPageProps, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <ComponentPage
         title="Sparkline Chart"
@@ -33,13 +36,24 @@ export class SparklineChartPage extends React.Component<IComponentDemoPageProps,
         }
         isHeaderVisible={this.props.isHeaderVisible}
         overview={
-          <div>
-            <p>
-              A sparkline is a very small area chart without axes or coordinates, usually representing trend over time.
-              When used as a component in lists, the sparkline is paired with a numeric value that summarizes or
-              provides the most current value of the chart.
-            </p>
-          </div>
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/SparklineChart/docs/SparklineChartOverview.md')}
+          </Markdown>
+        }
+        bestPractices={
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/SparklineChart/docs/SparklineChartBestPractices.md')}
+          </Markdown>
+        }
+        dos={
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/SparklineChart/docs/SparklineChartDos.md')}
+          </Markdown>
+        }
+        donts={
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/SparklineChart/docs/SparklineChartDonts.md')}
+          </Markdown>
         }
       />
     );

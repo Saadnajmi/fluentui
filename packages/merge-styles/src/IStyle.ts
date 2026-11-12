@@ -1,4 +1,4 @@
-import { IRawStyle } from './IRawStyle';
+import type { IRawStyle } from './IRawStyle';
 
 /**
  * {@docCategory IStyleBase}
@@ -13,7 +13,11 @@ export interface IStyleBaseArray extends Array<IStyle> {}
 /**
  * IStyleObject extends a raw style objects, but allows selectors to be defined
  * under the selectors node.
- * @public
+ * IStyleObject extends a raw style objects, but allows selectors to be defined
+ * under the selectors node.
+ *
  * {@docCategory IStyle}
+ *
+ * @public
  */
 export type IStyle = IStyleBase | IStyleBaseArray;

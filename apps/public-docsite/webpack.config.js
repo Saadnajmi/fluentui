@@ -2,8 +2,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const resources = require('../../scripts/webpack/webpack-resources');
-const getResolveAlias = require('../../scripts/webpack/getResolveAlias');
+const { resources } = require('@fluentui/scripts-webpack');
+const { getResolveAlias } = require('@fluentui/scripts-webpack');
 const { addMonacoWebpackConfig } = require('@fluentui/react-monaco-editor/scripts/addMonacoWebpackConfig');
 const { getLoadSiteConfig } = require('@fluentui/public-docsite-setup/scripts/getLoadSiteConfig');
 
@@ -52,7 +52,19 @@ module.exports = function (env, argv) {
         // to ensure we get a consistent version.
 
         resolve: {
-          alias: getResolveAlias(true /*useLib*/),
+          alias: {
+            ...getResolveAlias(true /*useLib*/),
+            // public-docsite-resources exposes api reference JSON under dist/api that is consumed via
+            // require.context; its package exports field cannot map a directory, so alias to the real
+            // directory to resolve it.
+            '@fluentui/public-docsite-resources/dist/api': path.resolve(
+              __dirname,
+              '../public-docsite-resources/dist/api',
+            ),
+            // react-monaco-editor dynamically loads @types/react via proprietary webpack require.ensure,
+            // this doesn't work starting @types/react@17.0.48 as the types package introduced Export Maps
+            '@types/react/index.d.ts': path.resolve(__dirname, '../../node_modules/@types/react/index.d.ts'),
+          },
         },
       },
       { outDir },

@@ -5,6 +5,7 @@ import { DetailsList, DetailsListLayoutMode, Selection, IColumn } from '@fluentu
 import { MarqueeSelection } from '@fluentui/react/lib/MarqueeSelection';
 import { mergeStyles } from '@fluentui/react/lib/Styling';
 import { Text } from '@fluentui/react/lib/Text';
+import type { JSXElement } from '@fluentui/utilities';
 
 const exampleChildClass = mergeStyles({
   display: 'block',
@@ -57,7 +58,7 @@ export class DetailsListKeyboardOverridesExample extends React.Component<{}, IDe
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { items, selectionDetails } = this.state;
 
     return (
@@ -68,10 +69,6 @@ export class DetailsListKeyboardOverridesExample extends React.Component<{}, IDe
           prevents the first item from being automatically selected when moving from the header to the main list content
           via keyboard, allows the arrow keys to focus different rows without selecting those rows, and allows the space
           key to toggle selected items without a modifier like the ctrl or meta key.
-        </Text>
-        <Text block>
-          Note: While focusing a row, pressing enter or double clicking will execute onItemInvoked, which in this
-          example will show an alert.
         </Text>
         <Announced message={selectionDetails} />
         <TextField
@@ -93,7 +90,6 @@ export class DetailsListKeyboardOverridesExample extends React.Component<{}, IDe
             ariaLabelForSelectionColumn="Toggle selection"
             ariaLabelForSelectAllCheckbox="Toggle selection for all items"
             checkButtonAriaLabel="select row"
-            onItemInvoked={this._onItemInvoked}
           />
         </MarqueeSelection>
       </div>
@@ -117,9 +113,5 @@ export class DetailsListKeyboardOverridesExample extends React.Component<{}, IDe
     this.setState({
       items: text ? this._allItems.filter(i => i.name.toLowerCase().indexOf(text) > -1) : this._allItems,
     });
-  };
-
-  private _onItemInvoked = (item: IDetailsListBasicExampleItem): void => {
-    alert(`Item invoked: ${item.name}`);
   };
 }

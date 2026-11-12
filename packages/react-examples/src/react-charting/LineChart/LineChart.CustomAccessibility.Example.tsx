@@ -1,7 +1,14 @@
 import * as React from 'react';
-import { IChartProps, ILineChartPoints, ILineChartProps, LineChart } from '@fluentui/react-charting';
-import { DefaultPalette } from '@fluentui/react/lib/Styling';
+import {
+  IChartProps,
+  ILineChartPoints,
+  ILineChartProps,
+  LineChart,
+  DataVizPalette,
+  getColorFromToken,
+} from '@fluentui/react-charting';
 import { Toggle } from '@fluentui/react/lib/Toggle';
+import type { JSXElement } from '@fluentui/utilities';
 
 interface ILineChartCustomAccessibilityExampleState {
   width: number;
@@ -22,9 +29,9 @@ export class LineChartCustomAccessibilityExample extends React.Component<
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
-      <>
+      <div className="containerDiv">
         <label htmlFor="changeWidth_Custom">Change Width:</label>
         <input
           type="range"
@@ -53,7 +60,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
           checked={this.state.allowMultipleShapes}
         />
         <div>{this._styledExample()}</div>
-      </>
+      </div>
     );
   }
 
@@ -67,7 +74,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
     }
   };
 
-  private _styledExample(): JSX.Element {
+  private _styledExample(): JSXElement {
     const points: ILineChartPoints[] = [
       {
         data: [
@@ -77,7 +84,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
             xAxisCalloutData: '2018/01/01',
             yAxisCalloutData: '10%',
             xAxisCalloutAccessibilityData: { ariaLabel: 'x-Axis 2018/01/01' },
-            callOutAccessibilityData: { ariaLabel: 'Line series 1 of 5 Point 1 First 10%' },
+            callOutAccessibilityData: { ariaLabel: '1 Jan 2018, Line series 1 of 5 Point 1 First 10%' },
           },
           {
             x: new Date('2018/02/01'),
@@ -85,7 +92,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
             xAxisCalloutData: '2018/01/15',
             yAxisCalloutData: '18%',
             xAxisCalloutAccessibilityData: { ariaLabel: 'x-Axis 2018/01/15' },
-            callOutAccessibilityData: { ariaLabel: 'Line series 2 of 5 Point 1 First 18%' },
+            callOutAccessibilityData: { ariaLabel: '15 Jan 2018, Line series 2 of 5 Point 1 First 18%' },
           },
           {
             x: new Date('2018/03/01'),
@@ -93,7 +100,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
             xAxisCalloutData: '2018/01/28',
             yAxisCalloutData: '24%',
             xAxisCalloutAccessibilityData: { ariaLabel: 'x-Axis 2018/01/28' },
-            callOutAccessibilityData: { ariaLabel: 'Line series 3 of 5 Point 1 First 24%' },
+            callOutAccessibilityData: { ariaLabel: '28 Jan 2018, Line series 3 of 5 Point 1 First 24%' },
           },
           {
             x: new Date('2018/04/01'),
@@ -101,7 +108,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
             xAxisCalloutData: '2018/02/01',
             yAxisCalloutData: '25%',
             xAxisCalloutAccessibilityData: { ariaLabel: 'x-Axis 2018/02/01' },
-            callOutAccessibilityData: { ariaLabel: 'Line series 4 of 5 Point 1 First 25%' },
+            callOutAccessibilityData: { ariaLabel: '1 Feb 2018, Line series 4 of 5 Point 1 First 25%' },
           },
           {
             x: new Date('2018/05/01'),
@@ -109,11 +116,11 @@ export class LineChartCustomAccessibilityExample extends React.Component<
             xAxisCalloutData: '2018/03/01',
             yAxisCalloutData: '15%',
             xAxisCalloutAccessibilityData: { ariaLabel: 'x-Axis 2018/03/01' },
-            callOutAccessibilityData: { ariaLabel: 'Line series 5 of 5 Point 1 First 15%' },
+            callOutAccessibilityData: { ariaLabel: '1 Mar 2018, Line series 5 of 5 Point 1 First 15%' },
           },
         ],
         legend: 'First',
-        color: DefaultPalette.blue,
+        color: DataVizPalette.color4,
         lineOptions: {
           lineBorderWidth: '4',
         },
@@ -124,31 +131,31 @@ export class LineChartCustomAccessibilityExample extends React.Component<
           {
             x: new Date('2018/01/01'),
             y: 30,
-            callOutAccessibilityData: { ariaLabel: 'Point 2 Second 30' },
+            callOutAccessibilityData: { ariaLabel: '1 Jan 2018, 00:00, Point 2 Second 30' },
           },
           {
             x: new Date('2018/02/01'),
             y: 50,
-            callOutAccessibilityData: { ariaLabel: 'Point 2 Second 50' },
+            callOutAccessibilityData: { ariaLabel: '1 Feb 2018, 00:00, Point 2 Second 50' },
           },
           {
             x: new Date('2018/03/01'),
             y: 30,
-            callOutAccessibilityData: { ariaLabel: 'Point 2 Second 30' },
+            callOutAccessibilityData: { ariaLabel: '1 Mar 2018, 00:00, Point 2 Second 30' },
           },
           {
             x: new Date('2018/04/01'),
             y: 50,
-            callOutAccessibilityData: { ariaLabel: 'Point 2 Second 50' },
+            callOutAccessibilityData: { ariaLabel: '1 Apr 2018, 00:00, Point 2 Second 50' },
           },
           {
             x: new Date('2018/05/01'),
             y: 30,
-            callOutAccessibilityData: { ariaLabel: 'Point 2 Second 30' },
+            callOutAccessibilityData: { ariaLabel: '1 May 2018, 00:00, Point 2 Second 30' },
           },
         ],
         legend: 'Second',
-        color: DefaultPalette.green,
+        color: DataVizPalette.color5,
         lineOptions: {
           lineBorderWidth: '4',
         },
@@ -156,14 +163,34 @@ export class LineChartCustomAccessibilityExample extends React.Component<
       },
       {
         data: [
-          { x: new Date('2018/01/01'), y: 50, callOutAccessibilityData: { ariaLabel: 'Point 3 Third 50' } },
-          { x: new Date('2018/02/01'), y: 70, callOutAccessibilityData: { ariaLabel: 'Point 3 Third 70' } },
-          { x: new Date('2018/03/01'), y: 50, callOutAccessibilityData: { ariaLabel: 'Point 3 Third 50' } },
-          { x: new Date('2018/04/01'), y: 70, callOutAccessibilityData: { ariaLabel: 'Point 3 Third 70' } },
-          { x: new Date('2018/05/01'), y: 50, callOutAccessibilityData: { ariaLabel: 'Point 3 Third 50' } },
+          {
+            x: new Date('2018/01/01'),
+            y: 50,
+            callOutAccessibilityData: { ariaLabel: '1 Jan 2018, 00:00, Point 3 Third 50' },
+          },
+          {
+            x: new Date('2018/02/01'),
+            y: 70,
+            callOutAccessibilityData: { ariaLabel: '1 Feb 2018, 00:00, Point 3 Third 70' },
+          },
+          {
+            x: new Date('2018/03/01'),
+            y: 50,
+            callOutAccessibilityData: { ariaLabel: '1 Mar 2018, 00:00, Point 3 Third 50' },
+          },
+          {
+            x: new Date('2018/04/01'),
+            y: 70,
+            callOutAccessibilityData: { ariaLabel: '1 Apr 2018, 00:00, Point 3 Third 70' },
+          },
+          {
+            x: new Date('2018/05/01'),
+            y: 50,
+            callOutAccessibilityData: { ariaLabel: '1 May 2018, 00:00, Point 3 Third 50' },
+          },
         ],
         legend: 'Third',
-        color: DefaultPalette.red,
+        color: DataVizPalette.color6,
         lineOptions: {
           lineBorderWidth: '4',
         },
@@ -189,7 +216,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
     const colorFillBarData = [
       {
         legend: 'Time range 1',
-        color: 'blue',
+        color: getColorFromToken(DataVizPalette.color11),
         data: [
           {
             startX: new Date('2018/01/06'),
@@ -199,7 +226,7 @@ export class LineChartCustomAccessibilityExample extends React.Component<
       },
       {
         legend: 'Time range 2',
-        color: 'red',
+        color: getColorFromToken(DataVizPalette.color10),
         data: [
           {
             startX: new Date('2018/01/18'),
@@ -225,6 +252,8 @@ export class LineChartCustomAccessibilityExample extends React.Component<
           legendProps={{ canSelectMultipleLegends: true, allowFocusOnLegends: true }}
           colorFillBars={colorFillBarData}
           allowMultipleShapesForPoints={this.state.allowMultipleShapes}
+          enablePerfOptimization={true}
+          useUTC={false}
         />
       </div>
     );

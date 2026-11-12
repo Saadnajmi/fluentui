@@ -1,11 +1,16 @@
-import * as React from 'react';
+'use client';
+
+import type * as React from 'react';
 import { createContext as baseCreateContext } from '@fluentui/react-context-selector';
 import { canUseDOM } from '@fluentui/react-utilities';
 import { getMajorVersion } from './utils';
-import { GlobalObject } from './types';
+import type { GlobalObject } from './types';
 
 const isBrowser = canUseDOM();
-const globalObject: GlobalObject = isBrowser ? window : global;
+const globalObject: GlobalObject = isBrowser
+  ? // eslint-disable-next-line @nx/workspace-no-restricted-globals
+    window
+  : global;
 
 // Identifier for the symbol, for easy idenfitifaction of symbols created by this util
 // Useful for clearning global object during SSR reloads
@@ -17,7 +22,6 @@ if (!isBrowser && process.env.NODE_ENV !== 'production') {
   const globalSymbols = Object.getOwnPropertySymbols(globalObject);
   globalSymbols.forEach(sym => {
     if (Symbol.keyFor(sym)?.startsWith(SYMBOL_NAMESPACE)) {
-      // @ts-expect-error - Indexing object with symbols not supported until TS 4.4
       delete globalObject[sym];
     }
   });
@@ -36,7 +40,12 @@ if (!isBrowser && process.env.NODE_ENV !== 'production') {
  * @param packageVersion - version of the npm package where the module is used
  * @returns @see React.createContext
  */
-export const createContext = <T>(defaultValue: T, name: string, packageName: string, packageVersion: string) => {
+export const createContext = <T>(
+  defaultValue: T,
+  name: string,
+  packageName: string,
+  packageVersion: string,
+): React.Context<T> => {
   // Symbol guaranteed to be unique for the entire runtime
   const sym = Symbol.for(`${SYMBOL_NAMESPACE}${packageName}/${name}/@${getMajorVersion(packageVersion)}`);
 
@@ -44,11 +53,9 @@ export const createContext = <T>(defaultValue: T, name: string, packageName: str
   // Object symbol properties can't be iterated with `for` or `Object.keys`
   const globalSymbols = Object.getOwnPropertySymbols(globalObject);
   if (!globalSymbols.includes(sym)) {
-    // @ts-expect-error - Indexing object with symbols not supported until TS 4.4
     // eslint-disable-next-line @fluentui/no-context-default-value
-    globalObject[sym] = baseCreateContext(defaultValue);
+    globalObject[sym] = baseCreateContext<unknown>(defaultValue);
   }
 
-  // @ts-expect-error - Indexing object with symbols not supported until TS 4.4
   return globalObject[sym] as React.Context<T>;
 };

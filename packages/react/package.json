@@ -1,6 +1,6 @@
 {
   "name": "@fluentui/react",
-  "version": "8.98.2",
+  "version": "8.125.10",
   "description": "Reusable React components for building web experiences.",
   "main": "lib-commonjs/index.js",
   "module": "lib/index.js",
@@ -15,57 +15,44 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "just-scripts build",
-    "bundle": "just-scripts bundle",
-    "build-storybook": "cross-env NODE_OPTIONS=--max-old-space-size=3072 just-scripts storybook:build",
-    "clean": "just-scripts clean",
-    "code-style": "just-scripts code-style",
-    "codepen": "node ../../scripts/local-codepen.js",
-    "e2e": "yarn workspace @fluentui/react-examples cypress run --component",
-    "e2e:local": "yarn workspace @fluentui/react-examples cypress open --component",
-    "just": "just-scripts",
-    "lint": "just-scripts lint",
-    "start": "cross-env NODE_OPTIONS=--max-old-space-size=3072 just-scripts dev:storybook",
+    "build": "yarn run -T just-scripts build",
+    "build-storybook": "yarn run -T cross-env NODE_OPTIONS=--max-old-space-size=3072 just-scripts storybook:build",
+    "clean": "yarn run -T just-scripts clean",
+    "codepen": "node ../../scripts/executors/src/local-codepen.js",
+    "e2e": "yarn run -T nx run react-examples:e2e --verbose",
+    "e2e:local": "yarn run -T nx run react-examples:e2e:local",
+    "start": "yarn run -T cross-env NODE_OPTIONS=--max-old-space-size=3072 just-scripts dev:storybook",
     "start:legacy": "yarn workspace @fluentui/public-docsite-resources start",
-    "start-test": "just-scripts jest-watch",
-    "test": "just-scripts test",
-    "update-snapshots": "just-scripts jest -u",
-    "mf": "just-scripts mf"
+    "mf": "yarn run -T just-scripts mf",
+    "verify-packaging": "yarn run -T just-scripts verify-packaging"
   },
   "devDependencies": {
-    "@fluentui/common-styles": "^1.2.10",
-    "@fluentui/eslint-plugin": "*",
-    "@fluentui/example-data": "^8.4.2",
-    "@fluentui/jest-serializer-merge-styles": "^8.0.20",
-    "@fluentui/react-conformance": "*",
-    "@fluentui/scripts": "^1.0.0",
-    "@fluentui/test-utilities": "^8.2.2",
-    "@fluentui/webpack-utilities": "^8.1.8",
     "office-ui-fabric-core": "^11.0.0"
   },
   "dependencies": {
-    "@fluentui/date-time-utilities": "^8.5.2",
-    "@fluentui/foundation-legacy": "^8.2.21",
-    "@fluentui/font-icons-mdl2": "^8.5.1",
-    "@fluentui/merge-styles": "^8.5.3",
-    "@fluentui/react-focus": "^8.8.6",
-    "@fluentui/react-hooks": "^8.6.11",
-    "@fluentui/react-portal-compat-context": "^9.0.2",
-    "@fluentui/react-window-provider": "^2.2.2",
-    "@fluentui/set-version": "^8.2.2",
-    "@fluentui/style-utilities": "^8.8.0",
-    "@fluentui/theme": "^2.6.16",
-    "@fluentui/utilities": "^8.13.1",
+    "@fluentui/date-time-utilities": "^8.6.11",
+    "@fluentui/font-icons-mdl2": "^8.5.76",
+    "@fluentui/foundation-legacy": "^8.6.9",
+    "@fluentui/merge-styles": "^8.6.16",
+    "@fluentui/react-focus": "^8.10.9",
+    "@fluentui/react-hooks": "^8.10.4",
+    "@fluentui/react-portal-compat-context": "^9.0.17",
+    "@fluentui/react-window-provider": "^2.3.2",
+    "@fluentui/set-version": "^8.2.24",
+    "@fluentui/style-utilities": "^8.15.4",
+    "@fluentui/theme": "^2.7.4",
+    "@fluentui/utilities": "^8.17.4",
     "@microsoft/load-themed-styles": "^1.10.26",
     "tslib": "^2.1.0"
   },
   "peerDependencies": {
-    "@types/react": ">=16.8.0 <19.0.0",
-    "@types/react-dom": ">=16.8.0 <19.0.0",
-    "react": ">=16.8.0 <19.0.0",
-    "react-dom": ">=16.8.0 <19.0.0"
+    "@types/react": ">=16.8.0 <20.0.0",
+    "@types/react-dom": ">=16.8.0 <20.0.0",
+    "react": ">=16.8.0 <20.0.0",
+    "react-dom": ">=16.8.0 <20.0.0"
   },
   "exports": {
+    "./dist/css/*": "./dist/css/*",
     "./dist/sass/*": "./dist/sass/*",
     "./lib/ActivityItem": {
       "types": "./lib/ActivityItem.d.ts",
@@ -426,6 +413,11 @@
       "types": "./lib/DragDrop.d.ts",
       "import": "./lib/DragDrop.js",
       "require": "./lib-commonjs/DragDrop.js"
+    },
+    "./lib/DraggableZone": {
+      "types": "./lib/DraggableZone.d.ts",
+      "import": "./lib/DraggableZone.js",
+      "require": "./lib-commonjs/DraggableZone.js"
     },
     "./lib/Dropdown": {
       "types": "./lib/Dropdown.d.ts",
@@ -1147,6 +1139,10 @@
     "./lib-commonjs/DragDrop": {
       "types": "./lib-commonjs/DragDrop.d.ts",
       "require": "./lib-commonjs/DragDrop.js"
+    },
+    "./lib-commonjs/DraggableZone": {
+      "types": "./lib-commonjs/DraggableZone.d.ts",
+      "require": "./lib-commonjs/DraggableZone.js"
     },
     "./lib-commonjs/Dropdown": {
       "types": "./lib-commonjs/Dropdown.d.ts",

@@ -5,12 +5,20 @@ import { ScrollablePaneContext } from '../ScrollablePane/ScrollablePane.types';
 import { StickyPositionType } from './Sticky.types';
 import type { IScrollablePaneContext } from '../ScrollablePane/ScrollablePane.types';
 import type { IStickyProps } from './Sticky.types';
+import { getScrollUtils } from './util/scroll';
+import type { ScrollUtils } from './util/scroll';
+import { isLessThanInRange } from './util/comparison';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 export interface IStickyState {
   isStickyTop: boolean;
   isStickyBottom: boolean;
   distanceFromTop?: number;
 }
+
+// Pixels
+const COMPARISON_RANGE = 1;
 
 export class Sticky extends React.Component<IStickyProps, IStickyState> {
   public static defaultProps: IStickyProps = {
@@ -19,6 +27,7 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
   };
 
   public static contextType = ScrollablePaneContext;
+  public context: any;
 
   private _root = React.createRef<HTMLDivElement>();
   private _stickyContentTop = React.createRef<HTMLDivElement>();
@@ -26,6 +35,7 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
   private _nonStickyContent = React.createRef<HTMLDivElement>();
   private _placeHolder = React.createRef<HTMLDivElement>();
   private _activeElement: HTMLElement | undefined;
+  private _scrollUtils: ScrollUtils;
 
   constructor(props: IStickyProps) {
     super(props);
@@ -37,6 +47,7 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
       distanceFromTop: undefined,
     };
     this._activeElement = undefined;
+    this._scrollUtils = getScrollUtils();
   }
 
   public get root(): HTMLDivElement | null {
@@ -144,7 +155,7 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
       _isOffsetHeightDifferent(this._nonStickyContent, this._placeHolder)) as boolean;
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { isStickyTop, isStickyBottom } = this.state;
     const { stickyClassName, children } = this.props;
 
@@ -192,7 +203,7 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
 
   public setDistanceFromTop(container: HTMLDivElement): void {
     const distanceFromTop = this._getNonStickyDistanceFromTop(container);
-    this.setState({ distanceFromTop: distanceFromTop });
+    this.setState({ distanceFromTop });
   }
 
   private _getContext = (): IScrollablePaneContext => this.context;
@@ -242,8 +253,8 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
             this.nonStickyContent.firstElementChild.clientWidth);
       }
       return {
-        height: height,
-        width: width,
+        height,
+        width,
       };
     } else {
       return {};
@@ -255,34 +266,37 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
       const distanceFromTop = this._getNonStickyDistanceFromTop(container);
       let isStickyTop = false;
       let isStickyBottom = false;
+      // eslint-disable-next-line no-restricted-globals
+      const doc = (this._getContext().window ?? window)?.document;
 
       if (this.canStickyTop) {
         const distanceToStickTop = distanceFromTop - this._getStickyDistanceFromTop();
-        isStickyTop = distanceToStickTop < container.scrollTop;
+        const containerScrollTop = container.scrollTop;
+        isStickyTop = isLessThanInRange(distanceToStickTop, containerScrollTop, COMPARISON_RANGE);
       }
 
       // Can sticky bottom if the scrollablePane - total sticky footer height is smaller than the sticky's distance
       // from the top of the pane
       if (this.canStickyBottom && container.clientHeight - footerStickyContainer.offsetHeight <= distanceFromTop) {
         isStickyBottom =
-          distanceFromTop - Math.floor(container.scrollTop) >=
+          distanceFromTop - this._scrollUtils.getScrollTopInRange(container, COMPARISON_RANGE) >=
           this._getStickyDistanceFromTopForFooter(container, footerStickyContainer);
       }
 
       if (
-        document.activeElement &&
-        this.nonStickyContent.contains(document.activeElement) &&
+        doc?.activeElement &&
+        this.nonStickyContent.contains(doc?.activeElement) &&
         (this.state.isStickyTop !== isStickyTop || this.state.isStickyBottom !== isStickyBottom)
       ) {
-        this._activeElement = document.activeElement as HTMLElement;
+        this._activeElement = doc?.activeElement as HTMLElement;
       } else {
         this._activeElement = undefined;
       }
 
       this.setState({
         isStickyTop: this.canStickyTop && isStickyTop,
-        isStickyBottom: isStickyBottom,
-        distanceFromTop: distanceFromTop,
+        isStickyBottom,
+        distanceFromTop,
       });
     }
   };
@@ -333,10 +347,12 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
     }
 
     let curr: HTMLElement = this.root;
+    // eslint-disable-next-line no-restricted-globals
+    const win = this._getContext().window ?? window;
 
     while (
-      window.getComputedStyle(curr).getPropertyValue('background-color') === 'rgba(0, 0, 0, 0)' ||
-      window.getComputedStyle(curr).getPropertyValue('background-color') === 'transparent'
+      win.getComputedStyle(curr).getPropertyValue('background-color') === 'rgba(0, 0, 0, 0)' ||
+      win.getComputedStyle(curr).getPropertyValue('background-color') === 'transparent'
     ) {
       if (curr.tagName === 'HTML') {
         // Fallback color if no element has a declared background-color attribute
@@ -346,10 +362,13 @@ export class Sticky extends React.Component<IStickyProps, IStickyState> {
         curr = curr.parentElement;
       }
     }
-    return window.getComputedStyle(curr).getPropertyValue('background-color');
+    return win.getComputedStyle(curr).getPropertyValue('background-color');
   }
 }
 
-function _isOffsetHeightDifferent(a: React.RefObject<HTMLElement>, b: React.RefObject<HTMLDivElement>): boolean {
+function _isOffsetHeightDifferent(
+  a: React.RefObject<HTMLElement | null>,
+  b: React.RefObject<HTMLDivElement | null>,
+): boolean {
   return (a && b && a.current && b.current && a.current.offsetHeight !== b.current.offsetHeight) as boolean;
 }

@@ -2,8 +2,27 @@ import * as React from 'react';
 import { Customizations } from './Customizations';
 import { hoistStatics } from '../hoistStatics';
 import { CustomizerContext } from './CustomizerContext';
-import { concatStyleSets } from '@fluentui/merge-styles';
+import { concatStyleSets, makeShadowConfig } from '@fluentui/merge-styles';
+import { MergeStylesShadowRootConsumer } from '../shadowDom/contexts/MergeStylesShadowRootConsumer';
+import { getWindow } from '../dom/getWindow';
+import { WindowContext } from '@fluentui/react-window-provider';
 import type { ICustomizerContext } from './CustomizerContext';
+import type { ShadowConfig } from '@fluentui/merge-styles';
+
+import { memoizeFunction } from '../memoize';
+
+import type { JSXElement } from '../jsx';
+
+const memoizedMakeShadowConfig = memoizeFunction(makeShadowConfig);
+const mergeComponentStyles = memoizeFunction(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (defaultStyles: any, componentStyles: any, shadowConfig: ShadowConfig): any => {
+    const styles = componentStyles ?? defaultStyles ?? {};
+    styles.__shadowConfig__ = shadowConfig;
+
+    return styles;
+  },
+);
 
 export function customizable(
   scope: string,
@@ -15,6 +34,9 @@ export function customizable(
   return function customizableFactory<P>(ComposedComponent: React.ComponentType<P>): any {
     const resultClass = class ComponentWithInjectedProps extends React.Component<P, {}> {
       public static displayName: string = 'Customized' + scope;
+      public static contextType = WindowContext;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      public context!: any;
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       private _styleCache: { default?: any; component?: any; merged?: any } = {};
@@ -33,38 +55,52 @@ export function customizable(
         Customizations.unobserve(this._onSettingChanged);
       }
 
-      public render(): JSX.Element {
+      public render(): JSXElement {
         return (
-          <CustomizerContext.Consumer>
-            {(context: ICustomizerContext) => {
-              const defaultProps = Customizations.getSettings(fields, scope, context.customizations);
+          <MergeStylesShadowRootConsumer stylesheetKey={scope}>
+            {(inShadow: boolean) => {
+              return (
+                <CustomizerContext.Consumer>
+                  {(context: ICustomizerContext) => {
+                    const defaultProps = Customizations.getSettings(fields, scope, context.customizations);
 
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const componentProps = this.props as any;
+                    const win = this.context.window ?? getWindow();
+                    const shadowConfig = memoizedMakeShadowConfig(scope, inShadow, win);
 
-              // If defaultProps.styles is a function, evaluate it before calling concatStyleSets
-              if (defaultProps.styles && typeof defaultProps.styles === 'function') {
-                defaultProps.styles = defaultProps.styles({ ...defaultProps, ...componentProps });
-              }
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const componentProps = this.props as any;
 
-              // If concatStyles is true and custom styles have been defined compute those styles
-              if (concatStyles && defaultProps.styles) {
-                if (
-                  this._styleCache.default !== defaultProps.styles ||
-                  this._styleCache.component !== componentProps.styles
-                ) {
-                  const mergedStyles = concatStyleSets(defaultProps.styles, componentProps.styles);
-                  this._styleCache.default = defaultProps.styles;
-                  this._styleCache.component = componentProps.styles;
-                  this._styleCache.merged = mergedStyles;
-                }
+                    // If defaultProps.styles is a function, evaluate it before calling concatStyleSets
+                    if (defaultProps.styles && typeof defaultProps.styles === 'function') {
+                      defaultProps.styles = defaultProps.styles({ ...defaultProps, ...componentProps });
+                    }
 
-                return <ComposedComponent {...defaultProps} {...componentProps} styles={this._styleCache.merged} />;
-              }
+                    // If concatStyles is true and custom styles have been defined compute those styles
+                    if (concatStyles && defaultProps.styles) {
+                      if (
+                        this._styleCache.default !== defaultProps.styles ||
+                        this._styleCache.component !== componentProps.styles
+                      ) {
+                        const mergedStyles = concatStyleSets(defaultProps.styles, componentProps.styles);
+                        mergedStyles.__shadowConfig__ = shadowConfig;
+                        this._styleCache.default = defaultProps.styles;
+                        this._styleCache.component = componentProps.styles;
+                        this._styleCache.merged = mergedStyles;
+                      }
 
-              return <ComposedComponent {...defaultProps} {...componentProps} />;
+                      return (
+                        <ComposedComponent {...defaultProps} {...componentProps} styles={this._styleCache.merged} />
+                      );
+                    }
+
+                    const styles = mergeComponentStyles(defaultProps.styles, componentProps.styles, shadowConfig);
+
+                    return <ComposedComponent {...defaultProps} {...componentProps} styles={styles} />;
+                  }}
+                </CustomizerContext.Consumer>
+              );
             }}
-          </CustomizerContext.Consumer>
+          </MergeStylesShadowRootConsumer>
         );
       }
 

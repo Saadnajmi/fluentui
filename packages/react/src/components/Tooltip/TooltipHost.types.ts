@@ -7,6 +7,8 @@ import type { ICalloutProps } from '../../Callout';
 import type { IRefObject, IStyleFunctionOrObject } from '../../Utilities';
 import type { IStyle, ITheme } from '../../Styling';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 /**
  * {@docCategory Tooltip}
  */
@@ -41,7 +43,7 @@ export enum TooltipOverflowMode {
  * passed through to the Tooltip itself, rather than being used on the host element.
  * {@docCategory Tooltip}
  */
-export interface ITooltipHostProps extends React.HTMLAttributes<HTMLDivElement | TooltipHostBase> {
+export interface ITooltipHostProps extends Omit<React.HTMLAttributes<HTMLDivElement | TooltipHostBase>, 'content'> {
   /**
    * Optional callback to access the ITooltipHost interface. Use this instead of ref for accessing
    * the public methods and properties of the component.
@@ -63,7 +65,8 @@ export interface ITooltipHostProps extends React.HTMLAttributes<HTMLDivElement |
   /**
    * Content to display in the Tooltip.
    */
-  content?: string | JSX.Element | JSX.Element[];
+
+  content?: string | JSXElement | JSXElement[];
 
   /**
    * Length of delay before showing the tooltip on hover.

@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { VerticalBarChart, IVerticalBarChartProps, IVerticalBarChartDataPoint } from '@fluentui/react-charting';
-import { DefaultPalette } from '@fluentui/react/lib/Styling';
+import {
+  VerticalBarChart,
+  IVerticalBarChartProps,
+  IVerticalBarChartDataPoint,
+  DataVizPalette,
+  getColorFromToken,
+} from '@fluentui/react-charting';
 import { Checkbox } from '@fluentui/react/lib/Checkbox';
+import type { JSXElement } from '@fluentui/utilities';
 
 interface IVerticalBarChartState {
   isChecked: boolean;
@@ -19,7 +25,7 @@ export class VerticalBarChartCustomAccessibilityExample extends React.Component<
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { isChecked } = this.state;
     const points: IVerticalBarChartDataPoint[] = [
       {
@@ -48,7 +54,11 @@ export class VerticalBarChartCustomAccessibilityExample extends React.Component<
       },
     ];
 
-    const customColors = [DefaultPalette.greenLight, DefaultPalette.green, DefaultPalette.greenDark];
+    const customColors = [
+      getColorFromToken(DataVizPalette.color8),
+      getColorFromToken(DataVizPalette.color18),
+      getColorFromToken(DataVizPalette.color28),
+    ];
 
     return (
       <>
@@ -74,6 +84,8 @@ export class VerticalBarChartCustomAccessibilityExample extends React.Component<
             yAxisTickCount={6}
             colors={customColors}
             hideLegend={true}
+            enableReflow={true}
+            lineLegendColor={getColorFromToken(DataVizPalette.color10)}
           />
         </div>
       </>

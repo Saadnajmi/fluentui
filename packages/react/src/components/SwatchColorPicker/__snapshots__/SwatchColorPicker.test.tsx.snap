@@ -1,8 +1,8 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
 <div
-  className=
+  class=
       ms-FocusZone
       ms-swatchColorPickerBodyContainer
       &:focus {
@@ -14,13 +14,10 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         min-width: 180px;
       }
   data-focuszone-id="FocusZone1"
-  onBlur={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
-  onMouseDownCapture={[Function]}
+  data-tabster="{\\"uncontrolled\\": {}}"
 >
   <table
-    className=
+    class=
 
         {
           border-collapse: collapse;
@@ -44,7 +41,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         role="row"
       >
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -56,14 +53,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="green"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -74,11 +72,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -113,6 +109,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -131,6 +146,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -170,26 +197,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={0}
-            data-is-focusable={true}
+            data-index="0"
+            data-is-focusable="true"
             id="swatchColorPicker0-a-0"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="0"
             title="green"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -202,7 +219,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="green"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -210,6 +227,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#00ff00"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -223,7 +241,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -235,14 +253,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="orange"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -253,11 +272,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -292,6 +309,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -310,6 +346,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -349,26 +397,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={1}
-            data-is-focusable={true}
+            data-index="1"
+            data-is-focusable="true"
             id="swatchColorPicker0-b-1"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="orange"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -381,7 +419,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="orange"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -389,6 +427,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#ffa500"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -402,7 +441,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -414,14 +453,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="blue"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -432,11 +472,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -471,6 +509,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -489,6 +546,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -528,26 +597,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={2}
-            data-is-focusable={true}
+            data-index="2"
+            data-is-focusable="true"
             id="swatchColorPicker0-c-2"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="blue"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -560,7 +619,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="blue"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -568,6 +627,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#0000ff"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -581,7 +641,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -593,14 +653,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="red"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -611,11 +672,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -650,6 +709,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -668,6 +746,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -707,26 +797,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={3}
-            data-is-focusable={true}
+            data-index="3"
+            data-is-focusable="true"
             id="swatchColorPicker0-d-3"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="red"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -739,7 +819,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="red"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -747,6 +827,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#ff0000"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -764,7 +845,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         role="row"
       >
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -776,14 +857,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="green"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -794,11 +876,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -833,6 +913,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -851,6 +950,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -890,26 +1001,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={4}
-            data-is-focusable={true}
+            data-index="4"
+            data-is-focusable="true"
             id="swatchColorPicker0-g-4"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="green"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -922,7 +1023,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="green"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -930,6 +1031,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#01ff01"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -943,7 +1045,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -955,14 +1057,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="orange"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -973,11 +1076,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -1012,6 +1113,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -1030,6 +1150,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -1069,26 +1201,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={5}
-            data-is-focusable={true}
+            data-index="5"
+            data-is-focusable="true"
             id="swatchColorPicker0-h-5"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="orange"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -1101,7 +1223,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="orange"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -1109,6 +1231,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#ffa501"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -1122,7 +1245,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -1134,14 +1257,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="blue"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -1152,11 +1276,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -1191,6 +1313,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -1209,6 +1350,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -1248,26 +1401,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={6}
-            data-is-focusable={true}
+            data-index="6"
+            data-is-focusable="true"
             id="swatchColorPicker0-i-6"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="blue"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -1280,7 +1423,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="blue"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -1288,6 +1431,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#0101ff"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -1301,7 +1445,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -1313,14 +1457,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="red"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -1331,11 +1476,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -1370,6 +1513,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -1388,6 +1550,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -1427,26 +1601,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={7}
-            data-is-focusable={true}
+            data-index="7"
+            data-is-focusable="true"
             id="swatchColorPicker0-j-7"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="red"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -1459,7 +1623,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="red"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -1467,6 +1631,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#ff0101"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -1484,7 +1649,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         role="row"
       >
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -1496,14 +1661,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="black"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -1514,11 +1680,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -1553,6 +1717,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -1571,6 +1754,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -1610,26 +1805,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={8}
-            data-is-focusable={true}
+            data-index="8"
+            data-is-focusable="true"
             id="swatchColorPicker0-k-8"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="black"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -1642,7 +1827,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="black"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -1650,6 +1835,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#000"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -1663,7 +1849,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -1675,14 +1861,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="grey"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -1693,11 +1880,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -1732,6 +1917,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -1750,6 +1954,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -1789,26 +2005,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={9}
-            data-is-focusable={true}
+            data-index="9"
+            data-is-focusable="true"
             id="swatchColorPicker0-l-9"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="grey"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -1821,7 +2027,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="grey"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -1829,6 +2035,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#888"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -1842,7 +2049,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -1854,14 +2061,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="white"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #a19f9d;
                   border-radius: 50%;
                   border: none;
@@ -1872,11 +2080,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 1px;
                   padding-left: 1px;
@@ -1911,6 +2117,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -1918,6 +2143,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
                   border-color: Window;
+                  outline: 1px solid ButtonText;
                 }
                 .ms-Fabric--isFocusVisible &:focus::after {
                   border-color: #605e5c;
@@ -1929,6 +2155,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -1968,26 +2206,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={10}
-            data-is-focusable={true}
+            data-index="10"
+            data-is-focusable="true"
             id="swatchColorPicker0-m-10"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="white"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -2000,7 +2228,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="white"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -2008,6 +2236,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#fff"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >
@@ -2021,7 +2250,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
           </button>
         </td>
         <td
-          className=
+          class=
 
               {
                 padding-bottom: 5px;
@@ -2033,14 +2262,15 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
         >
           <button
             aria-label="something"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-Button
                 ms-Button--action
                 ms-Button--command
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-radius: 50%;
                   border: none;
@@ -2051,11 +2281,9 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
+                  forced-color-adjust: none;
                   height: 20px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0px;
                   padding-left: 0px;
@@ -2090,6 +2318,25 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: 0px;
+                  content: "";
+                  left: 0px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: 0px;
+                  top: 0px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: none;
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -2108,6 +2355,18 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                   top: -2px;
                 }
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus::after {
+                  outline: 1px solid ButtonText;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus::after {
+                  border-color: #605e5c;
+                  border-radius: 50%;
+                  bottom: -2px;
+                  left: -2px;
+                  outline: none;
+                  right: -2px;
+                  top: -2px;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus::after {
                   outline: 1px solid ButtonText;
                 }
                 &:hover {
@@ -2147,26 +2406,16 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
                   color: Highlight;
                 }
-            data-index={11}
-            data-is-focusable={true}
+            data-index="11"
+            data-is-focusable="true"
             id="swatchColorPicker0-n-11"
-            onClick={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseEnter={[Function]}
-            onMouseLeave={[Function]}
-            onMouseMove={[Function]}
-            onMouseUp={[Function]}
-            onWheel={[Function]}
             role="gridcell"
+            tabindex="-1"
             title="something"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -2179,7 +2428,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
             >
               <svg
                 aria-label="something"
-                className=
+                class=
 
                     {
                       border-radius: 50%;
@@ -2187,6 +2436,7 @@ exports[`SwatchColorPicker renders SwatchColorPicker correctly 1`] = `
                       width: 100%;
                     }
                 fill="#123"
+                focusable="false"
                 role="img"
                 viewBox="0 0 20 20"
               >

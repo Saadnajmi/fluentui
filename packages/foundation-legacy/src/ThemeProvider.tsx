@@ -15,7 +15,9 @@ export interface IThemeProviderProps {
  * @deprecated This is an old ThemeProvider implementation. New code should use the ThemeProvider exported from
  * `@fluentui/react` (or `@fluentui/react/lib/Theme`) instead.
  */
-export const ThemeProvider: React.FunctionComponent<IThemeProviderProps> = (props: IThemeProviderProps) => {
+export const ThemeProvider: React.FunctionComponent<React.PropsWithChildren<IThemeProviderProps>> = (
+  props: IThemeProviderProps,
+) => {
   const { scheme, theme, ...rest } = props;
 
   // TODO: consider merging implementation with theme-proto, which only stores a reference / scheme name to theme
@@ -25,6 +27,6 @@ export const ThemeProvider: React.FunctionComponent<IThemeProviderProps> = (prop
     return getThemedContext(context, scheme, theme);
   };
 
-  // eslint-disable-next-line react/jsx-no-bind, deprecation/deprecation
+  // eslint-disable-next-line react/jsx-no-bind, @typescript-eslint/no-deprecated
   return <Customizer {...rest} contextTransform={contextTransform} />;
 };

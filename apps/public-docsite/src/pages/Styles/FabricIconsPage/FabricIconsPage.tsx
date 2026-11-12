@@ -19,13 +19,14 @@ export const FabricIconsPage: React.FunctionComponent<IStylesPageProps> = props 
   return (
     <StylesAreaPage
       {...props}
-      {...FabricIconsPageProps[platform]}
-      otherSections={_otherSections(platform) as IPageSectionProps[]}
+      {...FabricIconsPageProps[platform!]}
+      otherSections={_otherSections(platform!) as IPageSectionProps[]}
     />
   );
 };
 
 function _otherSections(platform: Platforms): IPageSectionProps<Platforms>[] {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [selectedItem, setSelectedItem] = React.useState('react-font');
   switch (platform) {
     case 'web':
@@ -33,18 +34,20 @@ function _otherSections(platform: Platforms): IPageSectionProps<Platforms>[] {
         {
           sectionName: 'Usage: Font icons',
           editUrl: `${baseUrl}/web/FabricIconsUsage.md`,
-          content: require('!raw-loader?esModule=false!@fluentui/public-docsite/src/pages/Styles/FabricIconsPage/docs/web/FabricIconsUsage.md') as string,
+          content:
+            require('!raw-loader?esModule=false!@fluentui/public-docsite/src/pages/Styles/FabricIconsPage/docs/web/FabricIconsUsage.md') as string,
           jumpLinks: [
             { text: enDash + ' Fluent UI React', url: 'fluent-ui-react' },
             { text: enDash + ' Fabric Core', url: 'fabric-core' },
-            { text: enDash + ' Fluent UI Icons tool', url: 'fluent-ui-icons-tool' },
+            { text: enDash + ' Icon subsets', url: 'icon-subsets' },
           ],
         },
 
         {
           sectionName: 'Usage: SVG icons',
           editUrl: `${baseUrl}/web/FabricIconsSvgUsage.md`,
-          content: require('!raw-loader?esModule=false!@fluentui/public-docsite/src/pages/Styles/FabricIconsPage/docs/web/FabricIconsSvgUsage.md') as string,
+          content:
+            require('!raw-loader?esModule=false!@fluentui/public-docsite/src/pages/Styles/FabricIconsPage/docs/web/FabricIconsSvgUsage.md') as string,
         },
 
         {
@@ -52,7 +55,7 @@ function _otherSections(platform: Platforms): IPageSectionProps<Platforms>[] {
           content: (
             <Pivot
               onLinkClick={item => {
-                setSelectedItem(item.props.itemKey);
+                setSelectedItem(item!.props.itemKey!);
               }}
             >
               <PivotItem headerText="Fluent UI React (font)" itemKey="react-font" className={styles.iconGrid}>
@@ -69,7 +72,7 @@ function _otherSections(platform: Platforms): IPageSectionProps<Platforms>[] {
                   )
                 }
               </PivotItem>
-              <PivotItem headerText="SVG icons (branded)" itemKey="svg-branded" className={styles.iconGrid}>
+              <PivotItem headerText="SVG icons (products)" itemKey="svg-branded" className={styles.iconGrid}>
                 {selectedItem === 'svg-branded' && (
                   <IconGrid icons={import('@fluentui/react-icons-mdl2-branded')} iconType="react-svg" />
                 )}

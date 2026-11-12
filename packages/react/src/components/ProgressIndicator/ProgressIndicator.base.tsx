@@ -6,6 +6,8 @@ import type {
   IProgressIndicatorStyles,
 } from './ProgressIndicator.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IProgressIndicatorStyleProps, IProgressIndicatorStyles>();
 
 // if the percentComplete is near 0, don't animate it.
@@ -34,11 +36,11 @@ export class ProgressIndicatorBase extends React.Component<IProgressIndicatorPro
     this._descriptionId = id + '-description';
   }
 
-  public render() {
+  public render(): JSXElement {
     const {
       barHeight,
       className,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       label = this.props.title, // Fall back to deprecated value.
       description,
       styles,
@@ -70,7 +72,7 @@ export class ProgressIndicatorBase extends React.Component<IProgressIndicatorPro
           ? onRenderProgress(
               {
                 ...(this.props as IProgressIndicatorProps),
-                percentComplete: percentComplete,
+                percentComplete,
               },
               this._onRenderProgress,
             )
@@ -84,14 +86,14 @@ export class ProgressIndicatorBase extends React.Component<IProgressIndicatorPro
     );
   }
 
-  private _onRenderProgress = (props: IProgressIndicatorProps): JSX.Element => {
+  private _onRenderProgress = (props: IProgressIndicatorProps): JSXElement => {
     const {
       ariaLabel,
       ariaValueText,
       barHeight,
       className,
       description,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       label = this.props.title,
       styles,
       theme,

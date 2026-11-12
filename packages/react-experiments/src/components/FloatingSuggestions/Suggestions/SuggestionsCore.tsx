@@ -4,6 +4,7 @@ import { SuggestionsItem } from './SuggestionsItem';
 import * as stylesImport from './SuggestionsCore.scss';
 import type { ISuggestionModel } from '@fluentui/react/lib/Pickers';
 import type { ISuggestionsCoreProps } from './Suggestions.types';
+import type { JSXElement } from '@fluentui/utilities';
 
 const styles: any = stylesImport;
 
@@ -22,7 +23,7 @@ function hasKey<T>(i: T): i is T & { key: string | number } {
 /**
  * Class when used with SuggestionsStore, renders a basic suggestions control
  */
-export class SuggestionsCore<T> extends React.Component<ISuggestionsCoreProps<T>, {}> {
+export class SuggestionsCore<T extends {}> extends React.Component<ISuggestionsCoreProps<T>, {}> {
   public currentIndex: number;
   public currentSuggestion: ISuggestionModel<T> | undefined;
   protected _selectedElement = React.createRef<HTMLDivElement>();
@@ -130,7 +131,7 @@ export class SuggestionsCore<T> extends React.Component<ISuggestionsCoreProps<T>
     this.scrollSelected();
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       onRenderSuggestion,
       suggestionsItemClassName,

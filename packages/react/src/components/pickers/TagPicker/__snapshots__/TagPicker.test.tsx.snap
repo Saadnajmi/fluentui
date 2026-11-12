@@ -1,16 +1,16 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`TagPicker renders correctly 1`] = `
 <div
-  className="ms-BasePicker"
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
+  class=
+      ms-BasePicker
+      {
+        position: relative;
+      }
 >
   <div
     aria-live="assertive"
-    className=
+    class=
 
         {
           border: 0px;
@@ -29,27 +29,17 @@ exports[`TagPicker renders correctly 1`] = `
           width: 1px;
         }
     id="selected-suggestion-alert-id__0"
-  >
-    
-  </div>
+  />
   <span
-    hidden={true}
+    hidden=""
     id="selected-items-id__0-label"
   />
   <div
-    className="ms-SelectionZone"
-    onClick={[Function]}
-    onContextMenu={[Function]}
-    onDoubleClick={[Function]}
-    onFocusCapture={[Function]}
-    onKeyDown={[Function]}
-    onKeyDownCapture={[Function]}
-    onMouseDown={[Function]}
-    onMouseDownCapture={[Function]}
+    class="ms-SelectionZone"
     role="presentation"
   >
     <div
-      className=
+      class=
           ms-BasePicker-text
           {
             align-items: center;
@@ -68,7 +58,7 @@ exports[`TagPicker renders correctly 1`] = `
     >
       <span
         aria-labelledby="selected-items-id__0-label"
-        className=
+        class=
             ms-BasePicker-itemsWrapper
             {
               display: flex;
@@ -79,7 +69,7 @@ exports[`TagPicker renders correctly 1`] = `
         role="list"
       >
         <div
-          className=
+          class=
               ms-TagItem
               {
                 -moz-osx-font-smoothing: grayscale;
@@ -121,6 +111,17 @@ exports[`TagPicker renders correctly 1`] = `
                 top: 1px;
                 z-index: 1;
               }
+              :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                border: 1px solid #ffffff;
+                bottom: 1px;
+                content: "";
+                left: 1px;
+                outline: 1px solid #605e5c;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                z-index: 1;
+              }
               &:hover {
                 background: #edebe9;
                 color: #201f1e;
@@ -131,12 +132,11 @@ exports[`TagPicker renders correctly 1`] = `
               @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
                 border: 1px solid WindowText;
               }
-          data-selection-index={0}
-          onClick={[Function]}
+          data-selection-index="0"
           role="listitem"
         >
           <span
-            className=
+            class=
                 ms-TagItem-text
                 {
                   margin-bottom: 0;
@@ -155,29 +155,27 @@ exports[`TagPicker renders correctly 1`] = `
           </span>
           <button
             aria-labelledby="id__1-removeLabel id__1-text"
-            className=
+            class=
                 ms-Button
                 ms-Button--icon
                 ms-TagItem-close
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: transparent;
                   border-radius: 0 2px 2px 0;
                   border: none;
                   box-sizing: border-box;
                   color: #605e5c;
                   cursor: pointer;
-                  display: inline-block;
+                  display: inline-flex;
                   flex: 0 0 auto;
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
                   height: 100%;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0;
                   padding-left: 4px;
@@ -210,6 +208,24 @@ exports[`TagPicker renders correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid transparent;
+                  bottom: 2px;
+                  content: "";
+                  left: 2px;
+                  outline: 1px solid #ffffff;
+                  position: absolute;
+                  right: 2px;
+                  top: 2px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -224,15 +240,11 @@ exports[`TagPicker renders correctly 1`] = `
                   border-color: Highlight;
                   color: Highlight;
                 }
-                &:focus {
-                  background: #0078d4;
-                  color: #ffffff;
-                }
                 &:active {
                   background-color: #005a9e;
                   color: #ffffff;
                 }
-                .is-selected & {
+                .is-selected &:focus {
                   background: #0078d4;
                   color: #ffffff;
                 }
@@ -240,18 +252,12 @@ exports[`TagPicker renders correctly 1`] = `
                   background: #005a9e;
                   color: #ffffff;
                 }
-            data-is-focusable={true}
+            data-is-focusable="true"
             id="id__1"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseUp={[Function]}
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -263,12 +269,13 @@ exports[`TagPicker renders correctly 1`] = `
               data-automationid="splitbuttonprimary"
             >
               <i
-                aria-hidden={true}
-                className=
+                aria-hidden="true"
+                class=
                     ms-Icon
                     ms-Button-icon
                     {
                       display: inline-block;
+                      text-decoration: inherit;
                     }
                     {
                       -moz-osx-font-smoothing: grayscale;
@@ -290,30 +297,26 @@ exports[`TagPicker renders correctly 1`] = `
                       text-align: center;
                     }
                 data-icon-name="Cancel"
-                style={
-                  Object {
-                    "fontFamily": "\\"FabricMDL2Icons\\"",
-                  }
-                }
+                style="font-family: \\"FabricMDL2Icons\\";"
               >
                 
               </i>
             </span>
           </button>
           <span
-            hidden={true}
+            hidden=""
             id="id__1-removeLabel"
           />
         </div>
       </span>
       <input
         aria-autocomplete="both"
-        aria-describedby="selected-items-id__0"
-        aria-expanded={false}
+        aria-describedby="selected-items-id__0 "
+        aria-expanded="false"
         aria-haspopup="listbox"
-        autoCapitalize="off"
-        autoComplete="off"
-        className=
+        autocapitalize="off"
+        autocomplete="off"
+        class=
             ms-BasePicker-input
             {
               -moz-osx-font-smoothing: grayscale;
@@ -376,24 +379,11 @@ exports[`TagPicker renders correctly 1`] = `
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&::-ms-input-placeholder {
               color: GrayText;
             }
-        data-lpignore={true}
+        data-lpignore="true"
         id="combobox-id__0"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onClick={[Function]}
-        onCompositionEnd={[Function]}
-        onCompositionStart={[Function]}
-        onCompositionUpdate={[Function]}
-        onFocus={[Function]}
-        onInput={[Function]}
-        onKeyDown={[Function]}
         role="combobox"
-        spellCheck={false}
-        style={
-          Object {
-            "fontFamily": "inherit",
-          }
-        }
+        spellcheck="false"
+        style="font-family: inherit;"
         value=""
       />
     </div>
@@ -403,15 +393,15 @@ exports[`TagPicker renders correctly 1`] = `
 
 exports[`TagPicker renders picker with selected item correctly 1`] = `
 <div
-  className="ms-BasePicker"
-  onBlur={[Function]}
-  onClick={[Function]}
-  onFocus={[Function]}
-  onKeyDown={[Function]}
+  class=
+      ms-BasePicker
+      {
+        position: relative;
+      }
 >
   <div
     aria-live="assertive"
-    className=
+    class=
 
         {
           border: 0px;
@@ -430,27 +420,17 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
           width: 1px;
         }
     id="selected-suggestion-alert-id__0"
-  >
-    
-  </div>
+  />
   <span
-    hidden={true}
+    hidden=""
     id="selected-items-id__0-label"
   />
   <div
-    className="ms-SelectionZone"
-    onClick={[Function]}
-    onContextMenu={[Function]}
-    onDoubleClick={[Function]}
-    onFocusCapture={[Function]}
-    onKeyDown={[Function]}
-    onKeyDownCapture={[Function]}
-    onMouseDown={[Function]}
-    onMouseDownCapture={[Function]}
+    class="ms-SelectionZone"
     role="presentation"
   >
     <div
-      className=
+      class=
           ms-BasePicker-text
           {
             align-items: center;
@@ -469,7 +449,7 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
     >
       <span
         aria-labelledby="selected-items-id__0-label"
-        className=
+        class=
             ms-BasePicker-itemsWrapper
             {
               display: flex;
@@ -480,7 +460,7 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
         role="list"
       >
         <div
-          className=
+          class=
               ms-TagItem
               {
                 -moz-osx-font-smoothing: grayscale;
@@ -522,6 +502,17 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
                 top: 1px;
                 z-index: 1;
               }
+              :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                border: 1px solid #ffffff;
+                bottom: 1px;
+                content: "";
+                left: 1px;
+                outline: 1px solid #605e5c;
+                position: absolute;
+                right: 1px;
+                top: 1px;
+                z-index: 1;
+              }
               &:hover {
                 background: #edebe9;
                 color: #201f1e;
@@ -532,12 +523,11 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
               @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
                 border: 1px solid WindowText;
               }
-          data-selection-index={0}
-          onClick={[Function]}
+          data-selection-index="0"
           role="listitem"
         >
           <span
-            className=
+            class=
                 ms-TagItem-text
                 {
                   margin-bottom: 0;
@@ -556,29 +546,27 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
           </span>
           <button
             aria-labelledby="id__1-removeLabel id__1-text"
-            className=
+            class=
                 ms-Button
                 ms-Button--icon
                 ms-TagItem-close
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: transparent;
                   border-radius: 0 2px 2px 0;
                   border: none;
                   box-sizing: border-box;
                   color: #605e5c;
                   cursor: pointer;
-                  display: inline-block;
+                  display: inline-flex;
                   flex: 0 0 auto;
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
                   height: 100%;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
                   outline: transparent;
                   padding-bottom: 0;
                   padding-left: 4px;
@@ -611,6 +599,24 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid transparent;
+                  bottom: 2px;
+                  content: "";
+                  left: 2px;
+                  outline: 1px solid #ffffff;
+                  position: absolute;
+                  right: 2px;
+                  top: 2px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -625,15 +631,11 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
                   border-color: Highlight;
                   color: Highlight;
                 }
-                &:focus {
-                  background: #0078d4;
-                  color: #ffffff;
-                }
                 &:active {
                   background-color: #005a9e;
                   color: #ffffff;
                 }
-                .is-selected & {
+                .is-selected &:focus {
                   background: #0078d4;
                   color: #ffffff;
                 }
@@ -641,18 +643,12 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
                   background: #005a9e;
                   color: #ffffff;
                 }
-            data-is-focusable={true}
+            data-is-focusable="true"
             id="id__1"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseUp={[Function]}
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -664,12 +660,13 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
               data-automationid="splitbuttonprimary"
             >
               <i
-                aria-hidden={true}
-                className=
+                aria-hidden="true"
+                class=
                     ms-Icon
                     ms-Button-icon
                     {
                       display: inline-block;
+                      text-decoration: inherit;
                     }
                     {
                       -moz-osx-font-smoothing: grayscale;
@@ -691,30 +688,26 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
                       text-align: center;
                     }
                 data-icon-name="Cancel"
-                style={
-                  Object {
-                    "fontFamily": "\\"FabricMDL2Icons\\"",
-                  }
-                }
+                style="font-family: \\"FabricMDL2Icons\\";"
               >
                 
               </i>
             </span>
           </button>
           <span
-            hidden={true}
+            hidden=""
             id="id__1-removeLabel"
           />
         </div>
       </span>
       <input
         aria-autocomplete="both"
-        aria-describedby="selected-items-id__0"
-        aria-expanded={false}
+        aria-describedby="selected-items-id__0 "
+        aria-expanded="false"
         aria-haspopup="listbox"
-        autoCapitalize="off"
-        autoComplete="off"
-        className=
+        autocapitalize="off"
+        autocomplete="off"
+        class=
             ms-BasePicker-input
             {
               -moz-osx-font-smoothing: grayscale;
@@ -777,24 +770,11 @@ exports[`TagPicker renders picker with selected item correctly 1`] = `
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&::-ms-input-placeholder {
               color: GrayText;
             }
-        data-lpignore={true}
+        data-lpignore="true"
         id="combobox-id__0"
-        onBlur={[Function]}
-        onChange={[Function]}
-        onClick={[Function]}
-        onCompositionEnd={[Function]}
-        onCompositionStart={[Function]}
-        onCompositionUpdate={[Function]}
-        onFocus={[Function]}
-        onInput={[Function]}
-        onKeyDown={[Function]}
         role="combobox"
-        spellCheck={false}
-        style={
-          Object {
-            "fontFamily": "inherit",
-          }
-        }
+        spellcheck="false"
+        style="font-family: inherit;"
         value=""
       />
     </div>

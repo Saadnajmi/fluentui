@@ -1,30 +1,28 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Button renders CompoundButton correctly 1`] = `
 <button
   aria-describedby="id__1"
   aria-labelledby="id__0"
-  className=
+  class=
       ms-Button
       ms-Button--compound
       {
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
+        align-items: center;
         background-color: #ffffff;
         border-radius: 2px;
         border: 1px solid #8a8886;
         box-sizing: border-box;
         color: #323130;
         cursor: pointer;
-        display: inline-block;
+        display: inline-flex;
         font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
         font-size: 14px;
         font-weight: 400;
         height: auto;
-        margin-bottom: 0px;
-        margin-left: 0px;
-        margin-right: 0px;
-        margin-top: 0px;
+        justify-content: center;
         max-width: 280px;
         min-height: 72px;
         outline: transparent;
@@ -58,6 +56,24 @@ exports[`Button renders CompoundButton correctly 1`] = `
         right: -2px;
         top: -2px;
       }
+      :host(.ms-Fabric--isFocusVisible) &:focus:after {
+        border: 1px solid transparent;
+        bottom: 2px;
+        content: "";
+        left: 2px;
+        outline: 1px solid #605e5c;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        z-index: 1;
+      }
+      @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+        bottom: -2px;
+        left: -2px;
+        outline-color: ButtonText;
+        right: -2px;
+        top: -2px;
+      }
       &:active > span {
         left: 0px;
         position: relative;
@@ -81,17 +97,11 @@ exports[`Button renders CompoundButton correctly 1`] = `
       &:active .ms-Button-description {
         color: inherit;
       }
-  data-is-focusable={true}
-  onClick={[Function]}
-  onKeyDown={[Function]}
-  onKeyPress={[Function]}
-  onKeyUp={[Function]}
-  onMouseDown={[Function]}
-  onMouseUp={[Function]}
+  data-is-focusable="true"
   type="button"
 >
   <span
-    className=
+    class=
         ms-Button-flexContainer
         {
           align-items: flex-start;
@@ -109,7 +119,7 @@ exports[`Button renders CompoundButton correctly 1`] = `
     data-automationid="splitbuttonprimary"
   >
     <span
-      className=
+      class=
           ms-Button-textContainer
           {
             display: block;
@@ -118,7 +128,7 @@ exports[`Button renders CompoundButton correctly 1`] = `
           }
     >
       <span
-        className=
+        class=
             ms-Button-label
             {
               display: block;
@@ -134,7 +144,7 @@ exports[`Button renders CompoundButton correctly 1`] = `
         Create account
       </span>
       <span
-        className=
+        class=
             ms-Button-description
             {
               -moz-osx-font-smoothing: grayscale;

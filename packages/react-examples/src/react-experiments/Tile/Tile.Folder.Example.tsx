@@ -10,6 +10,7 @@ import {
 import { lorem } from '@fluentui/example-data';
 import { css, ISize, fitContentToBounds } from '@fluentui/react-experiments/lib/Utilities';
 import * as TileExampleStylesModule from './Tile.Example.scss';
+import type { JSXElement } from '@fluentui/utilities';
 
 const TileExampleStyles = TileExampleStylesModule as any;
 
@@ -45,12 +46,12 @@ interface IFolderTileWithThumbnailProps {
   folderCoverType?: FolderCoverType;
   originalImageSize?: ISize;
   size: 'small' | 'large';
-  item: typeof ITEMS[0];
+  item: (typeof ITEMS)[0];
 }
 
 const FolderTileWithThumbnail: React.FunctionComponent<IFolderTileWithThumbnailProps> = (
   props: IFolderTileWithThumbnailProps,
-): JSX.Element => {
+): JSXElement => {
   const folderCover = (
     <FolderCover
       folderCoverSize={props.size}
@@ -86,8 +87,10 @@ const FolderTileWithThumbnail: React.FunctionComponent<IFolderTileWithThumbnailP
             {renderFolderCoverWithLayout(folderCover, {
               children: imageSize ? (
                 <img
-                  src={`//via.placeholder.com/${Math.round(imageSize.width)}x${Math.round(imageSize.height)}`}
+                  src="https://res.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/fluent-placeholder.svgs"
                   className={css(TileExampleStyles.tileImage)}
+                  height={Math.round(imageSize.height)}
+                  width={Math.round(imageSize.width)}
                 />
               ) : null,
             })}
@@ -111,7 +114,7 @@ export class TileFolderExample extends React.Component<{}, ITileFolderExampleSta
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { size } = this.state;
 
     return (

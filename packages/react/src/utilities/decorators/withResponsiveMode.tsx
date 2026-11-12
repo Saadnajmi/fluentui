@@ -3,6 +3,8 @@ import { BaseDecorator } from './BaseDecorator';
 import { getWindow, hoistStatics, EventGroup } from '../../Utilities';
 import { WindowContext } from '../../WindowProvider';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 /**
  * @deprecated Decorator usage is deprecated. Either call `getResponsiveMode` manually, or
  * use the `useResponsiveMode` hook within a function component.
@@ -74,7 +76,7 @@ export function getInitialResponsiveMode(): ResponsiveMode {
 export function withResponsiveMode<TProps extends { responsiveMode?: ResponsiveMode }, TState>(
   ComposedComponent: new (props: TProps, ...args: any[]) => React.Component<TProps, TState>,
 ): any {
-  // eslint-disable-next-line deprecation/deprecation
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const resultClass = class WithResponsiveMode extends BaseDecorator<TProps, IWithResponsiveModeState> {
     public static contextType = WindowContext;
     public context: React.ContextType<typeof WindowContext>;
@@ -100,7 +102,7 @@ export function withResponsiveMode<TProps extends { responsiveMode?: ResponsiveM
       this._events.dispose();
     }
 
-    public render(): JSX.Element | null {
+    public render(): JSXElement | null {
       const { responsiveMode } = this.state;
 
       return responsiveMode === ResponsiveMode.unknown ? null : (

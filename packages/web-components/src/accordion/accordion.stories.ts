@@ -1,71 +1,51 @@
-import { fluentAccordion } from './index';
+import { html, repeat } from '@microsoft/fast-element';
+import { type Meta, renderComponent, type StoryArgs, type StoryObj } from '../helpers.stories.js';
+import { getStorybookHelpers } from '../../.storybook/wc-toolkit-helpers.js';
+import type { Accordion as FluentAccordion } from './accordion.js';
+import { AccordionExpandMode } from './accordion.options.js';
 
-export default {
-  title: 'Components/Accordion',
-  component: fluentAccordion,
-  argTypes: {
-    expandMode: {
-      options: ['single', 'multi'],
-      control: { type: 'radio' },
-      defaultValue: 'multi',
-    },
-  },
-};
+type Story = StoryObj<FluentAccordion>;
+const { argTypes } = getStorybookHelpers<FluentAccordion>('fluent-accordion');
 
-const AccordionTemplate = ({ expandMode }) => `
-  <fluent-accordion
-    ${expandMode ? `expand-mode="${expandMode}"` : ''}
-  >
-    <fluent-accordion-item expanded>
-      <div slot="start">
-        <button>1</button>
-      </div>
-      <div slot="end">
-        <button>1</button>
-      </div>
-      <span slot="heading">Panel one</span>
-      Panel one content
-    </fluent-accordion-item>
-    <fluent-accordion-item>
-      <span slot="heading">Panel two</span>
-      Panel two content
-    </fluent-accordion-item>
-    <fluent-accordion-item expanded>
-      <span slot="heading">Panel three</span>
-      Panel three content
-    </fluent-accordion-item>
+const storyTemplate = html<StoryArgs<FluentAccordion>>`
+  <fluent-accordion expand-mode="${story => story.expandmode}">
+    ${repeat(
+      [
+        {
+          headingLevel: 2,
+          headingSlottedContent: () => html` <span slot="heading">Accordion Header 1</span> `,
+          slottedContent: () => 'Accordion Panel 1',
+        },
+        {
+          headingLevel: 2,
+          headingSlottedContent: () => html` <span slot="heading">Accordion Header 2</span> `,
+          slottedContent: () => 'Accordion Panel 2',
+        },
+        {
+          headingLevel: 2,
+          headingSlottedContent: () => html` <span slot="heading">Accordion Header 3</span> `,
+          slottedContent: () => 'Accordion Panel 3',
+        },
+      ],
+      html`
+        <fluent-accordion-item heading-level="${story => story.headinglevel}" ?disabled="${story => story.disabled}">
+          ${story => story.headingSlottedContent?.()} ${story => story.slottedContent?.()}
+        </fluent-accordion-item>
+      `,
+    )}
   </fluent-accordion>
 `;
 
-export const Accordion = AccordionTemplate.bind({});
+export default {
+  title: 'Components/Accordion/Accordion',
+  render: renderComponent(storyTemplate),
+  argTypes,
+} as Meta<FluentAccordion>;
 
-const example = `
-<fluent-accordion>
-  <fluent-accordion-item expanded>
-    <div slot="start">
-      <button>1</button>
-    </div>
-    <div slot="end">
-      <button>1</button>
-    </div>
-    <span slot="heading">Panel one</span>
-    Panel one content
-  </fluent-accordion-item>
-  <fluent-accordion-item>
-    <span slot="heading">Panel two</span>
-    Panel two content
-  </fluent-accordion-item>
-  <fluent-accordion-item expanded>
-    <span slot="heading">Panel three</span>
-    Panel three content
-  </fluent-accordion-item>
-</fluent-accordion>
-`;
+export const Default: Story = {};
 
-Accordion.parameters = {
-  docs: {
-    source: {
-      code: example,
-    },
+export const SingleMode: Story = {
+  args: {
+    expandmode: AccordionExpandMode.single,
   },
 };

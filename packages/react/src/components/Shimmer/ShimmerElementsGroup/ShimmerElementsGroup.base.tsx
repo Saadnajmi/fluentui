@@ -15,6 +15,8 @@ import type { IShimmerLineStyles } from '../ShimmerLine/ShimmerLine.types';
 import type { IShimmerGapStyles } from '../ShimmerGap/ShimmerGap.types';
 import type { IShimmerCircleStyles } from '../ShimmerCircle/ShimmerCircle.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IShimmerElementsGroupStyleProps, IShimmerElementsGroupStyles>();
 
 /**
@@ -37,7 +39,7 @@ export const ShimmerElementsGroupBase: React.FunctionComponent<IShimmerElementsG
   });
 
   return (
-    <div style={{ width: width }} className={classNames.root}>
+    <div style={{ width }} className={classNames.root}>
       {getRenderedElements(shimmerElements, backgroundColor, rowHeight)}
     </div>
   );
@@ -52,7 +54,7 @@ function getRenderedElements(
     shimmerElements.map(
       // false positive
       // eslint-disable-next-line array-callback-return
-      (element: IShimmerElement, index: number): JSX.Element => {
+      (element: IShimmerElement, index: number): JSXElement => {
         const { type, ...filteredElem } = element;
         const { verticalAlign, height } = filteredElem;
         const styles = getElementStyles(verticalAlign, type, height, backgroundColor, rowHeight);
@@ -112,7 +114,7 @@ const getElementStyles = memoizeFunction(
           };
         case ShimmerElementType.gap:
           return {
-            root: { ...borderStyle, borderColor: backgroundColor, backgroundColor: backgroundColor },
+            root: { ...borderStyle, borderColor: backgroundColor, backgroundColor },
           };
         case ShimmerElementType.line:
           return {

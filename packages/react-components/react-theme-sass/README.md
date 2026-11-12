@@ -1,6 +1,6 @@
 # @fluentui/react-theme-sass
 
-**React Theme Sass for [Fluent UI React](https://developer.microsoft.com/en-us/fluentui)**
+**React Theme Sass for [Fluent UI React](https://react.fluentui.dev)**
 
 SASS variables referencing react-theme design tokens injected to DOM by react-provider.
 
@@ -10,21 +10,22 @@ SASS variables referencing react-theme design tokens injected to DOM by react-pr
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOMClient from 'react-dom/client';
 import { FluentProvider, teamsLightTheme } from '@fluentui/react-components';
 import App from './App';
-ReactDOM.render(
+
+ReactDOMClient.createRoot(document.getElementById('root')).render(
   <FluentProvider theme={teamsLightTheme}>
     <App />
   </FluentProvider>,
-  document.getElementById('root'),
 );
 ```
 
 2. In SCSS styles you can import SCSS variables from `@fluentui/react-theme-sass` and use them in the styles:
 
 ```scss
-@import '~@fluentui/react-theme-sass';
+@import '@fluentui/react-theme-sass';
+
 .brandedElement {
   color: $colorBrandForeground1;
   background: $colorBrandBackground;
@@ -32,4 +33,4 @@ ReactDOM.render(
 }
 ```
 
-⚠ This package does not export any Javascript code.️
+> ⚠ Note: This package does not export any Javascript code.️

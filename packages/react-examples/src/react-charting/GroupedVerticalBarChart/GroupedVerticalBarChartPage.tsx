@@ -5,20 +5,35 @@ import {
   ExampleCard,
   IComponentDemoPageProps,
   PropertiesTableSet,
+  Markdown,
 } from '@fluentui/react-docsite-components';
 
 import { GroupedVerticalBarChartBasicExample } from './GroupedVerticalBarChart.Basic.Example';
 import { GroupedVerticalBarChartTruncatedExample } from './GroupedVerticalBarChart.Truncated.Example';
 import { GroupedVerticalBarChartStyledExample } from './GroupedVerticalBarChart.Styled.Example';
 import { GroupedVerticalBarChartCustomAccessibilityExample } from './GroupedVerticalBarChart.CustomAccessibility.Example';
+import { GroupedVerticalBarChartSecondaryYAxisExample } from './GroupedVerticalBarChart.SecondaryYAxis.Example';
+import { GroupedVerticalBarChartNegativeExample } from './GroupedVerticalBarChart.Negative.Example';
+import { GroupedVerticalBarChartLineExample } from './GroupedVerticalBarChart.Line.Example';
+import type { JSXElement } from '@fluentui/utilities';
 
-const GroupedVerticalBasicExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Basic.Example.tsx') as string;
-const GroupedVerticalStyledExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Styled.Example.tsx') as string;
-const GroupedVerticalTruncatedExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Truncated.Example.tsx') as string;
-const GroupedVerticalCustomAccessibilityExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.CustomAccessibility.Example.tsx') as string;
+const GroupedVerticalBasicExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Basic.Example.tsx') as string;
+const GroupedVerticalStyledExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Styled.Example.tsx') as string;
+const GroupedVerticalTruncatedExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Truncated.Example.tsx') as string;
+const GroupedVerticalCustomAccessibilityExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.CustomAccessibility.Example.tsx') as string;
+const GroupedVerticalBarChartSecondaryYAxisExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.SecondaryYAxis.Example.tsx') as string;
+const GroupedVerticalBarChartNegativeExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Negative.Example.tsx') as string;
+const GroupedVerticalBarChartLineExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/GroupedVerticalBarChart.Line.Example.tsx') as string;
 
 export class GroupedVerticalBarChart extends React.Component<IComponentDemoPageProps, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <ComponentPage
         title="Grouped Vertical Bar Chart"
@@ -40,6 +55,21 @@ export class GroupedVerticalBarChart extends React.Component<IComponentDemoPageP
             >
               <GroupedVerticalBarChartCustomAccessibilityExample />
             </ExampleCard>
+            <ExampleCard
+              title="Grouped Vertical Bar Chart Secondary Y-Axis"
+              code={GroupedVerticalBarChartSecondaryYAxisExampleCode}
+            >
+              <GroupedVerticalBarChartSecondaryYAxisExample />
+            </ExampleCard>
+            <ExampleCard
+              title="Grouped Vertical Bar Chart Negative Y-Axis"
+              code={GroupedVerticalBarChartNegativeExampleCode}
+            >
+              <GroupedVerticalBarChartNegativeExample />
+            </ExampleCard>
+            <ExampleCard title="Grouped Vertical Bar Chart With Lines" code={GroupedVerticalBarChartLineExampleCode}>
+              <GroupedVerticalBarChartLineExample />
+            </ExampleCard>
           </div>
         }
         propertiesTables={
@@ -52,16 +82,24 @@ export class GroupedVerticalBarChart extends React.Component<IComponentDemoPageP
         }
         isHeaderVisible={this.props.isHeaderVisible}
         overview={
-          <div>
-            <p>
-              Grouped vertical bar chart is slightly different than a vertical stacked bar chart. In a vertical stacked
-              bar chart, the bars are stacked one on top of the other. In a grouped vertical bar chart, the vertical
-              bars are aligned next to each other in groups. In stacked bar chart, the reference point for each bar is
-              either the x axis or another bar in the stack. For grouped vertical bar chart, each bar has x axis as the
-              reference point. Having a common reference point helps in better comparison between different values in
-              the chart.
-            </p>
-          </div>
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/docs/GroupedVerticalBarChartOverview.md')}
+          </Markdown>
+        }
+        bestPractices={
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/docs/GroupedVerticalBarChartBestPractices.md')}
+          </Markdown>
+        }
+        dos={
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/docs/GroupedVerticalBarChartDos.md')}
+          </Markdown>
+        }
+        donts={
+          <Markdown>
+            {require<string>('!raw-loader?esModule=false!@fluentui/react-examples/src/react-charting/GroupedVerticalBarChart/docs/GroupedVerticalBarChartDonts.md')}
+          </Markdown>
         }
       />
     );

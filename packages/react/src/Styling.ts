@@ -7,7 +7,7 @@ export {
   DefaultEffects,
   DefaultFontStyles,
   DefaultPalette,
-  // eslint-disable-next-line deprecation/deprecation
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   EdgeChromiumHighContrastSelector,
   FontClassNames,
   FontSizes,
@@ -39,11 +39,11 @@ export {
   createFontStyles,
   focusClear,
   fontFace,
-  // eslint-disable-next-line deprecation/deprecation
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   getEdgeChromiumNoHighContrastAdjustSelector,
   getFadedOverflowStyle,
   getFocusOutlineStyle,
-  // eslint-disable-next-line deprecation/deprecation
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   getFocusStyle,
   getGlobalClassNames,
   getHighContrastNoAdjustStyle,
@@ -96,4 +96,13 @@ export type {
   IStyleSet,
   IStyleSheetConfig,
   ITheme,
+  ShadowConfig,
 } from '@fluentui/style-utilities';
+
+import type { ShadowConfig } from '@fluentui/style-utilities';
+export interface IShadowDomStyle {
+  /**
+   * Optional configuration object when using shadow DOM.
+   */
+  __shadowConfig__?: ShadowConfig;
+}

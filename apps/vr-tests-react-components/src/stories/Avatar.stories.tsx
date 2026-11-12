@@ -1,10 +1,14 @@
-import { storiesOf } from '@storybook/react';
+import type { Meta, StoryFn } from '@storybook/react-webpack5';
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { Avatar, AvatarProps } from '@fluentui/react-avatar';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import type { AvatarProps } from '@fluentui/react-avatar';
+import { Avatar } from '@fluentui/react-avatar';
+import { tokens } from '@fluentui/react-theme';
 import { PeopleRegular, PersonCallRegular } from '@fluentui/react-icons';
+import { DARK_MODE, HIGH_CONTRAST, RTL, getStoryVariant } from '../utilities';
 
-const imageRoot = 'http://fabricweb.azureedge.net/fabric-website/assets/images/avatar';
+const imageRoot = 'https://fabricweb.azureedge.net/fabric-website/assets/images/avatar';
 
 /** Sample names and images for use in Avatar examples */
 const nameAndImage = [
@@ -42,7 +46,7 @@ const nameAndImage = [
 /** Arrays of example values for each Avatar prop */
 const examples = {
   size: [16, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 96, 120, 128],
-  nameAndImage: nameAndImage,
+  nameAndImage,
   name: nameAndImage.map(p => p.name),
   image: nameAndImage.map(p => p.image),
   badge: [
@@ -161,78 +165,133 @@ const AvatarCustomSizeList: React.FC<
   );
 };
 
-storiesOf('Avatar Converged', module)
-  .addDecorator(story => (
-    <div style={{ display: 'flex' }}>
-      <div className="testWrapper" style={{ maxWidth: '750px' }}>
-        {story()}
+const AvatarColors: React.FC<Pick<AvatarProps, 'active' | 'activeAppearance'>> = props => {
+  const rowStyles = { display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '12px', padding: '12px' } as const;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={rowStyles}>
+        <Avatar color="neutral" {...props} />
+        <Avatar color="brand" {...props} />
+      </div>
+      <div style={rowStyles}>
+        {examples.name.map(name => (
+          <Avatar color="colorful" name={name} key={name} {...props} />
+        ))}
+      </div>
+      <div style={rowStyles}>
+        {examples.namedColors.map(color => (
+          <Avatar color={color} key={color} {...props} />
+        ))}
       </div>
     </div>
-  ))
-  .addDecorator(story => (
-    <Screener steps={new Screener.Steps().snapshot('normal', { cropTo: '.testWrapper' }).end()}>{story()}</Screener>
-  ))
-  .addStory(
-    'basic',
-    () => (
-      <div style={{ display: 'flex', gap: '24px', padding: '24px' }}>
-        <Avatar />
-        <Avatar name="First Last" />
-        <Avatar name="Three Word Name" />
-        <Avatar name="One" />
-        <Avatar name="(111)-555-1234" icon={<PersonCallRegular />} />
-        <Avatar icon={<PeopleRegular />} shape="square" />
-        <Avatar name="Group" icon={<PeopleRegular />} shape="square" />
-        <Avatar image={{ src: examples.image[14] }} badge={{ status: 'away' }} />
-        <Avatar name={examples.name[7]} image={{ src: examples.image[7] }} badge={{ status: 'available' }} />
+  );
+};
+
+export default {
+  title: 'Avatar Converged',
+  component: Avatar,
+  decorators: [
+    story => (
+      <div style={{ display: 'flex' }}>
+        <div className="testWrapper" style={{ maxWidth: '750px' }}>
+          {story()}
+        </div>
       </div>
     ),
-    { includeRtl: true, includeHighContrast: true, includeDarkMode: true },
-  )
-  .addStory('size+name', () => <AvatarList names={examples.name} />)
-  .addStory('size+icon+badge+square', () => <AvatarList badge={{ status: 'out-of-office' }} shape="square" />)
-  .addStory('size+image+badge', () => <AvatarList images={examples.image} badge={{ status: 'do-not-disturb' }} />)
-  .addStory('size+inactive+badge', () => (
-    <AvatarList images={examples.image} active="inactive" badge={{ status: 'offline' }} />
-  ))
-  .addStory('size+active+badge', () => (
-    <AvatarList images={examples.image} active="active" badge={{ status: 'available' }} />
-  ))
-  .addStory('size+active+shadow', () => (
-    <AvatarList images={examples.image} active="active" activeAppearance="shadow" />
-  ))
-  .addStory('size+active+ring-shadow', () => (
-    <AvatarList images={examples.image} active="active" activeAppearance="ring-shadow" />
-  ))
-  .addStory('customSize+image', () => <AvatarCustomSizeList images={examples.image} />)
-  .addStory('customSize+name+badge', () => (
-    <AvatarCustomSizeList names={examples.name} badge={{ status: 'available' }} />
-  ))
-  .addStory('customSize+icon+active', () => <AvatarCustomSizeList active="active" />)
-  .addStory(
-    'color',
-    () => {
-      const rowStyles: React.CSSProperties = { display: 'flex', flexWrap: 'wrap', gap: '8px' };
+  ],
+  parameters: {
+    storyWright: { steps: new Steps().snapshot('normal', { cropTo: '.testWrapper' }).end() },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof Avatar>;
 
-      return (
-        <div style={{ display: 'flex', gap: '24px', flexDirection: 'row' }}>
-          <div style={rowStyles}>
-            <Avatar color="neutral" />
-            <Avatar color="brand" />
-          </div>
-          <div style={rowStyles}>
-            {examples.name.map(name => (
-              <Avatar color="colorful" name={name} key={name} />
-            ))}
-          </div>
-          <div style={rowStyles}>
-            {examples.namedColors.map(color => (
-              <Avatar color={color} key={color} />
-            ))}
-          </div>
-        </div>
-      );
-    },
-    { includeHighContrast: true, includeDarkMode: true },
-  )
-  .addStory('image-bad-url', () => <Avatar name="Broken Image" image={{ src: `${imageRoot}/bad_image_url.jpg` }} />);
+export const Basic = () => (
+  <div style={{ display: 'flex', gap: '24px', padding: '24px' }}>
+    <Avatar />
+    <Avatar name="First Last" />
+    <Avatar name="Three Word Name" />
+    <Avatar name="One" />
+    <Avatar name="(111)-555-1234" icon={<PersonCallRegular />} />
+    <Avatar icon={<PeopleRegular />} shape="square" />
+    <Avatar name="Group" icon={<PeopleRegular />} shape="square" />
+    <Avatar image={{ src: examples.image[14] }} badge={{ status: 'away' }} />
+    <Avatar name={examples.name[7]} image={{ src: examples.image[7] }} badge={{ status: 'available' }} />
+  </div>
+);
+Basic.storyName = 'basic';
+
+export const BasicRTL = getStoryVariant(Basic, RTL);
+export const BasicDarkMode = getStoryVariant(Basic, DARK_MODE);
+export const BasicHighContrast = getStoryVariant(Basic, HIGH_CONTRAST);
+
+export const SizeName = () => <AvatarList names={examples.name} />;
+SizeName.storyName = 'size+name';
+
+export const SizeIconBadgeSquare = () => <AvatarList badge={{ status: 'out-of-office' }} shape="square" />;
+SizeIconBadgeSquare.storyName = 'size+icon+badge+square';
+
+export const SizeImageBadge = () => <AvatarList images={examples.image} badge={{ status: 'do-not-disturb' }} />;
+SizeImageBadge.storyName = 'size+image+badge';
+
+export const SizeInactiveBadge = () => (
+  <AvatarList images={examples.image} active="inactive" badge={{ status: 'offline' }} />
+);
+SizeInactiveBadge.storyName = 'size+inactive+badge';
+
+/** Fetches an image and returns it as a data URI */
+const toDataUri = async (src: string): Promise<string> => {
+  const blob = await fetch(src).then(response => response.blob());
+
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
+};
+
+export const BadgeMask: StoryFn = (_args, { loaded }) => (
+  <div
+    style={{
+      backgroundSize: '32px 32px',
+      backgroundImage: `repeating-conic-gradient(${tokens.colorBrandBackground} 0% 25%, ${tokens.colorBrandBackgroundSelected} 0% 50%)`,
+    }}
+  >
+    <AvatarList images={loaded.images} color="marigold" active="active" badge={{ status: 'available' }} />
+  </div>
+);
+BadgeMask.storyName = 'badgeMask';
+// Images are passed as data URIs, which Chromium loads before the first paint. An image arriving after it re-rasters
+// only part of the active Avatar's compositing layer, which makes the anti-aliasing of the ring nondeterministic.
+BadgeMask.loaders = [
+  async () => ({ images: await Promise.all(examples.image.slice(0, examples.size.length).map(toDataUri)) }),
+];
+
+export const BadgeMaskRTL = getStoryVariant(BadgeMask, RTL);
+
+export const CustomSizeImage = () => <AvatarCustomSizeList images={examples.image} />;
+CustomSizeImage.storyName = 'customSize+image';
+
+export const CustomSizeNameBadge = () => <AvatarCustomSizeList names={examples.name} badge={{ status: 'available' }} />;
+CustomSizeNameBadge.storyName = 'customSize+name+badge';
+
+export const CustomSizeIconActive = () => <AvatarCustomSizeList active="active" badge={{ status: 'available' }} />;
+CustomSizeIconActive.storyName = 'customSize+icon+active';
+
+export const Color = () => <AvatarColors />;
+Color.storyName = 'color';
+
+export const ColorHighContrast = getStoryVariant(Color, HIGH_CONTRAST);
+export const ColorDarkMode = getStoryVariant(Color, DARK_MODE);
+
+export const ColorActive = () => <AvatarColors active="active" />;
+ColorActive.storyName = 'color+active';
+
+export const ColorActiveHighContrast = getStoryVariant(ColorActive, HIGH_CONTRAST);
+export const ColorActiveDarkMode = getStoryVariant(ColorActive, DARK_MODE);
+
+export const ImageBadUrl = () => <Avatar name="Broken Image" image={{ src: `${imageRoot}/bad_image_url.jpg` }} />;
+ImageBadUrl.storyName = 'image-bad-url';
+
+export const ImageBadUrlIcon = () => <Avatar image={{ src: `${imageRoot}/bad_image_url.jpg` }} />;
+ImageBadUrlIcon.storyName = 'image-bad-url+icon';

@@ -21,6 +21,7 @@ import { IPageProps, IPageSectionProps } from './Page.types';
 import * as styles from './Page.module.scss';
 import { sideRailWidth } from '../../styles/constants';
 import { getLinkColors } from '../../utilities/getLinkColors';
+import { BannerSection } from './sections/BannerSection';
 
 const SECTION_STAGGER_INTERVAL = 0.05;
 /** Section key/id prefix for sections which don't have a title */
@@ -75,7 +76,7 @@ export class Page extends React.Component<IPageProps, IPageState> {
     this._async.dispose();
   }
 
-  public render(): JSX.Element {
+  public render(): React.ReactElement {
     const { className } = this.props;
 
     const sections = this._getPageSections();
@@ -92,7 +93,7 @@ export class Page extends React.Component<IPageProps, IPageState> {
     );
   }
 
-  private _pageContent = (sections: IPageSectionProps[]): JSX.Element | undefined => {
+  private _pageContent = (sections: IPageSectionProps[]): React.ReactElement | undefined => {
     const { sectionWrapperClassName, showSideRail } = this.props;
     const { isMountedOffset } = this.state;
 
@@ -148,6 +149,7 @@ export class Page extends React.Component<IPageProps, IPageState> {
       title,
       usage,
       accessibility,
+      banner,
     } = this.props;
 
     const sectionProps: IPageSectionProps = {
@@ -158,6 +160,14 @@ export class Page extends React.Component<IPageProps, IPageState> {
     };
 
     const sections: IPageSectionProps[] = [];
+
+    banner &&
+      sections.push({
+        renderAs: BannerSection,
+        ...sectionProps,
+        content: banner.message,
+        sectionName: banner.title,
+      });
 
     overview &&
       sections.push({ renderAs: OverviewSection, ...sectionProps, sectionName: 'Overview', content: overview });
@@ -257,7 +267,7 @@ export class Page extends React.Component<IPageProps, IPageState> {
     return sections;
   };
 
-  private _getPageHeader = (): JSX.Element | null => {
+  private _getPageHeader = (): React.ReactElement | null => {
     const { showSideRail, title, subTitle, versionSwitcherDefinition } = this.props;
     return title ? (
       <PageHeader
@@ -277,11 +287,11 @@ export class Page extends React.Component<IPageProps, IPageState> {
     ) : null;
   };
 
-  private _getSideRail = (sections: IPageSectionProps[]): JSX.Element | undefined => {
+  private _getSideRail = (sections: IPageSectionProps[]): React.ReactElement | undefined => {
     const { contact, related, showSideRail } = this.props;
 
     if (showSideRail) {
-      let processedRelated: JSX.Element | ISideRailLink[] | undefined;
+      let processedRelated: React.ReactElement | ISideRailLink[] | undefined;
       if (typeof related === 'string') {
         // don't show section if the content is empty
         processedRelated = related.trim() ? <Markdown>{related}</Markdown> : undefined;
@@ -289,7 +299,7 @@ export class Page extends React.Component<IPageProps, IPageState> {
         processedRelated = related;
       }
 
-      let processedContacts: JSX.Element | ISideRailLink[] | undefined;
+      let processedContacts: React.ReactElement | ISideRailLink[] | undefined;
       if (typeof contact === 'string') {
         processedContacts = contact.trim() ? <Markdown>{contact}</Markdown> : undefined;
       } else {

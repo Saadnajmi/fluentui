@@ -5,6 +5,7 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import { TooltipHost, TooltipOverflowMode } from '@fluentui/react/lib/Tooltip';
 import { getRTL } from '@fluentui/react/lib/Utilities';
 import { mergeStyles, FontWeights } from '@fluentui/react/lib/Styling';
+import type { JSXElement } from '@fluentui/utilities';
 
 const SAMPLE_URL = 'https://contoso.sharepoint.com';
 
@@ -32,7 +33,7 @@ export class ChicletBreadcrumbExample extends React.Component {
     super(props);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const breadcrumb = (
       <Breadcrumb
         items={[
@@ -51,14 +52,14 @@ export class ChicletBreadcrumbExample extends React.Component {
       <Chiclet
         url={SAMPLE_URL}
         title="Quarterly Results.docx"
-        image="https://static2.sharepointonline.com/files/fabric/assets/item-types/96/docx.svg"
+        image="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/assets/item-types/96/docx.svg"
         size={ChicletSize.medium}
         description={breadcrumb}
       />
     );
   }
 
-  private _onRenderItem(item: IBreadcrumbItem): JSX.Element {
+  private _onRenderItem(item: IBreadcrumbItem): JSXElement {
     return (
       <TooltipHost overflowMode={TooltipOverflowMode.Parent} className={descriptionStyle}>
         {item.text}

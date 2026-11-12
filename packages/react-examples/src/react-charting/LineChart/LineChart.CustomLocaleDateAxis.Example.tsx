@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { IChartProps, ILineChartProps, LineChart } from '@fluentui/react-charting';
-import { DefaultPalette } from '@fluentui/react/lib/Styling';
+import { IChartProps, ILineChartProps, LineChart, DataVizPalette } from '@fluentui/react-charting';
 import { Toggle } from '@fluentui/react/lib/Toggle';
-import * as d3 from 'd3-fetch';
+import type { JSXElement } from '@fluentui/utilities';
 
 interface ILineChartBasicState {
   width: number;
@@ -26,7 +25,7 @@ export class LineChartCustomLocaleDateAxisExample extends React.Component<{}, IL
     this._getCustomLocale();
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return <div>{this._basicExample()}</div>;
   }
 
@@ -41,12 +40,11 @@ export class LineChartCustomLocaleDateAxisExample extends React.Component<{}, IL
   };
 
   private _getCustomLocale = () => {
-    d3.json('https://unpkg.com/d3-time-format@2/locale/it-IT.json').then(locale =>
-      this.setState({ customLocale: locale }),
-    );
+    const locale = require('d3-time-format/locale/it-IT.json');
+    this.setState({ customLocale: locale });
   };
 
-  private _basicExample(): JSX.Element {
+  private _basicExample(): JSXElement {
     const data: IChartProps = {
       chartTitle: 'Line Chart',
       lineChartData: [
@@ -99,7 +97,7 @@ export class LineChartCustomLocaleDateAxisExample extends React.Component<{}, IL
               onDataPointClick: () => alert('click on 218000'),
             },
           ],
-          color: DefaultPalette.blue,
+          color: DataVizPalette.color1,
           lineOptions: {
             lineBorderWidth: '4',
           },
@@ -137,20 +135,10 @@ export class LineChartCustomLocaleDateAxisExample extends React.Component<{}, IL
               y: 298000,
             },
           ],
-          color: DefaultPalette.green,
+          color: DataVizPalette.color2,
           lineOptions: {
             lineBorderWidth: '4',
           },
-        },
-        {
-          legend: 'single point',
-          data: [
-            {
-              x: new Date('2020-07-05T00:00:00.000Z'),
-              y: 282000,
-            },
-          ],
-          color: DefaultPalette.yellow,
         },
       ],
     };
@@ -159,7 +147,7 @@ export class LineChartCustomLocaleDateAxisExample extends React.Component<{}, IL
     const margins = { left: 35, top: 20, bottom: 35, right: 20 };
 
     return (
-      <>
+      <div className="containerDiv">
         <label htmlFor="changeWidth_basic">Change Width:</label>
         <input
           type="range"
@@ -197,13 +185,12 @@ export class LineChartCustomLocaleDateAxisExample extends React.Component<{}, IL
             height={this.state.height}
             width={this.state.width}
             margins={margins}
-            xAxisTickCount={10}
             allowMultipleShapesForPoints={this.state.allowMultipleShapes}
-            rotateXAxisLables={true}
             timeFormatLocale={this.state.customLocale}
+            enablePerfOptimization={true}
           />
         </div>
-      </>
+      </div>
     );
   }
 }

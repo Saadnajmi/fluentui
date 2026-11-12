@@ -24,8 +24,8 @@ const defaultCalloutProps: ICalloutProps = {
 
 const getClassNames = classNamesFunction<ITeachingBubbleStyleProps, ITeachingBubbleStyles>();
 const useComponentRef = (
-  componentRef: React.Ref<ITeachingBubble> | undefined,
-  rootElementRef: React.RefObject<HTMLDivElement>,
+  componentRef: React.Ref<ITeachingBubble | null> | undefined,
+  rootElementRef: React.RefObject<HTMLDivElement | null>,
 ) => {
   React.useImperativeHandle(
     componentRef,
@@ -44,10 +44,10 @@ export const TeachingBubbleBase: React.FunctionComponent<ITeachingBubbleProps> =
   const mergedRootRef = useMergedRefs(rootElementRef, forwardedRef);
   const {
     calloutProps: setCalloutProps,
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     targetElement,
     onDismiss,
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     hasCloseButton = props.hasCloseIcon,
     isWide,
     styles,

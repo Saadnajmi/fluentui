@@ -1,61 +1,56 @@
-import * as React from 'react';
-import { setAddon } from '@storybook/react';
-import { webLightTheme, teamsHighContrastTheme, webDarkTheme } from '@fluentui/react-theme';
-import { FluentProvider } from '@fluentui/react-provider';
+// @ts-check
+
+/** @type {import("@fluentui/react-storybook-addon").FluentParameters} */
+export const parameters = {
+  layout: 'none',
+  mode: 'vr-test',
+  reactStorybookAddon: {
+    disabledDecorators: ['AriaLive'],
+  },
+};
+
+disableWebAnimations();
 
 /**
- * @deprecated https://github.com/storybookjs/storybook/blob/next/MIGRATION.md#deprecated-setaddon
- *
- * TODO: rework this to be conformant with Component Story Format
- *
- * Via this addon, we INVENT a new API that automatically adds several
- * stories for you when you call addStory() that adds variants (like RTL)
- *
- * addStory() is not an official Storybook API
- *
- * Adds a story with different configuration options.
- * By default, only adds a story in LTR.
- * The config parameter can be used to add the story RTL in addition to LTR.
- * In future, this can add a story with additional configurations such as theming.
+ * Screenshots must not depend on when they are captured. storywright zeroes CSS animation and transition durations,
+ * but that does not affect the Web Animations API used by `@fluentui/react-motion`, so motions are settled here:
+ * finite animations jump to their end state and infinite ones are frozen half-way through their first iteration.
  */
-setAddon({
-  /**
-   * @type {import('../src/utilities/types').ExtendedStoryApi['addStory']}
-   * @this {import('../src/utilities/types').ExtendedStoryApi}
-   */
-  addStory(storyName, storyFn, config = {}) {
-    this.add(storyName, (/** @type {import('../src/utilities/types').StoryContext} */ context) => {
-      return <FluentProvider theme={webLightTheme}>{storyFn(context)}</FluentProvider>;
-    });
-    if (config.includeRtl) {
-      this.add(storyName + ' - RTL', (/** @type {import('../src/utilities/types').StoryContext} */ context) => {
-        return (
-          <FluentProvider theme={webLightTheme} dir="rtl">
-            {storyFn(context)}
-          </FluentProvider>
-        );
-      });
-    }
-    if (config.includeDarkMode) {
-      this.add(storyName + ' - Dark Mode', (/** @type {import('../src/utilities/types').StoryContext} */ context) => {
-        return <FluentProvider theme={webDarkTheme}>{storyFn(context)}</FluentProvider>;
-      });
-    }
-    if (config.includeHighContrast) {
-      this.add(storyName + ' - High Contrast', (
-        /** @type {import('../src/utilities/types').StoryContext} */ context,
-      ) => {
-        return <FluentProvider theme={teamsHighContrastTheme}>{storyFn(context)}</FluentProvider>;
-      });
-    }
+function disableWebAnimations() {
+  if (typeof Element === 'undefined' || typeof Element.prototype.animate !== 'function') {
+    return;
+  }
 
-    return this;
-  },
-});
+  const animate = Element.prototype.animate;
 
-export const parameters = { layout: 'none' };
+  /** @type {typeof Element.prototype.animate} */
+  Element.prototype.animate = function (keyframes, options) {
+    const animation = animate.call(this, keyframes, options);
 
-// For static storybook per https://github.com/screener-io/screener-storybook#testing-with-static-storybook-app
-if (typeof window === 'object') {
-  /** @type {*} */ (window).__screener_storybook__ = require('@storybook/react').getStorybook;
+    // Callers attach finish handlers right after animate() returns (e.g. Toast becomes visible on enter finish),
+    // so settle the animation only once they had a chance to do that.
+    queueMicrotask(() => settleAnimation(animation));
+
+    return animation;
+  };
+}
+
+/**
+ * @param {Animation | null} animation
+ */
+function settleAnimation(animation) {
+  // Chromium can return null from animate(), see https://github.com/microsoft/fluentui/issues/33902
+  const timing = animation?.effect?.getComputedTiming();
+
+  // An idle animation was cancelled by its owner already, finishing it would apply stale keyframes
+  if (!animation || !timing || animation.playState === 'idle') {
+    return;
+  }
+
+  if (timing.endTime === Infinity) {
+    animation.pause();
+    animation.currentTime = Number(timing.delay ?? 0) + Number(timing.duration ?? 0) / 2;
+  } else {
+    animation.finish();
+  }
 }

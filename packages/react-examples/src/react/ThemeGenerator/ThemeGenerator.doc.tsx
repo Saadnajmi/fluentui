@@ -20,6 +20,7 @@ import { TextFieldBasicExample } from '../TextField/TextField.Basic.Example';
 import { ToggleBasicExample } from '../../react/Toggle/Toggle.Basic.Example';
 import { ProgressIndicatorBasicExample } from '../ProgressIndicator/ProgressIndicator.Basic.Example';
 import { Async } from '@fluentui/utilities';
+import type { JSXElement } from '@fluentui/utilities';
 
 export interface IThemeGeneratorPageState {
   themeRules: IThemeRules;
@@ -40,7 +41,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     ThemeGenerator.insureSlots(themeRules, isDark(themeRules[BaseSlots[BaseSlots.backgroundColor]].color!));
 
     this.state = {
-      themeRules: themeRules,
+      themeRules,
       colorPickerSlotRule: null,
       colorPickerElement: null,
       colorPickerVisible: false,
@@ -63,7 +64,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     this._async.dispose();
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { colorPickerVisible, colorPickerSlotRule, colorPickerElement } = this.state;
 
     const fabricThemeSlots = [
@@ -227,7 +228,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
         true,
         true,
       );
-      this.setState({ themeRules: themeRules }, this._makeNewTheme);
+      this.setState({ themeRules }, this._makeNewTheme);
     }, 20);
     // 20ms is low enough that you can slowly drag to change color and see that theme,
     // but high enough that quick changes don't get bogged down by a million changes in-between
@@ -255,7 +256,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     }
   };
 
-  private _slotWidget = (slotRule: IThemeSlotRule): JSX.Element => {
+  private _slotWidget = (slotRule: IThemeSlotRule): JSXElement => {
     return (
       <div key={slotRule.name} className="ms-themer-slot">
         {this._colorSquareSwatchWidget(slotRule)}
@@ -267,11 +268,11 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     );
   };
 
-  private _fabricSlotWidget = (fabricSlot: FabricSlots): JSX.Element => {
+  private _fabricSlotWidget = (fabricSlot: FabricSlots): JSXElement => {
     return this._slotWidget(this.state.themeRules[FabricSlots[fabricSlot]]);
   };
 
-  private _colorSquareSwatchWidget(slotRule: IThemeSlotRule): JSX.Element {
+  private _colorSquareSwatchWidget(slotRule: IThemeSlotRule): JSXElement {
     return (
       <div
         key={slotRule.name}
@@ -282,13 +283,14 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     );
   }
 
-  private _accessibilityRow = (foreground: FabricSlots, background: FabricSlots): JSX.Element => {
+  private _accessibilityRow = (foreground: FabricSlots, background: FabricSlots): JSXElement => {
     const themeRules = this.state.themeRules;
     const bgc: IColor = themeRules[FabricSlots[background]].color!;
     const fgc: IColor = themeRules[FabricSlots[foreground]].color!;
 
     const contrastRatio = getContrastRatio(bgc, fgc);
     let contrastRatioString = String(contrastRatio);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     contrastRatioString = contrastRatioString.substr(0, contrastRatioString.indexOf('.') + 3);
     if (contrastRatio < 4.5) {
       contrastRatioString = '**' + contrastRatioString + '**';
@@ -303,8 +305,8 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     );
   };
 
-  private _accessibilityTableBody = (): JSX.Element => {
-    const accessibilityRows: JSX.Element[] = [
+  private _accessibilityTableBody = (): JSXElement => {
+    const accessibilityRows: JSXElement[] = [
       this._accessibilityRow(FabricSlots.neutralPrimary, FabricSlots.white), // default
       // primary color also needs to be accessible, this is also strong variant default
       this._accessibilityRow(FabricSlots.white, FabricSlots.themePrimary),
@@ -332,7 +334,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     return <tbody>{accessibilityRows}</tbody>;
   };
 
-  private _outputSection = (): JSX.Element => {
+  private _outputSection = (): JSXElement => {
     const themeRules = this.state.themeRules;
 
     // strip out the unnecessary shade slots from the final output theme
@@ -398,7 +400,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
     console.log('New theme:', finalTheme);
   };
 
-  private _baseColorSlotPicker = (baseSlot: BaseSlots, title: string): JSX.Element => {
+  private _baseColorSlotPicker = (baseSlot: BaseSlots, title: string): JSXElement => {
     let colorChangeTimeout: number;
 
     const onChange = (ev: any, newColor: IColor): void => {
@@ -413,7 +415,7 @@ export class ThemeGeneratorPage extends React.Component<{}, IThemeGeneratorPageS
           // isInverted got swapped, so need to refresh slots with new shading rules
           ThemeGenerator.insureSlots(themeRules, !currentIsDark);
         }
-        this.setState({ themeRules: themeRules }, this._makeNewTheme);
+        this.setState({ themeRules }, this._makeNewTheme);
       }, 20);
       // 20ms is low enough that you can slowly drag to change color and see that theme,
       // but high enough that quick changes don't get bogged down by a million changes in-between

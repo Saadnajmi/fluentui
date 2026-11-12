@@ -8,6 +8,7 @@ import { DirectionalHint } from '@fluentui/react/lib/Callout';
 import type { IPaginationProps, IPaginationString, IPaginationStyleProps, IPaginationStyles } from './Pagination.types';
 import type { IComboBoxOption, IComboBox } from '@fluentui/react/lib/ComboBox';
 import type { IProcessedStyleSet } from '../../Styling';
+import type { JSXElement } from '@fluentui/utilities';
 
 const getClassNames = classNamesFunction<IPaginationStyleProps, IPaginationStyles>();
 
@@ -36,7 +37,7 @@ export class PaginationBase extends React.Component<IPaginationProps> {
     initializeComponentRef(this);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       comboBoxAriaLabel,
       firstPageAriaLabel,
@@ -58,7 +59,7 @@ export class PaginationBase extends React.Component<IPaginationProps> {
 
     this._classNames = getClassNames(styles!, {
       theme: theme!,
-      format: format,
+      format,
     });
 
     const canPrevious = selectedPageIndex! > 0;
@@ -117,38 +118,44 @@ export class PaginationBase extends React.Component<IPaginationProps> {
 
     return (
       <div className={this._classNames.root}>
-        <div>
-          <IconButton
-            iconProps={this.props.firstPageIconProps}
-            onClick={this._handleFirstPage}
-            disabled={!canFirst}
-            aria-label={firstPageAriaLabel}
-            styles={{
-              icon: this._classNames.previousNextPage,
-              rootDisabled: this._classNames.previousNextPageDisabled,
-            }}
-          />
-          <IconButton
-            iconProps={this.props.previousPageIconProps}
-            onClick={this._handlePreviousPage}
-            disabled={!canPrevious}
-            aria-label={previousPageAriaLabel}
-            styles={{
-              icon: this._classNames.previousNextPage,
-              rootDisabled: this._classNames.previousNextPageDisabled,
-            }}
-          />
+        <div role="radiogroup">
+          <TooltipHost content={firstPageAriaLabel} directionalHint={DirectionalHint.bottomCenter}>
+            <IconButton
+              iconProps={this.props.firstPageIconProps}
+              onClick={this._handleFirstPage}
+              disabled={!canFirst}
+              aria-label={firstPageAriaLabel}
+              styles={{
+                icon: this._classNames.previousNextPage,
+                rootDisabled: this._classNames.previousNextPageDisabled,
+              }}
+            />
+          </TooltipHost>
+          <TooltipHost content={previousPageAriaLabel} directionalHint={DirectionalHint.bottomCenter}>
+            <IconButton
+              iconProps={this.props.previousPageIconProps}
+              onClick={this._handlePreviousPage}
+              disabled={!canPrevious}
+              aria-label={previousPageAriaLabel}
+              styles={{
+                icon: this._classNames.previousNextPage,
+                rootDisabled: this._classNames.previousNextPageDisabled,
+              }}
+            />
+          </TooltipHost>
           {this._pageList()}
-          <IconButton
-            iconProps={this.props.nextPageIconProps}
-            onClick={this._handleNextPage}
-            disabled={!canNext}
-            aria-label={nextPageAriaLabel}
-            styles={{
-              icon: this._classNames.previousNextPage,
-              rootDisabled: this._classNames.previousNextPageDisabled,
-            }}
-          />
+          <TooltipHost content={nextPageAriaLabel} directionalHint={DirectionalHint.bottomCenter}>
+            <IconButton
+              iconProps={this.props.nextPageIconProps}
+              onClick={this._handleNextPage}
+              disabled={!canNext}
+              aria-label={nextPageAriaLabel}
+              styles={{
+                icon: this._classNames.previousNextPage,
+                rootDisabled: this._classNames.previousNextPageDisabled,
+              }}
+            />
+          </TooltipHost>
           <TooltipHost
             content={`${pageAriaLabel ? pageAriaLabel + ' ' : ''}${pageCount}`}
             directionalHint={DirectionalHint.bottomCenter}
@@ -202,7 +209,7 @@ export class PaginationBase extends React.Component<IPaginationProps> {
     this._handleSelectedPage(this.props.selectedPageIndex! + 1);
   };
 
-  private _pageElement(index: number): JSX.Element {
+  private _pageElement(index: number): JSXElement {
     const { pageAriaLabel, pageCount, selectedPageIndex, selectedAriaLabel, strings } = this.props;
     const isSelected = index === selectedPageIndex;
     let ariaLabel = pageAriaLabel && `${pageAriaLabel} ${index + 1} ${strings!.of} ${pageCount}`;
@@ -223,7 +230,7 @@ export class PaginationBase extends React.Component<IPaginationProps> {
     );
   }
 
-  private _pageList(): JSX.Element[] {
+  private _pageList(): JSXElement[] {
     const { numberOfPageButton, pageCount, selectedPageIndex } = this.props;
     const pageList = [];
     if (pageCount <= numberOfPageButton!) {
@@ -250,7 +257,7 @@ export class PaginationBase extends React.Component<IPaginationProps> {
     return pageList;
   }
 
-  private _renderVisibleItemLabel = (props: IPaginationProps): JSX.Element | null => {
+  private _renderVisibleItemLabel = (props: IPaginationProps): JSXElement | null => {
     if (props.onRenderVisibleItemLabel) {
       return <div className={this._classNames.visibleItemLabel}>{props.onRenderVisibleItemLabel(props)}</div>;
     }

@@ -9,6 +9,10 @@ import type {
 } from './DocumentCardTitle.types';
 import type { IProcessedStyleSet } from '../../Styling';
 import { DocumentCardContext } from './DocumentCard.base';
+import { WindowContext } from '@fluentui/react-window-provider';
+import { getWindowEx } from '../../utilities/dom';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 const getClassNames = classNamesFunction<IDocumentCardTitleStyleProps, IDocumentCardTitleStyles>();
 
@@ -23,6 +27,9 @@ const TRUNCATION_VERTICAL_OVERFLOW_THRESHOLD = 5;
  * {@docCategory DocumentCard}
  */
 export class DocumentCardTitleBase extends React.Component<IDocumentCardTitleProps, IDocumentCardTitleState> {
+  public static contextType = WindowContext;
+  public context: any;
+
   private _titleElement = React.createRef<HTMLDivElement>();
   private _classNames: IProcessedStyleSet<IDocumentCardTitleStyles>;
   private _async: Async;
@@ -53,12 +60,13 @@ export class DocumentCardTitleBase extends React.Component<IDocumentCardTitlePro
     }
 
     if (prevProps.shouldTruncate !== this.props.shouldTruncate) {
+      const win = getWindowEx(this.context);
       if (this.props.shouldTruncate) {
         this._truncateTitle();
         this._async.requestAnimationFrame(this._shrinkTitle);
-        this._events.on(window, 'resize', this._updateTruncation);
+        this._events.on(win, 'resize', this._updateTruncation);
       } else {
-        this._events.off(window, 'resize', this._updateTruncation);
+        this._events.off(win, 'resize', this._updateTruncation);
       }
     } else if (this._needMeasurement) {
       this._async.requestAnimationFrame(() => {
@@ -71,7 +79,8 @@ export class DocumentCardTitleBase extends React.Component<IDocumentCardTitlePro
   public componentDidMount(): void {
     if (this.props.shouldTruncate) {
       this._truncateTitle();
-      this._events.on(window, 'resize', this._updateTruncation);
+      const win = getWindowEx(this.context);
+      this._events.on(win, 'resize', this._updateTruncation);
     }
   }
 
@@ -80,7 +89,7 @@ export class DocumentCardTitleBase extends React.Component<IDocumentCardTitlePro
     this._async.dispose();
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { title, shouldTruncate, showAsSecondaryTitle, styles, theme, className } = this.props;
     const { truncatedTitleFirstPiece, truncatedTitleSecondPiece } = this.state;
 

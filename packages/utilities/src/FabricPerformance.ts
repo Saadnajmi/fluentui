@@ -38,8 +38,11 @@ const RESET_INTERVAL = 3 * 60 * 1000; // auto reset every 3 minutes
 /**
  * Performance helper class for measuring things.
  *
- * @public
+ * Performance helper class for measuring things.
+ *
  * {@docCategory FabricPerformance}
+ *
+ * @public
  */
 export class FabricPerformance {
   public static summary: IPerfSummary = {};
@@ -67,7 +70,7 @@ export class FabricPerformance {
     measurement.totalDuration += duration;
     measurement.count++;
     measurement.all.push({
-      duration: duration,
+      duration,
       timeStamp: end,
     });
     FabricPerformance.summary[name] = measurement;

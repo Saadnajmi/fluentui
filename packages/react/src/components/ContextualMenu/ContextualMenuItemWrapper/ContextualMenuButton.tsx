@@ -1,24 +1,37 @@
 import * as React from 'react';
-import { buttonProperties, getNativeProps, memoizeFunction, getId, mergeAriaAttributeValues } from '../../../Utilities';
+import {
+  buttonProperties,
+  getNativeProps,
+  memoizeFunction,
+  getId,
+  mergeAriaAttributeValues,
+  IComponentAs,
+  composeComponentAs,
+} from '../../../Utilities';
 import { ContextualMenuItemWrapper } from './ContextualMenuItemWrapper';
 import { KeytipData } from '../../../KeytipData';
 import { getIsChecked, isItemDisabled, hasSubmenu, getMenuItemAriaRole } from '../../../utilities/contextualMenu/index';
 import { ContextualMenuItem } from '../ContextualMenuItem';
 import type { IKeytipDataProps } from '../../../KeytipData';
 import type { IKeytipProps } from '../../../Keytip';
+import { IContextualMenuItemProps } from '../ContextualMenuItem.types';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 export class ContextualMenuButton extends ContextualMenuItemWrapper {
   private _btn = React.createRef<HTMLButtonElement>();
   private _ariaDescriptionId: string;
 
-  private _getMemoizedMenuButtonKeytipProps = memoizeFunction((keytipProps: IKeytipProps) => {
-    return {
-      ...keytipProps,
-      hasMenu: true,
-    };
-  });
+  private _getMemoizedMenuButtonKeytipProps = memoizeFunction(
+    (keytipProps: IKeytipProps): IKeytipProps & { hasMenu: boolean } => {
+      return {
+        ...keytipProps,
+        hasMenu: true,
+      };
+    },
+  );
 
-  public render() {
+  public render(): JSXElement {
     const {
       item,
       classNames,
@@ -27,7 +40,7 @@ export class ContextualMenuButton extends ContextualMenuItemWrapper {
       totalItemCount,
       hasCheckmarks,
       hasIcons,
-      contextualMenuItemAs: ChildrenRenderer = ContextualMenuItem,
+      contextualMenuItemAs,
       expandedMenuItemKey,
       onItemMouseDown,
       onItemClick,
@@ -35,6 +48,16 @@ export class ContextualMenuButton extends ContextualMenuItemWrapper {
       dismissSubMenu,
       dismissMenu,
     } = this.props;
+
+    let ChildrenRenderer: IComponentAs<IContextualMenuItemProps> = ContextualMenuItem;
+
+    if (item.contextualMenuItemAs) {
+      ChildrenRenderer = composeComponentAs(item.contextualMenuItemAs, ChildrenRenderer);
+    }
+
+    if (contextualMenuItemAs) {
+      ChildrenRenderer = composeComponentAs(contextualMenuItemAs, ChildrenRenderer);
+    }
 
     const isChecked: boolean | null | undefined = getIsChecked(item);
     const canCheck: boolean = isChecked !== null;
@@ -84,7 +107,7 @@ export class ContextualMenuButton extends ContextualMenuItemWrapper {
         (itemRole === 'menuitemcheckbox' || itemRole === 'menuitemradio') && canCheck ? !!isChecked : undefined,
       'aria-selected': itemRole === 'menuitem' && canCheck ? !!isChecked : undefined,
       role: itemRole,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       style: item.style,
     };
 
@@ -95,7 +118,7 @@ export class ContextualMenuButton extends ContextualMenuItemWrapper {
 
     return (
       <KeytipData keytipProps={keytipProps} ariaDescribedBy={ariaDescribedByIds} disabled={isItemDisabled(item)}>
-        {(keytipAttributes: IKeytipDataProps): JSX.Element => (
+        {(keytipAttributes: IKeytipDataProps): JSXElement => (
           <button ref={this._btn} {...buttonNativeProperties} {...itemButtonProperties} {...keytipAttributes}>
             <ChildrenRenderer
               componentRef={item.componentRef}
@@ -117,7 +140,7 @@ export class ContextualMenuButton extends ContextualMenuItemWrapper {
     );
   }
 
-  protected _renderAriaDescription = (ariaDescription?: string, className?: string) => {
+  protected _renderAriaDescription = (ariaDescription?: string, className?: string): JSXElement | null => {
     // If ariaDescription is given, descriptionId will be assigned to ariaDescriptionSpan
     return ariaDescription ? (
       <span id={this._ariaDescriptionId} className={className}>

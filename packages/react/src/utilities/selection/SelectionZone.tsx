@@ -16,6 +16,8 @@ import {
 import { SelectionMode } from './interfaces';
 import type { ISelection, IObjectWithKey } from './interfaces';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 // Selection definitions:
 //
 // Anchor index: the point from which a range selection starts.
@@ -200,18 +202,19 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
 
   public componentDidMount(): void {
     const win = getWindow(this._root.current);
+    const doc = win?.document;
 
     // Track the latest modifier keys globally.
     this._events.on(win, 'keydown, keyup', this._updateModifiers, true);
-    this._events.on(document, 'click', this._findScrollParentAndTryClearOnEmptyClick);
-    this._events.on(document.body, 'touchstart', this._onTouchStartCapture, true);
-    this._events.on(document.body, 'touchend', this._onTouchStartCapture, true);
+    this._events.on(doc, 'click', this._findScrollParentAndTryClearOnEmptyClick);
+    this._events.on(doc?.body, 'touchstart', this._onTouchStartCapture, true);
+    this._events.on(doc?.body, 'touchend', this._onTouchStartCapture, true);
 
     // Subscribe to the selection to keep modal state updated.
     this._events.on(this.props.selection, 'change', this._onSelectionChange);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { isModal } = this.state;
 
     return (
@@ -274,8 +277,10 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
 
   private _onMouseDownCapture = (ev: React.MouseEvent<HTMLElement>): void => {
     let target = ev.target as HTMLElement;
+    const win = getWindow(this._root.current);
+    const doc = win?.document;
 
-    if (document.activeElement !== target && !elementContains(document.activeElement as HTMLElement, target)) {
+    if (doc?.activeElement !== target && !elementContains(doc?.activeElement as HTMLElement, target)) {
       this.ignoreNextFocus();
       return;
     }
@@ -519,9 +524,9 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
     const isSelectionDisabled = this._isSelectionDisabled(target);
 
     const { selection, selectionClearedOnEscapePress } = this.props;
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const isSelectAllKey = ev.which === KeyCodes.a && (this._isCtrlPressed || this._isMetaPressed);
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const isClearSelectionKey = ev.which === KeyCodes.escape;
 
     // Ignore key downs from input elements.
@@ -573,13 +578,16 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
           }
           break;
         } else if (
-          // eslint-disable-next-line deprecation/deprecation
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           (ev.which === KeyCodes.enter || ev.which === KeyCodes.space) &&
-          (target.tagName === 'BUTTON' || target.tagName === 'A' || target.tagName === 'INPUT')
+          (target.tagName === 'BUTTON' ||
+            target.tagName === 'A' ||
+            target.tagName === 'INPUT' ||
+            target.tagName === 'SUMMARY')
         ) {
           return false;
         } else if (target === itemRoot) {
-          // eslint-disable-next-line deprecation/deprecation
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           if (ev.which === KeyCodes.enter) {
             if (span === undefined) {
               // Items should be invokable even if selection is disabled.
@@ -587,7 +595,7 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
               ev.preventDefault();
             }
             return;
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
           } else if (ev.which === KeyCodes.space) {
             if (!isSelectionDisabled) {
               this._onToggleClick(ev, index, span);
@@ -734,9 +742,11 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
    * so this is less likely to cause layout thrashing then doing it in mount.
    */
   private _findScrollParentAndTryClearOnEmptyClick(ev: MouseEvent) {
+    const win = getWindow(this._root.current);
+    const doc = win?.document;
     const scrollParent = findScrollableParent(this._root.current) as HTMLElement;
     // unbind this handler and replace binding with a binding on the actual scrollable parent
-    this._events.off(document, 'click', this._findScrollParentAndTryClearOnEmptyClick);
+    this._events.off(doc, 'click', this._findScrollParentAndTryClearOnEmptyClick);
     this._events.on(scrollParent, 'click', this._tryClearOnEmptyClick);
 
     // If we clicked inside the scrollable parent, call through to the handler on this click.
@@ -786,7 +796,7 @@ export class SelectionZone extends React.Component<ISelectionZoneProps, ISelecti
     this._isCtrlPressed = ev.ctrlKey;
     this._isMetaPressed = ev.metaKey;
 
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const keyCode = (ev as React.KeyboardEvent<HTMLElement>).keyCode;
     this._isTabPressed = keyCode ? keyCode === KeyCodes.tab : false;
   }

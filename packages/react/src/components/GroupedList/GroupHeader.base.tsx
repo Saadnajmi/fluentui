@@ -14,6 +14,8 @@ import type {
   IGroupHeaderCheckboxProps,
 } from './GroupHeader.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IGroupHeaderStyleProps, IGroupHeaderStyles>();
 
 export interface IGroupHeaderState {
@@ -59,19 +61,20 @@ export class GroupHeaderBase extends React.Component<IGroupHeaderProps, IGroupHe
     };
   }
 
-  public render(): JSX.Element | null {
+  public render(): JSXElement | null {
     const {
       group,
       groupLevel = 0,
       viewport,
       selectionMode,
       loadingText,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       isSelected = false,
       selected = false,
       indentWidth,
       onRenderGroupHeaderCheckbox,
       isCollapsedGroupSelectVisible = true,
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expandButtonProps,
       expandButtonIcon,
       selectAllButtonProps,
@@ -210,9 +213,9 @@ export class GroupHeaderBase extends React.Component<IGroupHeaderProps, IGroupHe
     }
 
     if (!ev.defaultPrevented) {
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const shouldOpen = this.state.isCollapsed && ev.which === getRTLSafeKeyCode(KeyCodes.right, this.props.theme);
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const shouldClose = !this.state.isCollapsed && ev.which === getRTLSafeKeyCode(KeyCodes.left, this.props.theme);
       if (shouldClose || shouldOpen) {
         this._toggleCollapse();
@@ -244,7 +247,7 @@ export class GroupHeaderBase extends React.Component<IGroupHeaderProps, IGroupHe
     return <FastCheck theme={checkboxProps.theme} checked={checkboxProps.checked} />;
   }
 
-  private _onRenderTitle = (props: IGroupHeaderProps): JSX.Element | null => {
+  private _onRenderTitle = (props: IGroupHeaderProps): JSXElement | null => {
     const { group } = props;
 
     if (!group) {
@@ -269,7 +272,7 @@ export class GroupHeaderBase extends React.Component<IGroupHeaderProps, IGroupHe
     );
   };
 
-  private _onRenderName = (props: IGroupHeaderProps): JSX.Element | null => {
+  private _onRenderName = (props: IGroupHeaderProps): JSXElement | null => {
     const { group } = props;
 
     if (!group) {

@@ -10,7 +10,6 @@ Usage: in your [ESLint config file](https://eslint.org/docs/user-guide/configuri
 - `node`: node specific configuration for fluentui vNext
 - `react--legacy`: react specific configuration for fluentui v7,8
 - `node--legacy`: node specific configuration for fluentui v7,8
-- `react-northstar`: For `@fluentui/react-northstar` and related packages
 - `imports`: auto import statements sorting configuration
 
 Helpers for customizing configuration are exported under a `configHelpers` object.
@@ -169,4 +168,28 @@ const context = React.createContext({ someValue: undefined });
 ```ts
 import * as React from 'react';
 const context = React.createContext(undefined);
+```
+
+### `ban-instanceof-html-element`
+
+Bans usage of `instanceof HTMLElement` binary expressions as they might cause problems on [multiple realms](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof#instanceof_and_multiple_realms) environments.
+
+The alternative is to use `isHTMLElement` helper method provided by `@fluentui/react-utilities` packages, since that method does the proper verifications to ensure proper instance comparison.
+
+**❌ Don't**
+
+```ts
+event.target instanceof HTMLElement;
+
+event.target instanceof HTMLInputElement;
+```
+
+**✅ Do**
+
+```ts
+import { isHTMLElement } from '@fluentui/react-components';
+
+isHTMLElement(event.target);
+
+isHTMLElement(event.target, { constructorName: 'HTMLInputElement' });
 ```

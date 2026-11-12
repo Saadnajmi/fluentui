@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import { KeyCodes } from '../../../Utilities';
-import type { IRefObject, IRenderFunction, IStyleFunctionOrObject } from '../../../Utilities';
+import type { IReactProps, IRefObject, IRenderFunction, IStyleFunctionOrObject } from '../../../Utilities';
 import type { IPersonaProps } from '../../Persona/Persona.types';
 import type { IStyle, ITheme } from '../../../Styling';
 import type { ISpinnerStyleProps } from '../../Spinner/Spinner.types';
 import type { ISuggestionItemProps } from './SuggestionsItem.types';
-import type { IReactProps } from '../../../common/React.types';
 import { IIconProps } from '../../Icon/Icon.types';
+import type { JSXElement } from '@fluentui/utilities';
 /**
  * Suggestions component.
  * {@docCategory Pickers}
@@ -50,7 +50,8 @@ export interface ISuggestionsProps<T> extends IReactProps<any> {
   /**
    * How the suggestion should look in the suggestion list.
    */
-  onRenderSuggestion: (props: T, suggestionItemProps: ISuggestionItemProps<T>) => JSX.Element;
+
+  onRenderSuggestion: (props: T, suggestionItemProps: ISuggestionItemProps<T>) => JSXElement;
 
   /**
    * What should occur when a suggestion is clicked
@@ -190,13 +191,17 @@ export interface ISuggestionsProps<T> extends IReactProps<any> {
 
   /**
    * A renderer that adds an element at the end of the suggestions list it has more items than resultsMaximumNumber.
+   * This should not include interactive elements as the footer is not focusable.
    */
-  resultsFooterFull?: (props: ISuggestionsProps<T>) => JSX.Element;
+
+  resultsFooterFull?: (props: ISuggestionsProps<T>) => JSXElement;
 
   /**
    * A renderer that adds an element at the end of the suggestions list it has fewer items than resultsMaximumNumber.
+   * This should not include interactive elements as the footer is not focusable.
    */
-  resultsFooter?: (props: ISuggestionsProps<T>) => JSX.Element;
+
+  resultsFooter?: (props: ISuggestionsProps<T>) => JSXElement;
 
   /**
    * Indicates whether to show a button with each suggestion to remove that suggestion.

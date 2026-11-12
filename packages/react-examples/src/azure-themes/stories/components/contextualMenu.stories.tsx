@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { ContextualMenu, IContextualMenuProps, IIconProps } from '@fluentui/react';
 import { DefaultButton, PrimaryButton } from '@fluentui/react/lib/Button';
+import type { JSXElement } from '@fluentui/utilities';
+
+export default {
+  title: 'Components/ContextualMenu',
+};
 
 export interface IButtonExampleProps {
   // These are set based on the toggles shown above the examples (not needed in real code)
@@ -37,7 +42,7 @@ export const ButtonContextualMenuExample: React.FunctionComponent<IButtonExample
   const buttonProps = {
     text: 'New item',
     iconProps: addIcon,
-    menuProps: menuProps,
+    menuProps,
     // Optional callback to customize menu rendering
     menuAs: _getMenu,
     // Optional callback to do other actions (besides opening the menu) on click
@@ -46,8 +51,8 @@ export const ButtonContextualMenuExample: React.FunctionComponent<IButtonExample
     // Uncomment the next line to hide the ContextualMenu but persist it in the DOM instead.
     // persistMenu={true}
     allowDisabledFocus: true,
-    disabled: disabled,
-    checked: checked,
+    disabled,
+    checked,
   };
   return (
     <>
@@ -57,7 +62,7 @@ export const ButtonContextualMenuExample: React.FunctionComponent<IButtonExample
   );
 };
 
-function _getMenu(props: IContextualMenuProps): JSX.Element {
+function _getMenu(props: IContextualMenuProps): JSXElement {
   // Customize contextual menu with menuAs
   return <ContextualMenu {...props} />;
 }

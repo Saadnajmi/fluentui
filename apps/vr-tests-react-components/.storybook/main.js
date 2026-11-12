@@ -1,40 +1,40 @@
-const path = require('path');
-const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
+// @ts-check
 
-module.exports = /** @type {import('../../../.storybook/main').StorybookBaseConfig} */ ({
-  stories: ['../src/**/*.stories.tsx'],
+const path = require('path');
+const { getIconStoryPatterns, isolateIconBuildCache } = require('./icon-sizing');
+const {
+  configureReactIcons,
+  registerTsPaths,
+  registerRules,
+  rules,
+  loadWorkspaceAddon,
+} = require('@fluentui/scripts-storybook');
+const tsConfigPath = path.resolve(__dirname, '../../../tsconfig.base.json');
+
+module.exports = /** @satisfies {import('@storybook/react-webpack5').StorybookConfig} */ ({
+  addons: [loadWorkspaceAddon('@fluentui/react-storybook-addon', { tsConfigPath })],
+  stories: getIconStoryPatterns(),
   core: {
-    builder: 'webpack5',
+    disableTelemetry: true,
   },
-  babel: {},
+  framework: {
+    name: '@storybook/react-webpack5',
+    options: {
+      builder: {
+        lazyCompilation: false,
+      },
+    },
+  },
   typescript: {
     // disable react-docgen-typescript (totally not needed here, slows things down a lot)
     reactDocgen: false,
   },
-  webpackFinal: config => {
-    const tsPaths = new TsconfigPathsPlugin({
-      configFile: path.resolve(__dirname, '../../../tsconfig.base.json'),
-    });
+  webpackFinal(config) {
+    registerTsPaths({ config, configFile: tsConfigPath });
+    registerRules({ config, rules: [rules.swcRule, rules.griffelRule] });
+    configureReactIcons({ config });
 
-    if (config.resolve) {
-      config.resolve.plugins ? config.resolve.plugins.push(tsPaths) : (config.resolve.plugins = [tsPaths]);
-    }
-
-    if (config.module) {
-      config.module.rules?.unshift({
-        test: /\.(ts|tsx)$/,
-        use: [
-          {
-            loader: '@griffel/webpack-loader',
-            options: {
-              babelOptions: {
-                presets: ['@babel/preset-typescript'],
-              },
-            },
-          },
-        ],
-      });
-    }
+    isolateIconBuildCache(config);
 
     return config;
   },

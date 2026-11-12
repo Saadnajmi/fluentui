@@ -13,6 +13,7 @@ describe('EventGroup', () => {
     let ev = document.createEvent('HTMLEvents');
 
     eg.on(sourceButton, 'click', parent.cb);
+
     ev.initEvent('click', true, true);
 
     sourceButton.dispatchEvent(ev);

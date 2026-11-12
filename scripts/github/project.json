@@ -1,0 +1,17 @@
+{
+  "name": "scripts-github",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "scripts/github/src",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.preset.js",
+        "{workspaceRoot}/.github/workflows/create-experimental-branch.yml"
+      ]
+    }
+  },
+  "tags": ["tools"]
+}

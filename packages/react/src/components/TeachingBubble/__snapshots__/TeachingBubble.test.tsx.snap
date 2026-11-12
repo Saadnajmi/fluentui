@@ -1,15 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`TeachingBubble renders TeachingBubble correctly 1`] = `
 <div
-  className=
+  class=
       ms-Callout-container
       {
         position: relative;
       }
 >
   <div
-    className=
+    class=
         ms-Callout
         ms-TeachingBubble
         specialClassName
@@ -42,17 +42,11 @@ exports[`TeachingBubble renders TeachingBubble correctly 1`] = `
         &::-moz-focus-inner {
           border: 0px;
         }
-    style={
-      Object {
-        "filter": "opacity(0)",
-        "opacity": 0,
-        "pointerEvents": "none",
-      }
-    }
-    tabIndex={-1}
+    style="opacity: 0; filter: opacity(0); pointer-events: none;"
+    tabindex="-1"
   >
     <div
-      className=
+      class=
           ms-Callout-main
           {
             background-color: #ffffff;
@@ -63,22 +57,13 @@ exports[`TeachingBubble renders TeachingBubble correctly 1`] = `
             position: relative;
             width: 100%;
           }
-      onKeyDown={[Function]}
-      onMouseDown={[Function]}
-      onMouseUp={[Function]}
-      style={
-        Object {
-          "maxHeight": "100%",
-          "outline": "none",
-          "overflowY": "hidden",
-        }
-      }
+      style="overflow-y: hidden; outline: none; max-height: 100%;"
     >
       <div>
         <div
           aria-describedby="content"
           aria-labelledby="title"
-          className=
+          class=
               ms-TeachingBubble-content
               {
                 animation-duration: 300ms;
@@ -91,28 +76,22 @@ exports[`TeachingBubble renders TeachingBubble correctly 1`] = `
                 outline: transparent;
                 width: calc(100% + 1px);
               }
-          data-is-focusable={true}
+          data-is-focusable="true"
           role="dialog"
-          tabIndex={-1}
+          tabindex="-1"
         >
           <div
-            onBlurCapture={[Function]}
-            onFocusCapture={[Function]}
+            data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
           >
             <div
-              aria-hidden={true}
-              data-is-focus-trap-zone-bumper={true}
-              data-is-visible={true}
-              style={
-                Object {
-                  "pointerEvents": "none",
-                  "position": "fixed",
-                }
-              }
-              tabIndex={0}
+              aria-hidden="true"
+              data-is-focus-trap-zone-bumper="true"
+              data-is-visible="true"
+              style="pointer-events: none; position: fixed;"
+              tabindex="0"
             />
             <div
-              className=
+              class=
                   ms-TeachingBubble-bodycontent
                   {
                     padding-bottom: 20px;
@@ -122,14 +101,14 @@ exports[`TeachingBubble renders TeachingBubble correctly 1`] = `
                   }
             >
               <div
-                className=
+                class=
                     ms-TeachingBubble-body
                     &:not(:last-child) {
                       margin-bottom: 20px;
                     }
               >
                 <p
-                  className=
+                  class=
                       ms-TeachingBubble-subText
                       {
                         color: #ffffff;
@@ -147,16 +126,11 @@ exports[`TeachingBubble renders TeachingBubble correctly 1`] = `
               </div>
             </div>
             <div
-              aria-hidden={true}
-              data-is-focus-trap-zone-bumper={true}
-              data-is-visible={true}
-              style={
-                Object {
-                  "pointerEvents": "none",
-                  "position": "fixed",
-                }
-              }
-              tabIndex={0}
+              aria-hidden="true"
+              data-is-focus-trap-zone-bumper="true"
+              data-is-visible="true"
+              style="pointer-events: none; position: fixed;"
+              tabindex="0"
             />
           </div>
         </div>
@@ -170,7 +144,7 @@ exports[`TeachingBubble renders TeachingBubbleContent correctly 1`] = `
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -183,28 +157,22 @@ exports[`TeachingBubble renders TeachingBubbleContent correctly 1`] = `
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -214,7 +182,7 @@ exports[`TeachingBubble renders TeachingBubbleContent correctly 1`] = `
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-header
             ms-TeachingBubble-header--large
             &:not(:last-child) {
@@ -222,8 +190,8 @@ exports[`TeachingBubble renders TeachingBubbleContent correctly 1`] = `
             }
       >
         <p
-          aria-level={3}
-          className=
+          aria-level="3"
+          class=
               ms-TeachingBubble-headline
               {
                 color: #ffffff;
@@ -242,14 +210,14 @@ exports[`TeachingBubble renders TeachingBubbleContent correctly 1`] = `
         </p>
       </div>
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -267,16 +235,11 @@ exports[`TeachingBubble renders TeachingBubbleContent correctly 1`] = `
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -286,7 +249,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -299,28 +262,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -330,7 +287,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-header
             ms-TeachingBubble-header--large
             {
@@ -341,8 +298,8 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
             }
       >
         <p
-          aria-level={3}
-          className=
+          aria-level="3"
+          class=
               ms-TeachingBubble-headline
               {
                 color: #ffffff;
@@ -361,14 +318,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
         </p>
       </div>
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -385,7 +342,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
         </p>
       </div>
       <div
-        className=
+        class=
             ms-Stack
             ms-TeachingBubble-footer
             {
@@ -403,18 +360,12 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
             & > * {
               text-overflow: ellipsis;
             }
-            & > *:not(:first-child) {
-              margin-left: 0px;
-            }
-            & > *:not(.ms-StackItem) {
-              flex-shrink: 1;
-            }
             & .ms-Button:not(:first-child) {
               margin-left: 10px;
             }
       >
         <div
-          className=
+          class=
               ms-StackItem
               {
                 -moz-osx-font-smoothing: grayscale;
@@ -432,7 +383,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
           <span />
         </div>
         <div
-          className=
+          class=
               ms-StackItem
               {
                 -moz-osx-font-smoothing: grayscale;
@@ -447,7 +398,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
               }
         >
           <button
-            className=
+            class=
                 ms-Button
                 ms-Button--primary
                 ms-TeachingBubble-primaryButton
@@ -455,6 +406,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #ffffff;
                   border-color: #ffffff;
                   border-radius: 2px;
@@ -462,15 +414,12 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   box-sizing: border-box;
                   color: #0078d4;
                   cursor: pointer;
-                  display: inline-block;
+                  display: inline-flex;
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
-                  height: 32px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
+                  min-height: 32px;
                   min-width: 80px;
                   outline: transparent;
                   padding-bottom: 0;
@@ -505,6 +454,25 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid transparent;
+                  bottom: 1px;
+                  content: "";
+                  left: 1px;
+                  outline-color: #ffffff;
+                  outline: 1px solid transparent;
+                  position: absolute;
+                  right: 1px;
+                  top: 1px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -528,13 +496,6 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   border-color: Highlight;
                   color: Window;
                 }
-                &:focus {
-                  background-color: #deecf9;
-                  border: 1px solid #000000;
-                  color: #005a9e;
-                  outline-offset: -2px;
-                  outline: 1px solid #ffffff;
-                }
                 &:active {
                   background-color: #ffffff;
                   border-color: #ffffff;
@@ -555,17 +516,18 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   font-size: 14px;
                   font-weight: 400;
                 }
-            data-is-focusable={true}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseUp={[Function]}
+                &:focus {
+                  background-color: #deecf9;
+                  border: 1px solid #000000;
+                  color: #005a9e;
+                  outline-offset: -2px;
+                  outline: 1px solid #ffffff;
+                }
+            data-is-focusable="true"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -577,7 +539,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
               data-automationid="splitbuttonprimary"
             >
               <span
-                className=
+                class=
                     ms-Button-textContainer
                     {
                       display: block;
@@ -585,7 +547,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                     }
               >
                 <span
-                  className=
+                  class=
                       ms-Button-label
                       {
                         display: block;
@@ -596,7 +558,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                         margin-right: 4px;
                         margin-top: 0;
                       }
-                  id="id__3"
+                  id="id__4"
                 >
                   Test Primary Button
                 </span>
@@ -604,7 +566,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
             </span>
           </button>
           <button
-            className=
+            class=
                 ms-Button
                 ms-Button--default
                 ms-TeachingBubble-secondaryButton
@@ -612,6 +574,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                 {
                   -moz-osx-font-smoothing: grayscale;
                   -webkit-font-smoothing: antialiased;
+                  align-items: center;
                   background-color: #0078d4;
                   border-color: #ffffff;
                   border-radius: 2px;
@@ -619,15 +582,12 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   box-sizing: border-box;
                   color: #323130;
                   cursor: pointer;
-                  display: inline-block;
+                  display: inline-flex;
                   font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
                   font-size: 14px;
                   font-weight: 400;
-                  height: 32px;
-                  margin-bottom: 0px;
-                  margin-left: 0px;
-                  margin-right: 0px;
-                  margin-top: 0px;
+                  justify-content: center;
+                  min-height: 32px;
                   min-width: 80px;
                   outline: transparent;
                   padding-bottom: 0;
@@ -661,6 +621,24 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   right: -2px;
                   top: -2px;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid transparent;
+                  bottom: 1px;
+                  content: "";
+                  left: 1px;
+                  outline: 1px solid transparent;
+                  position: absolute;
+                  right: 1px;
+                  top: 1px;
+                  z-index: 1;
+                }
+                @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  bottom: -2px;
+                  left: -2px;
+                  outline-color: ButtonText;
+                  right: -2px;
+                  top: -2px;
+                }
                 &:active > span {
                   left: 0px;
                   position: relative;
@@ -675,12 +653,6 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   border-color: Highlight;
                   color: Highlight;
                 }
-                &:focus {
-                  background-color: #005a9e;
-                  border: 1px solid #000000;
-                  outline-offset: -2px;
-                  outline: 1px solid #ffffff;
-                }
                 &:active {
                   background-color: #0078d4;
                   border-color: #ffffff;
@@ -694,17 +666,17 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   font-size: 14px;
                   font-weight: 400;
                 }
-            data-is-focusable={true}
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onKeyPress={[Function]}
-            onKeyUp={[Function]}
-            onMouseDown={[Function]}
-            onMouseUp={[Function]}
+                &:focus {
+                  background-color: #005a9e;
+                  border: 1px solid #000000;
+                  outline-offset: -2px;
+                  outline: 1px solid #ffffff;
+                }
+            data-is-focusable="true"
             type="button"
           >
             <span
-              className=
+              class=
                   ms-Button-flexContainer
                   {
                     align-items: center;
@@ -716,7 +688,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
               data-automationid="splitbuttonprimary"
             >
               <span
-                className=
+                class=
                     ms-Button-textContainer
                     {
                       display: block;
@@ -724,7 +696,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                     }
               >
                 <span
-                  className=
+                  class=
                       ms-Button-label
                       {
                         display: block;
@@ -735,7 +707,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                         margin-right: 4px;
                         margin-top: 0;
                       }
-                  id="id__6"
+                  id="id__7"
                 >
                   Test Secondary Button
                 </span>
@@ -745,24 +717,26 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
         </div>
       </div>
       <button
-        className=
+        class=
             ms-Button
             ms-Button--icon
             ms-TeachingBubble-closebutton
             {
               -moz-osx-font-smoothing: grayscale;
               -webkit-font-smoothing: antialiased;
+              align-items: center;
               background-color: transparent;
               border-radius: 0px;
               border: none;
               box-sizing: border-box;
               color: #ffffff;
               cursor: pointer;
-              display: inline-block;
+              display: inline-flex;
               font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
               font-size: 12px;
               font-weight: 400;
               height: 32px;
+              justify-content: center;
               margin-bottom: 0;
               margin-left: 0;
               margin-right: 15px;
@@ -801,6 +775,24 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
               right: -2px;
               top: -2px;
             }
+            :host(.ms-Fabric--isFocusVisible) &:focus:after {
+              border: 1px solid transparent;
+              bottom: 2px;
+              content: "";
+              left: 2px;
+              outline: 1px solid #605e5c;
+              position: absolute;
+              right: 2px;
+              top: 2px;
+              z-index: 1;
+            }
+            @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+              bottom: -2px;
+              left: -2px;
+              outline-color: ButtonText;
+              right: -2px;
+              top: -2px;
+            }
             &:active > span {
               left: 0px;
               position: relative;
@@ -815,25 +807,19 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
               border-color: Highlight;
               color: Highlight;
             }
-            &:focus {
-              border: 1px solid #edebe9;
-            }
             &:active {
               background-color: #edebe9;
               background: #005a9e;
               color: #ffffff;
             }
-        data-is-focusable={true}
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        onKeyPress={[Function]}
-        onKeyUp={[Function]}
-        onMouseDown={[Function]}
-        onMouseUp={[Function]}
+            &:focus {
+              border: 1px solid #edebe9;
+            }
+        data-is-focusable="true"
         type="button"
       >
         <span
-          className=
+          class=
               ms-Button-flexContainer
               {
                 align-items: center;
@@ -845,12 +831,13 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
           data-automationid="splitbuttonprimary"
         >
           <i
-            aria-hidden={true}
-            className=
+            aria-hidden="true"
+            class=
                 ms-Icon
                 ms-Button-icon
                 {
                   display: inline-block;
+                  text-decoration: inherit;
                 }
                 {
                   -moz-osx-font-smoothing: grayscale;
@@ -872,11 +859,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
                   text-align: center;
                 }
             data-icon-name="Cancel"
-            style={
-              Object {
-                "fontFamily": "\\"FabricMDL2Icons\\"",
-              }
-            }
+            style="font-family: \\"FabricMDL2Icons\\";"
           >
             
           </i>
@@ -884,16 +867,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with buttons correctly 1`]
       </button>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -903,7 +881,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with calloutProps that dea
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -916,28 +894,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with calloutProps that dea
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -947,14 +919,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with calloutProps that dea
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -972,16 +944,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with calloutProps that dea
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -991,7 +958,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with condensed headline co
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -1004,28 +971,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with condensed headline co
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -1035,7 +996,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with condensed headline co
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-header
             ms-TeachingBubble-header--condensed
             {
@@ -1048,8 +1009,8 @@ exports[`TeachingBubble renders TeachingBubbleContent with condensed headline co
             }
       >
         <p
-          aria-level={3}
-          className=
+          aria-level="3"
+          class=
               ms-TeachingBubble-headline
               {
                 color: #ffffff;
@@ -1067,14 +1028,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with condensed headline co
         </p>
       </div>
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -1092,16 +1053,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with condensed headline co
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -1111,7 +1067,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -1124,28 +1080,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -1155,14 +1105,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -1179,7 +1129,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
         </p>
       </div>
       <div
-        className=
+        class=
             ms-Stack
             ms-TeachingBubble-footer
             {
@@ -1197,18 +1147,12 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
             & > * {
               text-overflow: ellipsis;
             }
-            & > *:not(:first-child) {
-              margin-left: 0px;
-            }
-            & > *:not(.ms-StackItem) {
-              flex-shrink: 1;
-            }
             & .ms-Button:not(:first-child) {
               margin-left: 10px;
             }
       >
         <div
-          className=
+          class=
               ms-StackItem
               {
                 -moz-osx-font-smoothing: grayscale;
@@ -1228,7 +1172,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
           </span>
         </div>
         <div
-          className=
+          class=
               ms-StackItem
               {
                 -moz-osx-font-smoothing: grayscale;
@@ -1245,16 +1189,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with custom footer text 1`
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -1264,7 +1203,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with generated aria-descri
 <div
   aria-describedby="teaching-bubble-content-0"
   aria-labelledby="teaching-bubble-title-1"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -1277,28 +1216,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with generated aria-descri
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -1308,7 +1241,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with generated aria-descri
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-header
             ms-TeachingBubble-header--large
             &:not(:last-child) {
@@ -1316,8 +1249,8 @@ exports[`TeachingBubble renders TeachingBubbleContent with generated aria-descri
             }
       >
         <p
-          aria-level={3}
-          className=
+          aria-level="3"
+          class=
               ms-TeachingBubble-headline
               {
                 color: #ffffff;
@@ -1336,14 +1269,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with generated aria-descri
         </p>
       </div>
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -1361,16 +1294,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with generated aria-descri
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -1380,7 +1308,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -1393,15 +1321,15 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    className="ms-TeachingBubble-header ms-TeachingBubble-image"
+    class="ms-TeachingBubble-header ms-TeachingBubble-image"
   >
     <div
-      className=
+      class=
           ms-Image
           {
             -moz-osx-font-smoothing: grayscale;
@@ -1411,15 +1339,9 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
             font-weight: 400;
             overflow: hidden;
           }
-      style={
-        Object {
-          "height": undefined,
-          "width": undefined,
-        }
-      }
     >
       <img
-        className=
+        class=
             ms-Image-image
             ms-Image-image--portrait
             is-notLoaded
@@ -1428,30 +1350,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
               display: block;
               opacity: 0;
             }
-        onError={[Function]}
-        onLoad={[Function]}
         src="test image url"
       />
     </div>
   </div>
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -1461,7 +1375,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-header
             ms-TeachingBubble-header--large
             &:not(:last-child) {
@@ -1469,8 +1383,8 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
             }
       >
         <p
-          aria-level={3}
-          className=
+          aria-level="3"
+          class=
               ms-TeachingBubble-headline
               {
                 color: #ffffff;
@@ -1489,14 +1403,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
         </p>
       </div>
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -1514,16 +1428,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with image correctly 1`] =
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>
@@ -1533,7 +1442,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with small headline correc
 <div
   aria-describedby="content"
   aria-labelledby="title"
-  className=
+  class=
       ms-TeachingBubble-content
       {
         animation-duration: 300ms;
@@ -1546,28 +1455,22 @@ exports[`TeachingBubble renders TeachingBubbleContent with small headline correc
         outline: transparent;
         width: calc(100% + 1px);
       }
-  data-is-focusable={true}
+  data-is-focusable="true"
   role="dialog"
-  tabIndex={-1}
+  tabindex="-1"
 >
   <div
-    onBlurCapture={[Function]}
-    onFocusCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {\\"completely\\": true}}"
   >
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
     <div
-      className=
+      class=
           ms-TeachingBubble-bodycontent
           {
             padding-bottom: 20px;
@@ -1577,7 +1480,7 @@ exports[`TeachingBubble renders TeachingBubbleContent with small headline correc
           }
     >
       <div
-        className=
+        class=
             ms-TeachingBubble-header
             ms-TeachingBubble-header--small
             {
@@ -1592,8 +1495,8 @@ exports[`TeachingBubble renders TeachingBubbleContent with small headline correc
             }
       >
         <p
-          aria-level={3}
-          className=
+          aria-level="3"
+          class=
               ms-TeachingBubble-headline
               {
                 color: #ffffff;
@@ -1611,14 +1514,14 @@ exports[`TeachingBubble renders TeachingBubbleContent with small headline correc
         </p>
       </div>
       <div
-        className=
+        class=
             ms-TeachingBubble-body
             &:not(:last-child) {
               margin-bottom: 20px;
             }
       >
         <p
-          className=
+          class=
               ms-TeachingBubble-subText
               {
                 color: #ffffff;
@@ -1636,16 +1539,11 @@ exports[`TeachingBubble renders TeachingBubbleContent with small headline correc
       </div>
     </div>
     <div
-      aria-hidden={true}
-      data-is-focus-trap-zone-bumper={true}
-      data-is-visible={true}
-      style={
-        Object {
-          "pointerEvents": "none",
-          "position": "fixed",
-        }
-      }
-      tabIndex={0}
+      aria-hidden="true"
+      data-is-focus-trap-zone-bumper="true"
+      data-is-visible="true"
+      style="pointer-events: none; position: fixed;"
+      tabindex="0"
     />
   </div>
 </div>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TextField } from '@fluentui/react/lib/TextField';
 import { Checkbox } from '@fluentui/react/lib/Checkbox';
 import { IPersonaProps, IPersonaStyles } from '@fluentui/react/lib/Persona';
 import {
@@ -6,8 +7,10 @@ import {
   ListPeoplePicker,
   ValidationState,
   PeoplePickerItemSuggestion,
+  IPeoplePickerItemSuggestionStyles,
 } from '@fluentui/react/lib/Pickers';
 import { people, mru } from '@fluentui/example-data';
+import type { JSXElement } from '@fluentui/utilities';
 
 const suggestionProps: IBasePickerSuggestionsProps = {
   suggestionsHeaderText: 'Suggested People',
@@ -39,9 +42,16 @@ const personaStyles: Partial<IPersonaStyles> = {
   },
 };
 
+const suggestionItemStyles: Partial<IPeoplePickerItemSuggestionStyles> = {
+  subComponentStyles: { persona: personaStyles },
+};
+
 export const PeoplePickerListExample: React.FunctionComponent = () => {
   const [delayResults, setDelayResults] = React.useState(false);
   const [isPickerDisabled, setIsPickerDisabled] = React.useState(false);
+  const [pickerLabel, setPickerLabel] = React.useState<string | undefined>('Choose People');
+  const [showPickerLabel, setShowPickerLabel] = React.useState(false);
+  const [isPickerRequired, setIsPickerRequired] = React.useState(false);
   const [mostRecentlyUsed, setMostRecentlyUsed] = React.useState<IPersonaProps[]>(mru);
   const [peopleList, setPeopleList] = React.useState<IPersonaProps[]>(people);
 
@@ -102,6 +112,18 @@ export const PeoplePickerListExample: React.FunctionComponent = () => {
     setIsPickerDisabled(!isPickerDisabled);
   };
 
+  const onShowLabelButtonClick = (): void => {
+    setShowPickerLabel(!showPickerLabel);
+  };
+
+  const onPickerLabelChange = (_: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string): void => {
+    setPickerLabel(newValue ?? '');
+  };
+
+  const onRequiredButtonClick = (): void => {
+    setIsPickerRequired(!isPickerRequired);
+  };
+
   const onToggleDelayResultsChange = (): void => {
     setDelayResults(!delayResults);
   };
@@ -109,18 +131,27 @@ export const PeoplePickerListExample: React.FunctionComponent = () => {
   const onRenderSuggestionItem = (personaProps: IPersonaProps, suggestionsProps: IBasePickerSuggestionsProps) => {
     return (
       <PeoplePickerItemSuggestion
-        personaProps={{ ...personaProps, styles: personaStyles }}
+        personaProps={personaProps}
         suggestionsProps={suggestionsProps}
+        styles={suggestionItemStyles}
       />
     );
   };
 
+  const onGetErrorMessage = React.useCallback(
+    (items: IPersonaProps[]): string | JSXElement | PromiseLike<string | JSXElement> | undefined => {
+      return isPickerRequired && (items || []).length === 0 ? 'Please fill out this field.' : undefined;
+    },
+    [isPickerRequired],
+  );
+
   return (
     <div>
       <ListPeoplePicker
+        label={showPickerLabel ? pickerLabel : undefined}
         // eslint-disable-next-line react/jsx-no-bind
         onResolveSuggestions={onFilterChanged}
-        // eslint-disable-next-line react/jsx-no-bind
+        // eslint-disable-next-line react/jsx-no-bind, @typescript-eslint/no-deprecated
         onEmptyInputFocus={returnMostRecentlyUsed}
         getTextFromItem={getTextFromItem}
         className={'ms-PeoplePicker'}
@@ -141,6 +172,8 @@ export const PeoplePickerListExample: React.FunctionComponent = () => {
         componentRef={picker}
         resolveDelay={300}
         disabled={isPickerDisabled}
+        required={isPickerRequired}
+        onGetErrorMessage={onGetErrorMessage}
       />
       <Checkbox
         label="Disable People Picker"
@@ -156,6 +189,28 @@ export const PeoplePickerListExample: React.FunctionComponent = () => {
         onChange={onToggleDelayResultsChange}
         styles={checkboxStyles}
       />
+      <Checkbox
+        label="Required People Picker"
+        checked={isPickerRequired}
+        // eslint-disable-next-line react/jsx-no-bind
+        onChange={onRequiredButtonClick}
+        styles={checkboxStyles}
+      />
+      <Checkbox
+        label="Show Label"
+        checked={showPickerLabel}
+        // eslint-disable-next-line react/jsx-no-bind
+        onChange={onShowLabelButtonClick}
+        styles={checkboxStyles}
+      />
+      {showPickerLabel && (
+        <TextField
+          label={'People Picker Label'}
+          value={pickerLabel}
+          // eslint-disable-next-line react/jsx-no-bind
+          onChange={onPickerLabelChange}
+        />
+      )}
     </div>
   );
 };

@@ -1,7 +1,9 @@
 import * as React from 'react';
-import type { IStyle, ITheme } from '../../Styling';
+import type { IShadowDomStyle, IStyle, ITheme } from '../../Styling';
 import type { IRefObject, IRenderFunction, IStyleFunctionOrObject } from '../../Utilities';
 import type { IIconProps } from '../../Icon';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 /**
  * {@docCategory TextField}
@@ -71,9 +73,16 @@ export interface ITextFieldProps extends React.AllHTMLAttributes<HTMLInputElemen
 
   /**
    * For multiline text fields, whether or not to auto adjust text field height.
+   * If inside a scrollable container, also set `scrollContainerRef`.
    * @defaultvalue false
    */
   autoAdjustHeight?: boolean;
+
+  /**
+   * A read-only ref to the scrollable element that contains this TextField, if any. Only needed if
+   * `autoAdjustHeight` is set. This allows TextField to maintain the scroll position when text is edited.
+   */
+  scrollContainerRef?: React.RefObject<HTMLElement | null>;
 
   /**
    * Whether or not the text field is underlined.
@@ -179,7 +188,8 @@ export interface ITextFieldProps extends React.AllHTMLAttributes<HTMLInputElemen
    * change the error message displayed (if any) based on the current value. `errorMessage` and
    * `onGetErrorMessage` are mutually exclusive (`errorMessage` takes precedence).
    */
-  errorMessage?: string | JSX.Element;
+
+  errorMessage?: string | JSXElement;
 
   /**
    * Callback for when the input value changes.
@@ -191,22 +201,24 @@ export interface ITextFieldProps extends React.AllHTMLAttributes<HTMLInputElemen
   /**
    * Function called after validation completes.
    */
-  onNotifyValidationResult?: (errorMessage: string | JSX.Element, value: string | undefined) => void;
+
+  onNotifyValidationResult?: (errorMessage: string | JSXElement, value: string | undefined) => void;
 
   /**
    * Function used to determine whether the input value is valid and get an error message if not.
    * Mutually exclusive with the static string `errorMessage` (it will take precedence over this).
    *
-   * When it returns `string | JSX.Element`:
+   * When it returns `string | JSXElement`:
    * - If valid, it returns empty string.
    * - If invalid, it returns the error message and the text field will
    *   show a red border and show an error message below the text field.
    *
-   * When it returns `Promise<string | JSX.Element>`:
+   * When it returns `Promise<string | JSXElement>`:
    * - The resolved value is displayed as the error message.
    * - If rejected, the value is thrown away.
    */
-  onGetErrorMessage?: (value: string) => string | JSX.Element | PromiseLike<string | JSX.Element> | undefined;
+
+  onGetErrorMessage?: (value: string) => string | JSXElement | PromiseLike<string | JSXElement> | undefined;
 
   /**
    * Text field will start to validate after users stop typing for `deferredValidationTime` milliseconds.
@@ -329,7 +341,7 @@ export interface ITextFieldSubComponentStyles {
 /**
  * {@docCategory TextField}
  */
-export interface ITextFieldStyles {
+export interface ITextFieldStyles extends IShadowDomStyle {
   /**
    * Style for root element.
    */

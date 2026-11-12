@@ -19,6 +19,8 @@ import type { IHoverCardProps, IHoverCardStyles, IHoverCardStyleProps, IHoverCar
 import type { IExpandingCardProps } from './ExpandingCard.types';
 import type { IPlainCardProps } from './PlainCard/PlainCard.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IHoverCardStyleProps, IHoverCardStyles>();
 
 export interface IHoverCardState {
@@ -79,7 +81,7 @@ export class HoverCardBase extends React.Component<IHoverCardProps, IHoverCardSt
     this._events.dispose();
   }
 
-  public componentDidUpdate(prevProps: IHoverCardProps, prevState: IHoverCardState) {
+  public componentDidUpdate(prevProps: IHoverCardProps, prevState: IHoverCardState): void {
     if (prevProps.target !== this.props.target) {
       this._events.off();
       this._setEventListeners();
@@ -120,7 +122,8 @@ export class HoverCardBase extends React.Component<IHoverCardProps, IHoverCardSt
   };
 
   // Render
-  public render(): JSX.Element {
+
+  public render(): JSXElement {
     const {
       expandingCardProps,
       children,
@@ -193,7 +196,7 @@ export class HoverCardBase extends React.Component<IHoverCardProps, IHoverCardSt
 
   // Show HoverCard
   private _cardOpen = (ev: MouseEvent): void => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (this._shouldBlockHoverCard() || (ev.type === 'keydown' && !(ev.which === this.props.openHotKey))) {
       return;
     }
@@ -239,13 +242,13 @@ export class HoverCardBase extends React.Component<IHoverCardProps, IHoverCardSt
         return;
       }
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (ev.type === 'keydown' && ev.which !== KeyCodes.escape) {
         return;
       }
 
       // Dismiss if not sticky and currentTarget is the same element that mouse last entered
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       if (!this.props.sticky && (this._currentMouseTarget === ev.currentTarget || ev.which === KeyCodes.escape)) {
         this.dismiss(true);
       }

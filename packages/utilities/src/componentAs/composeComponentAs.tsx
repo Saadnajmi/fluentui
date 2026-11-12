@@ -2,11 +2,13 @@ import * as React from 'react';
 import { createMemoizer } from '../memoize';
 import type { IComponentAs, IComponentAsProps } from '../IComponentAs';
 
+import type { JSXElement } from '../jsx';
+
 interface IComposeComponentAs {
-  <TProps>(outer: IComponentAs<TProps>): (inner: IComponentAs<TProps>) => IComponentAs<TProps>;
+  <TProps extends {}>(outer: IComponentAs<TProps>): (inner: IComponentAs<TProps>) => IComponentAs<TProps>;
 }
 
-function createComposedComponent<TProps>(
+function createComposedComponent<TProps extends {}>(
   outer: IComponentAs<TProps>,
 ): (inner: IComponentAs<TProps>) => IComponentAs<TProps> {
   const Outer = outer;
@@ -21,7 +23,7 @@ function createComposedComponent<TProps>(
     const innerMemoizer = createMemoizer((defaultRender: IComponentAs<TProps>) => {
       const InnerWithDefaultRender: React.ComponentType<IComponentAsProps<TProps>> = (
         innerProps: IComponentAsProps<TProps>,
-      ): JSX.Element => {
+      ): JSXElement => {
         return <Inner {...innerProps} defaultRender={defaultRender} />;
       };
 
@@ -30,7 +32,7 @@ function createComposedComponent<TProps>(
 
     const OuterWithDefaultRender: React.ComponentType<IComponentAsProps<TProps>> = (
       outerProps: IComponentAsProps<TProps>,
-    ): JSX.Element => {
+    ): JSXElement => {
       const { defaultRender } = outerProps;
 
       return <Outer {...outerProps} defaultRender={defaultRender ? innerMemoizer(defaultRender) : Inner} />;
@@ -51,7 +53,7 @@ const componentAsMemoizer = createMemoizer<IComposeComponentAs>(createComposedCo
  *
  * @public
  */
-export function composeComponentAs<TProps>(
+export function composeComponentAs<TProps extends {}>(
   outer: IComponentAs<TProps>,
   inner: IComponentAs<TProps>,
 ): IComponentAs<TProps> {

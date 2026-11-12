@@ -1,8 +1,62 @@
 # Change Log - @fluentui/codemods
 
-This log was last generated on Wed, 12 Oct 2022 07:38:30 GMT and should not be manually modified.
+This log was last generated on Thu, 14 Aug 2025 07:19:47 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## [8.4.29](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.29)
+
+Thu, 14 Aug 2025 07:19:47 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/codemods_v8.4.28..@fluentui/codemods_v8.4.29)
+
+### Patches
+
+- chore: lock ts to 5.3.3 ([PR #33498](https://github.com/microsoft/fluentui/pull/33498) by vgenaev@gmail.com)
+
+## [8.4.28](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.28)
+
+Thu, 10 Jul 2025 07:19:40 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/codemods_v8.4.27..@fluentui/codemods_v8.4.28)
+
+### Patches
+
+- chore: update description and remove react from direct dependencies ([PR #34790](https://github.com/microsoft/fluentui/pull/34790) by martinhochel@microsoft.com)
+
+## [8.4.27](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.27)
+
+Mon, 23 Dec 2024 07:22:57 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/codemods_v8.4.26..@fluentui/codemods_v8.4.27)
+
+### Patches
+
+- chore: remove usage of "export *" ([PR #33448](https://github.com/microsoft/fluentui/pull/33448) by olfedias@microsoft.com)
+
+## [8.4.26](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.26)
+
+Tue, 09 Jul 2024 07:36:39 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/codemods_v8.4.16..@fluentui/codemods_v8.4.26)
+
+### Patches
+
+- fix: revert incorectly set npm versions in all packages ([PR #31937](https://github.com/microsoft/fluentui/pull/31937) by martinhochel@microsoft.com)
+
+## [8.4.16](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.16)
+
+Fri, 22 Mar 2024 07:28:52 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/codemods_v8.4.12..@fluentui/codemods_v8.4.16)
+
+### Patches
+
+- fix: Build errors in TypeScript 5.3 ([PR #30806](https://github.com/microsoft/fluentui/pull/30806) by behowell@microsoft.com)
+
+## [8.4.12](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.12)
+
+Wed, 31 May 2023 07:38:38 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/codemods_v8.4.8..@fluentui/codemods_v8.4.12)
+
+### Patches
+
+- fix: tweak type errors exposed in ts 4.5 ([PR #27936](https://github.com/microsoft/fluentui/pull/27936) by martinhochel@microsoft.com)
 
 ## [8.4.5](https://github.com/microsoft/fluentui/tree/@fluentui/codemods_v8.4.5)
 

@@ -21,6 +21,8 @@ import {
   onRenderTilesListExampleRow,
 } from '@fluentui/react-examples/lib/react-experiments/TilesList/ExampleHelpers';
 import { ShimmerElementType, ShimmerElementsGroup } from '@fluentui/react/lib/Shimmer';
+import { FLUENT_CDN_BASE_URL } from '@fluentui/style-utilities';
+import type { JSXElement } from '@fluentui/utilities';
 
 const HEADER_VERTICAL_PADDING = 13;
 const HEADER_FONT_SIZE = 18;
@@ -114,7 +116,7 @@ export class TilesListDocumentExample extends React.Component<
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <div style={{ padding: '4px' }}>
         <Toggle
@@ -178,7 +180,7 @@ export class TilesListDocumentExample extends React.Component<
 
     this.setState({
       isDataLoaded: !isDataLoaded,
-      cells: cells,
+      cells,
     });
   };
 
@@ -206,7 +208,7 @@ export class TilesListDocumentExample extends React.Component<
     alert(`Invoked item '${item.name}'`);
   };
 
-  private _onRenderDocumentCell = (props: ITilesGridItemCellProps<IExampleItem>): JSX.Element => {
+  private _onRenderDocumentCell = (props: ITilesGridItemCellProps<IExampleItem>): JSXElement => {
     const { item } = props;
 
     const { tileSize } = this.props;
@@ -223,7 +225,7 @@ export class TilesListDocumentExample extends React.Component<
         invokeSelection={true}
         foreground={
           <img
-            src={`https://spoppe-b.azureedge.net/files/fabric-cdn-prod_20210407.001/assets/item-types/${imgSize}/docx.png`}
+            src={`${FLUENT_CDN_BASE_URL}/assets/item-types/${imgSize}/docx.png`}
             style={{
               display: 'block',
               width: `${imgSize}px`,
@@ -240,7 +242,7 @@ export class TilesListDocumentExample extends React.Component<
     );
   };
 
-  private _onRenderShimmerCell = (props: ITilesGridItemCellProps<IExampleItem>): JSX.Element => {
+  private _onRenderShimmerCell = (props: ITilesGridItemCellProps<IExampleItem>): JSXElement => {
     const { finalSize } = props;
 
     const { tileSize } = this.props;
@@ -257,7 +259,7 @@ export class TilesListDocumentExample extends React.Component<
     );
   };
 
-  private _onRenderHeader = (props: ITilesGridItemCellProps<IExampleItem>): JSX.Element => {
+  private _onRenderHeader = (props: ITilesGridItemCellProps<IExampleItem>): JSXElement => {
     const { item } = props;
 
     return (
@@ -276,7 +278,7 @@ export class TilesListDocumentExample extends React.Component<
     );
   };
 
-  private _onRenderShimmerHeader = (props: ITilesGridItemCellProps<IExampleItem>): JSX.Element => {
+  private _onRenderShimmerHeader = (props: ITilesGridItemCellProps<IExampleItem>): JSXElement => {
     return (
       <ShimmerElementsGroup
         shimmerElements={[

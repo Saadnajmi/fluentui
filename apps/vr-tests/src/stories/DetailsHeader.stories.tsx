@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { TestWrapperDecorator } from '../utilities';
 import {
   IColumn,
   DetailsListLayoutMode,
@@ -113,11 +114,13 @@ const _columnReorderProps = {
   frozenColumnCountFromEnd: 1,
 };
 
-storiesOf('DetailsHeader', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'DetailsHeader',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.ms-DetailsHeader' })
         .hover('[data-item-key=a]')
         .snapshot('hoverFrozenFirst', { cropTo: '.ms-DetailsHeader' })
@@ -136,18 +139,17 @@ storiesOf('DetailsHeader', module)
         .cssAnimations(true)
         .executeScript(`DndSimulator.simulate('[draggable="true"]', '[data-item-key="d"]', true)`)
         .snapshot('dropHint')
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
+        .end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof DetailsHeader>;
 
-  .addStory('Root', () => (
-    <DetailsHeader
-      selection={_selection}
-      selectionMode={SelectionMode.multiple}
-      layoutMode={DetailsListLayoutMode.fixedColumns}
-      columns={columns}
-      columnReorderProps={_columnReorderProps}
-    />
-  ));
+export const Root = () => (
+  <DetailsHeader
+    selection={_selection}
+    selectionMode={SelectionMode.multiple}
+    layoutMode={DetailsListLayoutMode.fixedColumns}
+    columns={columns}
+    columnReorderProps={_columnReorderProps}
+  />
+);

@@ -1,291 +1,182 @@
-import { css, ElementStyles } from '@microsoft/fast-element';
+import { css } from '@microsoft/fast-element';
+import { checkedState, disabledState, submenuState } from '../styles/states/index.js';
 import {
-  disabledCursor,
-  display,
-  ElementDefinitionContext,
-  focusVisible,
-  forcedColorsStylesheetBehavior,
-  MenuItemOptions,
-} from '@microsoft/fast-foundation';
-import { SystemColors } from '@microsoft/fast-web-utilities';
-import { DirectionalStyleSheetBehavior, heightNumber } from '../styles/index';
-import {
-  controlCornerRadius,
-  disabledOpacity,
-  neutralFillStealthActive,
-  neutralFillStealthHover,
-  neutralForegroundHint,
-  neutralForegroundRest,
-  strokeWidth,
-} from '../design-tokens';
-import { typeRampBase } from '../styles/patterns/type-ramp';
-import { focusTreatmentBase } from '../styles/focus';
+  borderRadiusMedium,
+  colorCompoundBrandForeground1Pressed,
+  colorNeutralBackground1,
+  colorNeutralBackground1Hover,
+  colorNeutralBackground1Selected,
+  colorNeutralBackgroundDisabled,
+  colorNeutralForeground2,
+  colorNeutralForeground2Hover,
+  colorNeutralForeground2Pressed,
+  colorNeutralForeground3,
+  colorNeutralForegroundDisabled,
+  colorStrokeFocus2,
+  fontFamilyBase,
+  fontSizeBase200,
+  fontSizeBase300,
+  fontWeightRegular,
+  lineHeightBase200,
+  lineHeightBase300,
+  spacingHorizontalXXS,
+} from '../theme/design-tokens.js';
+import { display } from '../utils/display.js';
 
-export const menuItemStyles: (context: ElementDefinitionContext, definition: MenuItemOptions) => ElementStyles = (
-  context: ElementDefinitionContext,
-  definition: MenuItemOptions,
-) =>
-  css`
-    ${display('grid')} :host {
-      contain: layout;
-      overflow: visible;
-      ${typeRampBase}
-      box-sizing: border-box;
-      height: calc(${heightNumber} * 1px);
-      grid-template-columns: minmax(32px, auto) 1fr minmax(32px, auto);
-      grid-template-rows: auto;
-      justify-items: center;
-      align-items: center;
-      padding: 0;
-      white-space: nowrap;
-      color: ${neutralForegroundRest};
-      fill: currentcolor;
-      cursor: pointer;
-      border-radius: calc(${controlCornerRadius} * 1px);
-      border: calc(${strokeWidth} * 1px) solid transparent;
-    }
+/** MenuItem styles
+ * @public
+ */
+export const styles = css`
+  ${display('flex')}
 
-    :host(.indent-0) {
-      grid-template-columns: auto 1fr minmax(32px, auto);
-    }
+  :host {
+    align-items: center;
+    background: ${colorNeutralBackground1};
+    border-radius: ${borderRadiusMedium};
+    box-sizing: border-box;
+    color: ${colorNeutralForeground2};
+    cursor: pointer;
+    font: ${fontWeightRegular} ${fontSizeBase300} / ${lineHeightBase300} ${fontFamilyBase};
+    gap: 4px;
+    min-block-size: 32px;
+    overflow: visible;
+    padding-inline: 10px;
+  }
 
-    :host(.indent-0) .content {
-      grid-column: 1;
-      grid-row: 1;
-      margin-inline-start: 10px;
-    }
-
-    :host(.indent-0) .expand-collapse-glyph-container {
-      grid-column: 5;
-      grid-row: 1;
-    }
-
-    :host(.indent-2) {
-      grid-template-columns: minmax(32px, auto) minmax(32px, auto) 1fr minmax(32px, auto) minmax(32px, auto);
-    }
-
-    :host(.indent-2) .content {
-      grid-column: 3;
-      grid-row: 1;
-      margin-inline-start: 10px;
-    }
-
-    :host(.indent-2) .expand-collapse-glyph-container {
-      grid-column: 5;
-      grid-row: 1;
-    }
-
-    :host(.indent-2) .start {
-      grid-column: 2;
-    }
-
-    :host(.indent-2) .end {
-      grid-column: 4;
-    }
-
-    :host(:${focusVisible}) {
-      ${focusTreatmentBase}
-    }
-
-    :host(:not([disabled]):hover) {
-      background: ${neutralFillStealthHover};
-    }
-
-    :host(:not([disabled]):active),
-    :host(.expanded) {
-      background: ${neutralFillStealthActive};
-      color: ${neutralForegroundRest};
-    }
-
-    :host([disabled]) {
-      cursor: ${disabledCursor};
-      opacity: ${disabledOpacity};
-    }
-
-    .content {
-      grid-column-start: 2;
-      justify-self: start;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .start,
-    .end {
-      display: flex;
-      justify-content: center;
-    }
-
-    :host(.indent-0[aria-haspopup='menu']) {
+  @supports (grid-template-columns: subgrid) {
+    :host {
       display: grid;
-      grid-template-columns: minmax(32px, auto) auto 1fr minmax(32px, auto) minmax(32px, auto);
-      align-items: center;
-      min-height: 32px;
+      gap: 0;
+      grid-template-columns: subgrid;
+      padding-inline: unset;
     }
+  }
 
-    :host(.indent-1[aria-haspopup='menu']),
-    :host(.indent-1[role='menuitemcheckbox']),
-    :host(.indent-1[role='menuitemradio']) {
-      display: grid;
-      grid-template-columns: minmax(32px, auto) auto 1fr minmax(32px, auto) minmax(32px, auto);
-      align-items: center;
-      min-height: 32px;
-    }
+  :host(:hover) {
+    background: ${colorNeutralBackground1Hover};
+    color: ${colorNeutralForeground2Hover};
+  }
 
-    :host(.indent-2:not([aria-haspopup='menu'])) .end {
-      grid-column: 5;
-    }
+  :host(:active) {
+    background-color: ${colorNeutralBackground1Selected};
+    color: ${colorNeutralForeground2Pressed};
+  }
 
-    :host .input-container,
-    :host .expand-collapse-glyph-container {
-      display: none;
-    }
+  :host(:active) ::slotted([slot='start']) {
+    color: ${colorCompoundBrandForeground1Pressed};
+  }
 
-    :host([aria-haspopup='menu']) .expand-collapse-glyph-container,
-    :host([role='menuitemcheckbox']) .input-container,
-    :host([role='menuitemradio']) .input-container {
-      display: grid;
-    }
+  :host(${disabledState}) {
+    background-color: ${colorNeutralBackgroundDisabled};
+    color: ${colorNeutralForegroundDisabled};
+  }
 
-    :host([aria-haspopup='menu']) .content,
-    :host([role='menuitemcheckbox']) .content,
-    :host([role='menuitemradio']) .content {
-      grid-column-start: 3;
-    }
+  :host(${disabledState}) ::slotted([slot='start']),
+  :host(${disabledState}) ::slotted([slot='end']) {
+    color: ${colorNeutralForegroundDisabled};
+  }
 
-    :host([aria-haspopup='menu'].indent-0) .content {
-      grid-column-start: 1;
-    }
+  :host(:focus-visible) {
+    border-radius: ${borderRadiusMedium};
+    outline: 2px solid ${colorStrokeFocus2};
+  }
 
-    :host([aria-haspopup='menu']) .end,
-    :host([role='menuitemcheckbox']) .end,
-    :host([role='menuitemradio']) .end {
-      grid-column-start: 4;
-    }
+  :host(:not([role='menuitemcheckbox']):not([role='menuitemradio'])) .indicator,
+  :host(:not([role='menuitemcheckbox']):not([role='menuitemradio'])) ::slotted([slot='indicator']),
+  :host(:not(${submenuState})) .submenu-glyph,
+  :host(:not(${submenuState})) ::slotted([slot='submenu-glyph']) {
+    display: none;
+  }
 
-    :host .expand-collapse,
-    :host .checkbox,
-    :host .radio {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  :host(:not(${checkedState})) .indicator,
+  :host(:not(${checkedState})) ::slotted([slot='indicator']) {
+    visibility: hidden;
+  }
+
+  .indicator,
+  ::slotted([slot='indicator']),
+  ::slotted([slot='start']),
+  ::slotted([slot='end']),
+  .submenu-glyph,
+  ::slotted([slot='submenu-glyph']) {
+    margin-inline: ${spacingHorizontalXXS};
+  }
+
+  ::slotted([slot='end']) {
+    color: ${colorNeutralForeground3};
+    font: ${fontWeightRegular} ${fontSizeBase200} / ${lineHeightBase200} ${fontFamilyBase};
+    white-space: nowrap;
+  }
+
+  .indicator,
+  ::slotted([slot='indicator']) {
+    grid-column: 2 / span 1;
+    width: 20px;
+  }
+
+  ::slotted([slot='start']) {
+    display: inline-flex;
+    grid-column: 3 / span 1;
+  }
+
+  .content {
+    flex-grow: 1;
+    grid-column: 4 / span 1;
+    padding: 0 2px;
+    white-space: nowrap;
+  }
+
+  ::slotted([slot='end']) {
+    grid-column: 5 / span 1;
+    justify-self: end;
+  }
+
+  .submenu-glyph,
+  ::slotted([slot='submenu-glyph']) {
+    grid-column: 6 / span 1;
+    justify-self: end;
+  }
+
+  @layer popover {
+    :host {
+      anchor-name: --menu-trigger;
       position: relative;
-      box-sizing: border-box;
     }
 
-    :host .checkbox-indicator,
-    :host .radio-indicator,
-    slot[name='checkbox-indicator'],
-    slot[name='radio-indicator'] {
+    @position-try --inline-inside {
+      inset-inline-start: unset;
+      inset-inline-end: anchor(inside);
+    }
+
+    ::slotted([popover]) {
+      margin: 0;
+      max-block-size: var(--menu-max-height, auto);
+      position: fixed;
+      position-anchor: --menu-trigger;
+      inset: unset;
+      inset-block-start: anchor(inside);
+      inset-inline-start: anchor(outside);
+      position-try-fallbacks: --inline-inside, flip-block, flip-block --inline-inside;
+      z-index: 1;
+    }
+
+    ::slotted([popover]:not(:popover-open)) {
       display: none;
     }
 
-    ::slotted([slot='end']:not(svg)) {
-      margin-inline-end: 10px;
-      color: ${neutralForegroundHint};
+    /* Fallback for no anchor-positioning */
+    @supports not (anchor-name: --menu-trigger) {
+      ::slotted([popover]) {
+        align-self: start;
+      }
     }
+  }
 
-    :host([aria-checked='true']) .checkbox-indicator,
-    :host([aria-checked='true']) slot[name='checkbox-indicator'],
-    :host([aria-checked='true']) .radio-indicator,
-    :host([aria-checked='true']) slot[name='radio-indicator'] {
-      display: flex;
+  @media (forced-colors: active) {
+    :host(${disabledState}),
+    :host(${disabledState}) ::slotted([slot='start']),
+    :host(${disabledState}) ::slotted([slot='end']) {
+      color: GrayText;
     }
-  `.withBehaviors(
-    forcedColorsStylesheetBehavior(
-      css`
-        :host,
-        ::slotted([slot='end']:not(svg)) {
-          forced-color-adjust: none;
-          color: ${SystemColors.ButtonText};
-          fill: currentcolor;
-        }
-        :host(:not([disabled]):hover) {
-          background: ${SystemColors.Highlight};
-          color: ${SystemColors.HighlightText};
-          fill: currentcolor;
-        }
-        :host(:hover) .start,
-        :host(:hover) .end,
-        :host(:hover)::slotted(svg),
-        :host(:active) .start,
-        :host(:active) .end,
-        :host(:active)::slotted(svg),
-        :host(:hover) ::slotted([slot='end']:not(svg)),
-        :host(:${focusVisible}) ::slotted([slot='end']:not(svg)) {
-          color: ${SystemColors.HighlightText};
-          fill: currentcolor;
-        }
-        :host(.expanded) {
-          background: ${SystemColors.Highlight};
-          color: ${SystemColors.HighlightText};
-        }
-        :host(:${focusVisible}) {
-          background: ${SystemColors.Highlight};
-          outline-color: ${SystemColors.ButtonText};
-          color: ${SystemColors.HighlightText};
-          fill: currentcolor;
-        }
-        :host([disabled]),
-        :host([disabled]:hover),
-        :host([disabled]:hover) .start,
-        :host([disabled]:hover) .end,
-        :host([disabled]:hover)::slotted(svg),
-        :host([disabled]:${focusVisible}) {
-          background: ${SystemColors.ButtonFace};
-          color: ${SystemColors.GrayText};
-          fill: currentcolor;
-          opacity: 1;
-        }
-        :host([disabled]:${focusVisible}) {
-          outline-color: ${SystemColors.GrayText};
-        }
-        :host .expanded-toggle,
-        :host .checkbox,
-        :host .radio {
-          border-color: ${SystemColors.ButtonText};
-          background: ${SystemColors.HighlightText};
-        }
-        :host([checked]) .checkbox,
-        :host([checked]) .radio {
-          background: ${SystemColors.HighlightText};
-          border-color: ${SystemColors.HighlightText};
-        }
-        :host(:hover) .expanded-toggle,
-            :host(:hover) .checkbox,
-            :host(:hover) .radio,
-            :host(:${focusVisible}) .expanded-toggle,
-            :host(:${focusVisible}) .checkbox,
-            :host(:${focusVisible}) .radio,
-            :host([checked]:hover) .checkbox,
-            :host([checked]:hover) .radio,
-            :host([checked]:${focusVisible}) .checkbox,
-            :host([checked]:${focusVisible}) .radio {
-          border-color: ${SystemColors.HighlightText};
-        }
-        :host([aria-checked='true']) {
-          background: ${SystemColors.Highlight};
-          color: ${SystemColors.HighlightText};
-        }
-        :host([aria-checked='true']) .checkbox-indicator,
-        :host([aria-checked='true']) ::slotted([slot='checkbox-indicator']),
-        :host([aria-checked='true']) ::slotted([slot='radio-indicator']) {
-          fill: ${SystemColors.Highlight};
-        }
-        :host([aria-checked='true']) .radio-indicator {
-          background: ${SystemColors.Highlight};
-        }
-      `,
-    ),
-    new DirectionalStyleSheetBehavior(
-      css`
-        .expand-collapse-glyph-container {
-          transform: rotate(0deg);
-        }
-      `,
-      css`
-        .expand-collapse-glyph-container {
-          transform: rotate(180deg);
-        }
-      `,
-    ),
-  );
+  }
+`;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { useMountSync } from './useMountSync';
 
 describe('useMountSync', () => {
@@ -7,7 +7,6 @@ describe('useMountSync', () => {
     const onMount = jest.fn();
 
     const TestComponent: React.FunctionComponent = () => {
-      // eslint-disable-next-line deprecation/deprecation
       useMountSync(() => {
         onMount();
       });
@@ -15,10 +14,10 @@ describe('useMountSync', () => {
       return <>Test Component</>;
     };
 
-    expect(onMount).toBeCalledTimes(0);
-    const wrapper = mount(<TestComponent />);
-    expect(onMount).toBeCalledTimes(1);
-    wrapper.unmount();
-    expect(onMount).toBeCalledTimes(1);
+    expect(onMount).toHaveBeenCalledTimes(0);
+    const { unmount } = render(<TestComponent />);
+    expect(onMount).toHaveBeenCalledTimes(1);
+    unmount();
+    expect(onMount).toHaveBeenCalledTimes(1);
   });
 });

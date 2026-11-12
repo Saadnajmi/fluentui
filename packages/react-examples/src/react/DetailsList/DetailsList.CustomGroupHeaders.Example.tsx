@@ -13,6 +13,7 @@ import {
 import { createListItems, createGroups, IExampleItem } from '@fluentui/example-data';
 import { getTheme, mergeStyleSets } from '@fluentui/react/lib/Styling';
 import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react/lib/Dropdown';
+import type { JSXElement } from '@fluentui/utilities';
 
 const ROW_HEIGHT: number = 42; // from DEFAULT_ROW_HEIGHTS in DetailsRow.styles.ts
 const GROUP_HEADER_AND_FOOTER_SPACING: number = 8;
@@ -68,7 +69,7 @@ export class DetailsListCustomGroupHeadersExample extends React.Component<{}, { 
     this.state = { selectedItem: dropdownOptions[0] };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <>
         <Dropdown
@@ -109,18 +110,28 @@ export class DetailsListCustomGroupHeadersExample extends React.Component<{}, { 
 
   private _onRenderGroupHeader: IDetailsGroupRenderProps['onRenderHeader'] = props => {
     if (props) {
+      const { ariaColSpan = 1, ariaRowIndex } = props;
+      // the custom group header row doesn't include the selection cell or expand/collapse column, so we need to add 2
+      const finalColSpan = ariaColSpan + 2;
       return (
-        <div className={classNames.headerAndFooter}>
-          <div className={classNames.headerTitle}>{`Custom header for ${props.group!.name}`}</div>
-          <div className={classNames.headerLinkSet}>
-            {props.selectionMode !== SelectionMode.none ? (
-              <Link className={classNames.headerLink} onClick={this._onToggleSelectGroup(props)}>
-                {props.selected ? 'Remove selection' : 'Select group'}
+        <div
+          className={classNames.headerAndFooter}
+          role="row"
+          aria-rowindex={ariaRowIndex}
+          aria-expanded={!props.group!.isCollapsed}
+        >
+          <div role="gridcell" aria-colspan={finalColSpan}>
+            <div className={classNames.headerTitle}>{`Custom header for ${props.group!.name}`}</div>
+            <div className={classNames.headerLinkSet}>
+              {props.selectionMode !== SelectionMode.none ? (
+                <Link className={classNames.headerLink} onClick={this._onToggleSelectGroup(props)} underline>
+                  {props.selected ? 'Remove selection' : 'Select group'}
+                </Link>
+              ) : null}
+              <Link className={classNames.headerLink} onClick={this._onToggleCollapse(props)} underline>
+                {props.group!.isCollapsed ? 'Expand group' : 'Collapse group'}
               </Link>
-            ) : null}
-            <Link className={classNames.headerLink} onClick={this._onToggleCollapse(props)}>
-              {props.group!.isCollapsed ? 'Expand group' : 'Collapse group'}
-            </Link>
+            </div>
           </div>
         </div>
       );
@@ -131,9 +142,10 @@ export class DetailsListCustomGroupHeadersExample extends React.Component<{}, { 
 
   private _onRenderGroupFooter: IDetailsGroupRenderProps['onRenderFooter'] = props => {
     if (props) {
+      const { ariaColSpan = 1, ariaRowIndex } = props;
       return (
-        <div className={classNames.headerAndFooter}>
-          <em>{`Custom footer for ${props.group!.name}`}</em>
+        <div className={classNames.headerAndFooter} role="row" aria-rowindex={ariaRowIndex}>
+          <em role="gridcell" aria-colspan={ariaColSpan + 2}>{`Custom footer for ${props.group!.name}`}</em>
         </div>
       );
     }

@@ -6,9 +6,14 @@ export * from './ContextualMenuItem.base';
 export * from './ContextualMenuItem.types';
 export { getMenuItemStyles } from './ContextualMenu.cnstyles';
 export {
-  // eslint-disable-next-line deprecation/deprecation
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   getItemClassNames as getContextualMenuItemClassNames,
   getItemStyles as getContextualMenuItemStyles,
 } from './ContextualMenu.classNames';
-// eslint-disable-next-line deprecation/deprecation
-export type { IContextualMenuClassNames, IMenuItemClassNames } from './ContextualMenu.classNames';
+
+export type {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  IContextualMenuClassNames,
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  IMenuItemClassNames,
+} from './ContextualMenu.classNames';

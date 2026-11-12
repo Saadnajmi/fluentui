@@ -9,6 +9,8 @@ import type {
 } from './DocumentCardActions.types';
 import type { IProcessedStyleSet } from '../../Styling';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IDocumentCardActionsStyleProps, IDocumentCardActionsStyles>();
 
 /**
@@ -23,7 +25,7 @@ export class DocumentCardActionsBase extends React.Component<IDocumentCardAction
     initializeComponentRef(this);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { actions, views, styles, theme, className } = this.props;
 
     this._classNames = getClassNames(styles!, {
@@ -42,7 +44,7 @@ export class DocumentCardActionsBase extends React.Component<IDocumentCardAction
             );
           })}
 
-        {views! > 0 && (
+        {(views as number) > 0 && (
           <div className={this._classNames.views}>
             <Icon iconName="View" className={this._classNames.viewsIcon} />
             {views}

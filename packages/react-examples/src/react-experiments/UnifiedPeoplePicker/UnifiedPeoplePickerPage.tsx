@@ -8,13 +8,16 @@ import {
 import { UnifiedPeoplePickerExample } from './UnifiedPeoplePicker.Example';
 import { UnifiedPeoplePickerWithEditExample } from './UnifiedPeoplePicker.WithEdit.Example';
 import { DoubleUnifiedPeoplePickerExample } from './DoubleUnifiedPeoplePicker.Example';
+import type { JSXElement } from '@fluentui/utilities';
 
 const UnifiedPeoplePickerExampleCode = require('!raw-loader?esModule=false!./UnifiedPeoplePicker.Example') as string;
-const UnifiedPeoplePickerWithEditExampleCode = require('!raw-loader?esModule=false!./UnifiedPeoplePicker.WithEdit.Example') as string;
-const DoubleUnifiedPeoplePickerExampleCode = require('!raw-loader?esModule=false!./DoubleUnifiedPeoplePicker.Example') as string;
+const UnifiedPeoplePickerWithEditExampleCode =
+  require('!raw-loader?esModule=false!./UnifiedPeoplePicker.WithEdit.Example') as string;
+const DoubleUnifiedPeoplePickerExampleCode =
+  require('!raw-loader?esModule=false!./DoubleUnifiedPeoplePicker.Example') as string;
 
 export class UnifiedPeoplePickerPage extends React.Component<IComponentDemoPageProps, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <ComponentPage
         title="UnifiedPeoplePicker"

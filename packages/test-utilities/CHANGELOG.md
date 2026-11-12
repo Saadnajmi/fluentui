@@ -1,8 +1,84 @@
 # Change Log - @fluentui/test-utilities
 
-This log was last generated on Thu, 16 Dec 2021 07:26:40 GMT and should not be manually modified.
+This log was last generated on Tue, 11 Nov 2025 10:09:26 GMT and should not be manually modified.
 
 <!-- Start content -->
+
+## [8.5.1](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.5.1)
+
+Tue, 11 Nov 2025 10:09:26 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.5.0..@fluentui/test-utilities_v8.5.1)
+
+### Patches
+
+- chore: migrate source to react 19 ([PR #35434](https://github.com/microsoft/fluentui/pull/35434) by martinhochel@microsoft.com)
+
+## [8.5.0](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.5.0)
+
+Thu, 23 Oct 2025 10:23:22 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.4.0..@fluentui/test-utilities_v8.5.0)
+
+### Minor changes
+
+- feat: bump react range to support React 19 ([PR #35362](https://github.com/microsoft/fluentui/pull/35362) by martinhochel@microsoft.com)
+
+### Patches
+
+- fix: add deprecations and runtime assert on non supporter react majors ([PR #35359](https://github.com/microsoft/fluentui/pull/35359) by martinhochel@microsoft.com)
+
+## [8.4.0](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.4.0)
+
+Thu, 08 May 2025 07:22:42 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.3.19..@fluentui/test-utilities_v8.4.0)
+
+### Minor changes
+
+- feat: deprecate safeMount ([PR #34390](https://github.com/microsoft/fluentui/pull/34390) by martinhochel@microsoft.com)
+
+## [8.3.19](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.3.19)
+
+Tue, 09 Jul 2024 07:36:30 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.3.6..@fluentui/test-utilities_v8.3.19)
+
+### Patches
+
+- fix: revert incorectly set npm versions in all packages ([PR #31937](https://github.com/microsoft/fluentui/pull/31937) by martinhochel@microsoft.com)
+
+## [8.3.4](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.3.4)
+
+Fri, 05 May 2023 18:14:00 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.3.3..@fluentui/test-utilities_v8.3.4)
+
+### Patches
+
+- fix: explicitly ship dist/ folder. ([PR #27769](https://github.com/microsoft/fluentui/pull/27769) by tristan.watanabe@gmail.com)
+
+## [8.3.3](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.3.3)
+
+Tue, 02 May 2023 22:20:21 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.3.0..@fluentui/test-utilities_v8.3.3)
+
+### Patches
+
+- fix: update npmignore files to fix npm8/node16 regression with how npm publish works. ([PR #27745](https://github.com/microsoft/fluentui/pull/27745) by tristan.watanabe@gmail.com)
+
+## [8.3.0](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.3.0)
+
+Wed, 01 Mar 2023 07:45:40 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.2.5..@fluentui/test-utilities_v8.3.0)
+
+### Minor changes
+
+- feat: move private test/ helpers from utilities package to make test pass with jest 28 ([PR #26958](https://github.com/microsoft/fluentui/pull/26958) by martinhochel@microsoft.com)
+
+## [8.2.3](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.2.3)
+
+Thu, 20 Oct 2022 07:43:13 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/test-utilities_v8.2.1..@fluentui/test-utilities_v8.2.3)
+
+### Patches
+
+- chore: Bump react peer dependency to react 18. ([PR #25278](https://github.com/microsoft/fluentui/pull/25278) by mgodbolt@microsoft.com)
 
 ## [8.2.0](https://github.com/microsoft/fluentui/tree/@fluentui/test-utilities_v8.2.0)
 

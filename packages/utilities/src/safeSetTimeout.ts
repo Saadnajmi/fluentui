@@ -7,16 +7,16 @@ import { extendComponent } from './extendComponent';
  * is unmounting before the async code is executed, preventing bugs where code
  * accesses things within the component after being unmounted.
  */
-export const safeSetTimeout = (component: React.Component) => {
-  let activeTimeouts: Set<NodeJS.Timer>;
+export const safeSetTimeout = (component: React.Component): ((cb: Function, duration: number) => void) => {
+  let activeTimeouts: Set<ReturnType<typeof setTimeout>>;
 
-  return (cb: Function, duration: number) => {
+  return (cb: Function, duration: number): void => {
     if (!activeTimeouts) {
-      activeTimeouts = new Set<NodeJS.Timer>();
+      activeTimeouts = new Set();
 
       extendComponent(component, {
         componentWillUnmount: () => {
-          activeTimeouts.forEach((id: NodeJS.Timer) => clearTimeout(id));
+          activeTimeouts.forEach(id => clearTimeout(id));
         },
       });
     }

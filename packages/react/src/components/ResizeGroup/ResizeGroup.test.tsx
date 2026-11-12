@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { ResizeGroup } from './ResizeGroup';
 import { getNextResizeGroupStateProvider, getMeasurementCache } from './ResizeGroup.base';
-import * as renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import { isConformant } from '../../common/isConformant';
+import { getBySelector } from '../../common/testUtilities';
 import type { IResizeGroupState } from './ResizeGroup.base';
 
 interface ITestScalingData {
@@ -37,16 +37,14 @@ describe('ResizeGroup', () => {
     const renderedDataId = 'onRenderDataId';
     const onRenderData = (data: any) => <div id={renderedDataId}> Rendered data: {data.content}</div>;
     expect(
-      renderer
-        .create(
-          <ResizeGroup
-            data={initialData}
-            onReduceData={onReduceScalingData}
-            onRenderData={onRenderData}
-            className={'TestClassName'}
-          />,
-        )
-        .toJSON(),
+      render(
+        <ResizeGroup
+          data={initialData}
+          onReduceData={onReduceScalingData}
+          onRenderData={onRenderData}
+          className={'TestClassName'}
+        />,
+      ).container.firstChild,
     ).toMatchSnapshot();
   });
 
@@ -65,11 +63,11 @@ describe('ResizeGroup', () => {
     const renderedDataId = 'onRenderDataId';
     const onRenderData = (data: any) => <div id={renderedDataId}> Rendered data: {data.content}</div>;
 
-    const wrapper = mount(
+    const { container } = render(
       <ResizeGroup data={initialData} onReduceData={onReduceScalingData} onRenderData={onRenderData} />,
     );
 
-    expect(wrapper.find('#' + renderedDataId).length).toEqual(1);
+    expect(getBySelector(container, '#' + renderedDataId)).toBeTruthy();
   });
 
   describe('getNextResizeGroupStateProvider', () => {
@@ -276,7 +274,7 @@ describe('ResizeGroup', () => {
 
       // Pass in a state that reflects some rendered data
       const currentState = {
-        renderedData: renderedData,
+        renderedData,
       };
 
       const result = getNextResizeGroupState(resizeGroupProps, currentState, getMeasuredElementWidthStub, reducedWidth);
@@ -284,7 +282,7 @@ describe('ResizeGroup', () => {
       // Important to note that we do not start scaling from the initial data,
       // we continue from the last rendered data.
       expect(result).toEqual({
-        renderedData: renderedData,
+        renderedData,
         dataToMeasure: renderedData,
         measureContainer: false,
         resizeDirection: 'shrink',
@@ -305,7 +303,7 @@ describe('ResizeGroup', () => {
 
       // Pass in a state that reflects some rendered data
       const currentState = {
-        renderedData: renderedData,
+        renderedData,
       };
 
       const result = getNextResizeGroupState(
@@ -316,7 +314,7 @@ describe('ResizeGroup', () => {
       );
 
       expect(result).toEqual({
-        renderedData: renderedData,
+        renderedData,
         dataToMeasure: resizeGroupProps.data,
         resizeDirection: 'shrink',
         measureContainer: false,
@@ -423,7 +421,7 @@ describe('ResizeGroup', () => {
 
       // Pass in a state that reflects some rendered data
       const currentState = {
-        renderedData: renderedData,
+        renderedData,
       };
 
       const result = getNextResizeGroupState(
@@ -434,7 +432,7 @@ describe('ResizeGroup', () => {
       );
 
       expect(result).toEqual({
-        renderedData: renderedData,
+        renderedData,
         dataToMeasure: { index: 4 },
         resizeDirection: 'grow',
         measureContainer: false,
@@ -539,7 +537,7 @@ describe('ResizeGroup', () => {
 
     // Pass in a state that reflects some rendered data
     const currentState: IResizeGroupState = {
-      renderedData: renderedData,
+      renderedData,
       dataToMeasure: { index: 8 },
       resizeDirection: 'grow',
     };
@@ -551,7 +549,7 @@ describe('ResizeGroup', () => {
     // Important to note that we do not start scaling from the initial data,
     // we continue from the last rendered data.
     expect(result).toEqual({
-      renderedData: renderedData,
+      renderedData,
       dataToMeasure: { index: 7 },
       measureContainer: false,
       resizeDirection: 'shrink',

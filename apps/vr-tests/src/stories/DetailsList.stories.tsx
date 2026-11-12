@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import {
   DetailsList,
   DetailsListLayoutMode,
@@ -116,79 +117,86 @@ const groups = [
   { count: 4, key: '2', name: 'Blue', startIndex: 2 },
 ];
 
-storiesOf('DetailsList', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'DetailsList',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.testWrapper' })
         .hover('.ms-DetailsRow')
         .snapshot('hover', { cropTo: '.testWrapper' })
         .click('.ms-DetailsRow')
         .hover('.ms-DetailsRow')
         .snapshot('click', { cropTo: '.testWrapper' })
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory('Root', () => (
-    <DetailsList
-      items={items}
-      compact={false}
-      columns={columns}
-      layoutMode={DetailsListLayoutMode.justified}
-      isHeaderVisible={true}
-    />
-  ))
-  .addStory('Compact', () => (
-    <DetailsList
-      items={items}
-      compact
-      columns={columns}
-      layoutMode={DetailsListLayoutMode.justified}
-      isHeaderVisible={true}
-    />
-  ))
-  .addStory('Single Selection Mode', () => (
-    <DetailsList
-      items={items}
-      compact={false}
-      columns={columns}
-      selectionMode={SelectionMode.single}
-      layoutMode={DetailsListLayoutMode.justified}
-      isHeaderVisible={true}
-    />
-  ))
-  .addStory('Grouped', () => (
-    <DetailsList
-      items={items}
-      groups={groups}
-      columns={columns}
-      layoutMode={DetailsListLayoutMode.justified}
-      isHeaderVisible={true}
-    />
-  ))
-  .addStory('Grouped with Checkbox Hidden', () => (
-    <DetailsList
-      items={items}
-      groups={groups}
-      columns={columns}
-      layoutMode={DetailsListLayoutMode.justified}
-      checkboxVisibility={CheckboxVisibility.hidden}
-      isHeaderVisible={true}
-    />
-  ))
-  .addStory(
-    'Checkbox Visible Always',
-    () => (
-      <DetailsList
-        items={items}
-        columns={columns}
-        layoutMode={DetailsListLayoutMode.justified}
-        checkboxVisibility={CheckboxVisibility.always}
-        isHeaderVisible={true}
-      />
-    ),
-    { includeRtl: true },
-  );
+        .end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof DetailsList>;
+
+export const Root = () => (
+  <DetailsList
+    items={items}
+    compact={false}
+    columns={columns}
+    layoutMode={DetailsListLayoutMode.justified}
+    isHeaderVisible={true}
+  />
+);
+
+export const Compact = () => (
+  <DetailsList
+    items={items}
+    compact
+    columns={columns}
+    layoutMode={DetailsListLayoutMode.justified}
+    isHeaderVisible={true}
+  />
+);
+
+export const SingleSelectionMode = () => (
+  <DetailsList
+    items={items}
+    compact={false}
+    columns={columns}
+    selectionMode={SelectionMode.single}
+    layoutMode={DetailsListLayoutMode.justified}
+    isHeaderVisible={true}
+  />
+);
+
+export const Grouped = () => (
+  <DetailsList
+    items={items}
+    groups={groups}
+    columns={columns}
+    layoutMode={DetailsListLayoutMode.justified}
+    isHeaderVisible={true}
+  />
+);
+
+export const GroupedWithCheckboxHidden = () => (
+  <DetailsList
+    items={items}
+    groups={groups}
+    columns={columns}
+    layoutMode={DetailsListLayoutMode.justified}
+    checkboxVisibility={CheckboxVisibility.hidden}
+    isHeaderVisible={true}
+  />
+);
+
+GroupedWithCheckboxHidden.storyName = 'Grouped with Checkbox Hidden';
+
+export const CheckboxVisibleAlways = () => (
+  <DetailsList
+    items={items}
+    columns={columns}
+    layoutMode={DetailsListLayoutMode.justified}
+    checkboxVisibility={CheckboxVisibility.always}
+    isHeaderVisible={true}
+  />
+);
+
+export const CheckboxVisibleAlwaysRTL = getStoryVariant(CheckboxVisibleAlways, RTL);

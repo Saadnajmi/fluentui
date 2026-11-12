@@ -5,14 +5,10 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "clean": "just-scripts clean",
-    "generate:site": "just-scripts generate:site",
-    "lint": "eslint --ext .js,.ts --cache .",
-    "type-check": "tsc -p ."
+    "clean": "yarn run -T just-scripts clean",
+    "generate:site": "yarn run -T just-scripts generate:site",
+    "lint": "yarn run -T eslint --cache .",
+    "type-check": "yarn run -T tsc -p . --noEmit"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@fluentui/eslint-plugin": "*",
-    "@fluentui/scripts": "^1.0.0"
-  }
+  "license": "MIT"
 }

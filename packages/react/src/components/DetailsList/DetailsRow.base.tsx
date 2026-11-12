@@ -14,7 +14,6 @@ import { GroupSpacer } from '../GroupedList/GroupSpacer';
 import { DetailsRowFields } from './DetailsRowFields';
 import { FocusZone, FocusZoneDirection } from '../../FocusZone';
 import { SelectionMode, SELECTION_CHANGE } from '../../Selection';
-import { CollapseAllVisibility } from '../../GroupedList';
 import { classNamesFunction } from '../../Utilities';
 import type { IDisposable } from '../../Utilities';
 import type { IColumn } from './DetailsList.types';
@@ -25,6 +24,8 @@ import type { IDetailsRowCheckProps } from './DetailsRowCheck.types';
 import type { IDetailsRowFieldsProps } from './DetailsRowFields.types';
 import type { IProcessedStyleSet } from '../../Styling';
 import { getId } from '../../Utilities';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 const getClassNames = classNamesFunction<IDetailsRowStyleProps, IDetailsRowStyles>();
 
@@ -107,7 +108,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
     }
   }
 
-  public componentDidUpdate(previousProps: IDetailsRowBaseProps) {
+  public componentDidUpdate(previousProps: IDetailsRowBaseProps): void {
     const state = this.state;
     const { item, onDidMount } = this.props;
     const { columnMeasureInfo } = state;
@@ -175,7 +176,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       className,
       columns = NO_COLUMNS,
@@ -190,7 +191,6 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
       onRenderField,
       getCellValueKey,
       selectionMode,
-      rowWidth = 0,
       checkboxVisibility,
       getRowAriaLabel,
       getRowAriaDescription,
@@ -227,7 +227,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
     const ariaSelected = selectionMode === SelectionMode.none ? undefined : isSelected;
     const ariaPositionInSet = group ? itemIndex - group.startIndex + 1 : undefined;
     const ariaSetSize = group ? group.count : undefined;
-    const focusZoneDirection = focusZoneProps ? focusZoneProps.direction : FocusZoneDirection.horizontal;
+    const focusZoneDirection = focusZoneProps?.direction ?? FocusZoneDirection.horizontal;
 
     this._classNames = {
       ...this._classNames,
@@ -318,6 +318,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
         {...focusZoneProps}
         {...groupedListRowProps}
         direction={focusZoneDirection}
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         elementRef={this._root}
         componentRef={this._focusZone}
         role={role}
@@ -327,11 +328,10 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
         className={this._classNames.root}
         data-selection-index={itemIndex}
         data-selection-touch-invoke={true}
-        data-selection-disabled={disabled || undefined}
+        data-selection-disabled={(this.props as any)['data-selection-disabled'] ?? (disabled || undefined)}
         data-item-index={itemIndex}
         aria-rowindex={ariaPositionInSet === undefined ? itemIndex + flatIndexOffset : undefined}
         data-automationid="DetailsRow"
-        style={{ minWidth: rowWidth }}
         aria-selected={ariaSelected}
         allowFocusRoot={true}
       >
@@ -354,7 +354,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
               className: this._classNames.check,
               theme,
               isVisible: checkboxVisibility === CheckboxVisibility.always,
-              onRenderDetailsCheckbox: onRenderDetailsCheckbox,
+              onRenderDetailsCheckbox,
               useFastIcons,
             })}
           </div>
@@ -363,7 +363,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
         <GroupSpacer
           indentWidth={indentWidth}
           role="gridcell"
-          count={groupNestingDepth! - (this.props.collapseAllVisibility === CollapseAllVisibility.hidden ? 1 : 0)}
+          count={groupNestingDepth! === 0 ? -1 : groupNestingDepth!}
         />
 
         {item && rowFields}
@@ -385,13 +385,6 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
             />
           </span>
         )}
-
-        <span
-          role="checkbox"
-          className={this._classNames.checkCover}
-          aria-checked={isSelected}
-          data-selection-toggle={true}
-        />
       </FocusZone>
     );
   }
@@ -424,7 +417,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
     return !!this._focusZone.current?.focus(forceIntoFirstElement);
   }
 
-  protected _onRenderCheck(props: IDetailsRowCheckProps) {
+  protected _onRenderCheck(props: IDetailsRowCheckProps): JSXElement {
     return <DetailsRowCheck {...props} />;
   }
 
@@ -432,9 +425,7 @@ export class DetailsRowBase extends React.Component<IDetailsRowBaseProps, IDetai
     const selectionState = getSelectionState(this.props);
 
     if (!shallowCompare(selectionState, this.state.selectionState)) {
-      this.setState({
-        selectionState: selectionState,
-      });
+      this.setState({ selectionState });
     }
   };
 

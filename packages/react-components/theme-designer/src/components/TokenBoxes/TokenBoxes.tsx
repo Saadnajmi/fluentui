@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { makeStyles, shorthands } from '@griffel/react';
+import { makeStyles } from '@griffel/react';
 import { tokens, useId, Button, Caption1, Input } from '@fluentui/react-components';
-import { Theme } from '@fluentui/react-theme';
+import type { InputOnChangeData } from '@fluentui/react-components';
+import type { Theme } from '@fluentui/react-theme';
 import { SearchRegular } from '@fluentui/react-icons';
 
 export interface TokenBoxesProps {
@@ -28,11 +29,11 @@ const useStyles = makeStyles({
   boxes: {
     display: 'flex',
     flexDirection: 'column',
-    ...shorthands.borderRadius('0.5em'),
-    ...shorthands.border('2px solid'),
+    borderRadius: '0.5em',
+    border: '2px solid',
     boxShadow: '0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19)',
     paddingBottom: '10px',
-    ...shorthands.overflow('hidden'),
+    overflow: 'hidden',
   },
   colors: {
     height: '100px',
@@ -67,14 +68,17 @@ export const TokenBoxes: React.FC<TokenBoxesProps> = props => {
   });
 
   const filteredColors = colors.filter(color => {
-    const themeColor = ((theme as unknown) as Record<string, string>)[color];
+    const themeColor = (theme as unknown as Record<string, string>)[color];
     if (!themeColor) {
       return;
     }
     return themeColor.includes(filter) || color.toLowerCase().includes(filter.toLowerCase());
   });
 
-  const changeFilter = React.useCallback((ev, data) => setFilter(ev.target.value), [setFilter]);
+  const changeFilter = React.useCallback(
+    (ev: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => setFilter(ev.target.value),
+    [setFilter],
+  );
 
   return (
     <div>
@@ -90,7 +94,7 @@ export const TokenBoxes: React.FC<TokenBoxesProps> = props => {
       </div>
       <div className={styles.root}>
         {filteredColors.map(color => {
-          const themeColor = ((theme as unknown) as Record<string, string>)[color];
+          const themeColor = (theme as unknown as Record<string, string>)[color];
           if (!themeColor) {
             return;
           }

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { registerIcons } from '@fluentui/style-utilities';
+import { registerIcons, FLUENT_CDN_BASE_URL } from '@fluentui/style-utilities';
 import { FileTypeIconMap } from './FileTypeIconMap';
 import type { IIconOptions } from '@fluentui/style-utilities';
+import type { JSXElement } from '@fluentui/utilities';
 
 const PNG_SUFFIX = '_png';
 const SVG_SUFFIX = '_svg';
 
-export const DEFAULT_BASE_URL = 'https://spoppe-b.azureedge.net/files/fabric-cdn-prod_20220825.001/assets/item-types/';
+export const DEFAULT_BASE_URL = `${FLUENT_CDN_BASE_URL}/assets/item-types/`;
 export const ICON_SIZES: number[] = [16, 20, 24, 32, 40, 48, 64, 96];
 
 export function initializeFileTypeIcons(baseUrl: string = DEFAULT_BASE_URL, options?: Partial<IIconOptions>): void {
@@ -17,7 +18,7 @@ export function initializeFileTypeIcons(baseUrl: string = DEFAULT_BASE_URL, opti
 
 function _initializeIcons(baseUrl: string, size: number, options?: Partial<IIconOptions>): void {
   const iconTypes: string[] = Object.keys(FileTypeIconMap);
-  const fileTypeIcons: { [key: string]: JSX.Element } = {};
+  const fileTypeIcons: { [key: string]: JSXElement } = {};
 
   iconTypes.forEach((type: string) => {
     const baseUrlSizeType = baseUrl + size + '/' + type;

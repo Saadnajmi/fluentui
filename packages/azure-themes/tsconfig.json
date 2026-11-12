@@ -10,13 +10,13 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
     "preserveConstEnums": true,
-    "lib": ["es5", "dom"]
+    "lib": ["es5", "dom"],
+    "isolatedModules": true
   },
   "include": ["src"]
 }

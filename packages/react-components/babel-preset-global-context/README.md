@@ -1,6 +1,6 @@
 # @fluentui/babel-preset-global-context
 
-**Babel Preset Global Context for [Fluent UI React](https://developer.microsoft.com/en-us/fluentui)**
+**Babel Preset Global Context for [Fluent UI React](https://react.fluentui.dev)**
 
 Babel preset that transforms createContext calls to use global context shims
 
@@ -55,7 +55,7 @@ function Consumer() {
 ```
 
 > ⚠️ The recommended solution to the above problem is to make sure that the affected dependency
-> only exists once in node_modules. You can do this by upgrading your dependencies or using [resolutions](https://classic.yarnpkg.com/lang/en/docs/selective-version-resolutions/).
+> only exists once in node_modules. You can do this by upgrading your dependencies or using [resolutions](https://yarnpkg.com/configuration/manifest#resolutions).
 
 This library should only be used as a workaround in the cases where it might not be feasible to deduplicate `node_modules`.
 

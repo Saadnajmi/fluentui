@@ -18,6 +18,7 @@ import {
   Async,
   EventGroup,
   FocusRects,
+  FocusRectsContext,
   KeyCodes,
 } from '../../Utilities';
 import { Icon, FontIcon, ImageIcon } from '../../Icon';
@@ -26,13 +27,15 @@ import { ContextualMenu } from '../../ContextualMenu';
 import { getBaseButtonClassNames } from './BaseButton.classNames';
 import { getSplitButtonClassNames as getBaseSplitButtonClassNames } from './SplitButton/SplitButton.classNames';
 import { KeytipData } from '../../KeytipData';
-import type { IRenderFunction } from '../../Utilities';
+import type { IFocusRectsContext, IRenderFunction } from '../../Utilities';
 import type { IContextualMenuProps } from '../../ContextualMenu';
 import type { IButtonProps, IButton } from './Button.types';
 import type { IButtonClassNames } from './BaseButton.classNames';
 import type { ISplitButtonClassNames } from './SplitButton/SplitButton.classNames';
 import type { IKeytipProps } from '../../Keytip';
 import { composeComponentAs } from '../../Utilities';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 /**
  * {@docCategory Button}
@@ -65,6 +68,10 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     styles: {},
     split: false,
   };
+
+  // needed to access registeredProviders when manually setting focus visibility
+  public static contextType = FocusRectsContext;
+  public context: IFocusRectsContext;
 
   private _async: Async;
   private _events: EventGroup;
@@ -113,7 +120,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       ariaDescription,
       ariaLabel,
@@ -122,7 +129,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       disabled,
       allowDisabledFocus,
       primaryDisabled,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       secondaryText = this.props.description,
       href,
       iconProps,
@@ -176,7 +183,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     const tag = renderAsAnchor ? 'a' : 'button';
 
     const nativeProps = getNativeProps(
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       assign(renderAsAnchor ? {} : { type: 'button' }, this.props.rootProps, this.props),
       renderAsAnchor ? anchorProperties : buttonProperties,
       [
@@ -225,7 +232,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
 
     const buttonProps = assign(nativeProps, {
       className: this._classNames.root,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       ref: this._mergedRef(this.props.elementRef, this._buttonElement),
       disabled: isPrimaryButtonDisabled && !allowDisabledFocus,
       onKeyDown: this._onKeyDown,
@@ -262,7 +269,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     return this._onRenderContent(tag, buttonProps);
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     // For split buttons, touching anywhere in the button should drop the dropdown, which should contain the
     // primary action. This gives more hit target space for touch environments. We're setting the onpointerdown here,
     // because React does not support Pointer events yet.
@@ -276,7 +283,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     }
   }
 
-  public componentDidUpdate(prevProps: IBaseButtonProps, prevState: IBaseButtonState) {
+  public componentDidUpdate(prevProps: IBaseButtonProps, prevState: IBaseButtonState): void {
     // If Button's menu was closed, run onAfterMenuDismiss.
     if (this.props.onAfterMenuDismiss && !prevState.menuHidden && this.state.menuHidden) {
       this.props.onAfterMenuDismiss();
@@ -290,10 +297,10 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
 
   public focus(): void {
     if (this._isSplitButton && this._splitButtonContainer.current) {
-      setFocusVisibility(true);
+      setFocusVisibility(true, undefined, this.context?.registeredProviders);
       this._splitButtonContainer.current.focus();
     } else if (this._buttonElement.current) {
-      setFocusVisibility(true);
+      setFocusVisibility(true, undefined, this.context?.registeredProviders);
       this._buttonElement.current.focus();
     }
   }
@@ -306,7 +313,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     this._openMenu(shouldFocusOnContainer, shouldFocusOnMount);
   }
 
-  private _onRenderContent(tag: any, buttonProps: IButtonProps): JSX.Element {
+  private _onRenderContent(tag: any, buttonProps: IButtonProps): JSXElement {
     const props = this.props;
     const Tag = tag;
     const {
@@ -315,7 +322,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       onRenderIcon = this._onRenderIcon,
       onRenderAriaDescription = this._onRenderAriaDescription,
       onRenderChildren = this._onRenderChildren,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       onRenderMenu = this._onRenderMenu,
       onRenderMenuIcon = this._onRenderMenuIcon,
       disabled,
@@ -325,7 +332,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
     }
 
-    const Button = (keytipAttributes?: any): JSX.Element => (
+    const Button = (keytipAttributes?: any): JSXElement => (
       <Tag {...buttonProps} {...keytipAttributes}>
         <span className={this._classNames.flexContainer} data-automationid="splitbuttonprimary">
           {onRenderIcon(props, this._onRenderIcon)}
@@ -350,7 +357,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
         ariaDescribedBy={(buttonProps as any)['aria-describedby']}
         disabled={disabled}
       >
-        {(keytipAttributes: any): JSX.Element => Button(keytipAttributes)}
+        {(keytipAttributes: any): JSXElement => Button(keytipAttributes)}
       </KeytipData>
     ) : (
       Button()
@@ -380,7 +387,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
    */
   private _shouldRenderMenu() {
     const { menuHidden } = this.state;
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { persistMenu, renderPersistedMenuHiddenOnMount } = this.props;
 
     if (!menuHidden) {
@@ -398,7 +405,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
   private _onRenderIcon = (
     buttonProps?: IButtonProps,
     defaultRender?: IRenderFunction<IButtonProps>,
-  ): JSX.Element | null => {
+  ): JSXElement | null => {
     const { iconProps } = this.props;
 
     if (iconProps && (iconProps.iconName !== undefined || iconProps.imageProps)) {
@@ -419,11 +426,11 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     return null;
   };
 
-  private _onRenderTextContents = (): JSX.Element | (JSX.Element | null)[] => {
+  private _onRenderTextContents = (): JSXElement | (JSXElement | null)[] => {
     const {
       text,
       children,
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       secondaryText = this.props.description,
       onRenderText = this._onRenderText,
       onRenderDescription = this._onRenderDescription,
@@ -440,7 +447,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     return [onRenderText(this.props, this._onRenderText), onRenderDescription(this.props, this._onRenderDescription)];
   };
 
-  private _onRenderText = (): JSX.Element | null => {
+  private _onRenderText = (): JSXElement | null => {
     let { text } = this.props;
     const { children } = this.props;
 
@@ -468,7 +475,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     return this.props.text !== null && (this.props.text !== undefined || typeof this.props.children === 'string');
   }
 
-  private _onRenderChildren = (): JSX.Element | null => {
+  private _onRenderChildren = (): JSXElement | null => {
     const { children } = this.props;
 
     // If children is just a string, either it or the text will be rendered via onRenderLabel
@@ -481,7 +488,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
   };
 
   private _onRenderDescription = (props: IButtonProps) => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { secondaryText = this.props.description } = props;
 
     // ms-Button-description is only shown when the button type is compound.
@@ -505,7 +512,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     ) : null;
   };
 
-  private _onRenderMenuIcon = (props: IButtonProps): JSX.Element | null => {
+  private _onRenderMenuIcon = (props: IButtonProps): JSXElement | null => {
     const { menuIconProps } = this.props;
 
     return <FontIcon iconName="ChevronDown" {...menuIconProps} className={this._classNames.menuIcon} />;
@@ -535,7 +542,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     };
   }
 
-  private _onRenderMenu = (menuProps: IContextualMenuProps): JSX.Element => {
+  private _onRenderMenu = (menuProps: IContextualMenuProps): JSXElement => {
     const MenuType = this.props.menuAs ? composeComponentAs(this.props.menuAs, ContextualMenu) : ContextualMenu;
 
     return <MenuType {...menuProps} />;
@@ -576,7 +583,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     this.state.menuHidden ? this._openMenu(shouldFocusOnContainer, shouldFocusOnMount) : this._dismissMenu();
   };
 
-  private _onRenderSplitButtonContent(tag: any, buttonProps: IButtonProps): JSX.Element {
+  private _onRenderSplitButtonContent(tag: any, buttonProps: IButtonProps): JSXElement {
     const {
       styles = {},
       disabled,
@@ -615,7 +622,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       assign(buttonProps, primaryActionButtonProps);
     }
 
-    const SplitButton = (keytipAttributes?: any): JSX.Element => (
+    const SplitButton = (keytipAttributes?: any): JSXElement => (
       <div
         {...containerProps}
         data-ktp-target={keytipAttributes ? keytipAttributes['data-ktp-target'] : undefined}
@@ -648,7 +655,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
 
     return keytipProps ? (
       <KeytipData keytipProps={keytipProps} disabled={disabled}>
-        {(keytipAttributes: any): JSX.Element => SplitButton(keytipAttributes)}
+        {(keytipAttributes: any): JSXElement => SplitButton(keytipAttributes)}
       </KeytipData>
     ) : (
       SplitButton()
@@ -673,14 +680,17 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       this._dismissMenu();
     }
 
-    if (!this._processingTouch && this.props.onClick) {
+    // toggle split buttons need two separate targets, even for touch
+    const singleTouchTarget = this._processingTouch && !this.props.toggle;
+
+    if (!singleTouchTarget && this.props.onClick) {
       this.props.onClick(ev);
-    } else if (this._processingTouch) {
+    } else if (singleTouchTarget) {
       this._onMenuClick(ev);
     }
   };
 
-  private _onRenderSplitButtonDivider(classNames: ISplitButtonClassNames | undefined): JSX.Element | null {
+  private _onRenderSplitButtonDivider(classNames: ISplitButtonClassNames | undefined): JSXElement | null {
     if (classNames && classNames.divider) {
       const onClick = (ev: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         ev.stopPropagation();
@@ -693,15 +703,9 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
   private _onRenderSplitButtonMenuButton(
     classNames: ISplitButtonClassNames | undefined,
     keytipAttributes: any,
-  ): JSX.Element {
-    const {
-      allowDisabledFocus,
-      checked,
-      disabled,
-      splitButtonMenuProps,
-      splitButtonAriaLabel,
-      primaryDisabled,
-    } = this.props;
+  ): JSXElement {
+    const { allowDisabledFocus, checked, disabled, splitButtonMenuProps, splitButtonAriaLabel, primaryDisabled } =
+      this.props;
     const { menuHidden } = this.state;
     let menuIconProps = this.props.menuIconProps;
 
@@ -714,9 +718,9 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     const splitButtonProps = {
       ...splitButtonMenuProps,
       styles: classNames,
-      checked: checked,
-      disabled: disabled,
-      allowDisabledFocus: allowDisabledFocus,
+      checked,
+      disabled,
+      allowDisabledFocus,
       onClick: this._onMenuClick,
       menuProps: undefined,
       iconProps: { ...menuIconProps, className: this._classNames.menuIcon },
@@ -739,7 +743,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
 
   private _onKeyDown = (ev: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement>) => {
     // explicity cancelling event so click won't fire after this
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (this.props.disabled && (ev.which === KeyCodes.enter || ev.which === KeyCodes.space)) {
       ev.preventDefault();
       ev.stopPropagation();
@@ -763,9 +767,9 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
   private _onKeyPress = (
     ev: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement | HTMLSpanElement>,
   ) => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (!this.props.disabled && this.props.onKeyPress !== undefined) {
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       this.props.onKeyPress(ev); // not cancelling event because it's not disabled
     }
   };
@@ -799,7 +803,7 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
   };
 
   private _onSplitButtonContainerKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (ev.which === KeyCodes.enter || ev.which === KeyCodes.space) {
       if (this._buttonElement.current) {
         this._buttonElement.current.click();
@@ -820,9 +824,9 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       this.props.onKeyDown(ev);
     }
 
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const isUp = ev.which === KeyCodes.up;
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const isDown = ev.which === KeyCodes.down;
 
     if (!ev.defaultPrevented && this._isValidMenuOpenKey(ev)) {
@@ -836,12 +840,12 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
       ev.stopPropagation();
     }
 
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (ev.which === KeyCodes.enter || ev.which === KeyCodes.space) {
       // We manually set the focus visibility to true if opening via Enter or Space to account for the scenario where
       // a user clicks on the button, closes the menu and then opens it via keyboard. In this scenario our default logic
       // for setting focus visibility is not triggered since there is no keyboard navigation present beforehand.
-      setFocusVisibility(true, ev.target as Element);
+      setFocusVisibility(true, ev.target as Element, this.context?.registeredProviders);
     }
 
     if (!(ev.altKey || ev.metaKey) && (isUp || isDown)) {
@@ -905,7 +909,10 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
 
       // Touch and pointer events don't focus the button naturally,
       // so adding an imperative focus call to guarantee this behavior.
-      this.focus();
+      // Only focus the button if a splitbutton menu is not open
+      if (this.state.menuHidden) {
+        this.focus();
+      }
     }, TouchIdleDelay);
   }
 
@@ -918,10 +925,10 @@ export class BaseButton extends React.Component<IBaseButtonProps, IBaseButtonSta
     ev: React.KeyboardEvent<HTMLDivElement | HTMLAnchorElement | HTMLButtonElement>,
   ): boolean {
     if (this.props.menuTriggerKeyCode) {
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       return ev.which === this.props.menuTriggerKeyCode;
     } else if (this.props.menuProps) {
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       return ev.which === KeyCodes.down && (ev.altKey || ev.metaKey);
     }
 

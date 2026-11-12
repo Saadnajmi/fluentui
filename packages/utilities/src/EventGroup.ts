@@ -1,3 +1,4 @@
+import { getDocument } from './dom';
 import { assign } from './object';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -37,7 +38,8 @@ export interface IDeclaredEventsByName {
   [eventName: string]: boolean;
 }
 
-/** An instance of EventGroup allows anything with a handle to it to trigger events on it.
+/**
+ * An instance of EventGroup allows anything with a handle to it to trigger events on it.
  *  If the target is an HTMLElement, the event will be attached to the element and can be
  *  triggered as usual (like clicking for onClick).
  *  The event can be triggered by calling EventGroup.raise() here. If the target is an
@@ -45,8 +47,17 @@ export interface IDeclaredEventsByName {
  *  handled here in EventGroup, and the handler is called in the context of the parent
  *  (which is passed in in the constructor).
  *
- * @public
+ * An instance of EventGroup allows anything with a handle to it to trigger events on it.
+ *  If the target is an HTMLElement, the event will be attached to the element and can be
+ *  triggered as usual (like clicking for onClick).
+ *  The event can be triggered by calling EventGroup.raise() here. If the target is an
+ *  HTMLElement, the event gets raised and is handled by the browser. Otherwise, it gets
+ *  handled here in EventGroup, and the handler is called in the context of the parent
+ *  (which is passed in in the constructor).
+ *
  * {@docCategory EventGroup}
+ *
+ * @public
  */
 export class EventGroup {
   private static _uniqueId: number = 0;
@@ -61,21 +72,29 @@ export class EventGroup {
    *  which may lead to unexpected behavior if it differs from the defaults.
    *
    */
-  public static raise(target: any, eventName: string, eventArgs?: any, bubbleEvent?: boolean): boolean | undefined {
+  public static raise(
+    target: any,
+    eventName: string,
+    eventArgs?: any,
+    bubbleEvent?: boolean,
+    doc?: Document,
+  ): boolean | undefined {
     let retVal;
+    const theDoc = doc ?? getDocument()!;
 
     if (EventGroup._isElement(target)) {
-      if (typeof document !== 'undefined' && document.createEvent) {
-        let ev = document.createEvent('HTMLEvents');
+      if (typeof theDoc !== 'undefined' && theDoc.createEvent) {
+        let ev = theDoc.createEvent('HTMLEvents');
 
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ev.initEvent(eventName, bubbleEvent || false, true);
 
         assign(ev, eventArgs);
 
         retVal = target.dispatchEvent(ev);
-      } else if (typeof document !== 'undefined' && (document as any).createEventObject) {
+      } else if (typeof theDoc !== 'undefined' && (theDoc as any).createEventObject) {
         // IE8
-        let evObj = (document as any).createEventObject(eventArgs);
+        let evObj = (theDoc as any).createEventObject(eventArgs);
         // cannot set cancelBubble on evObj, fireEvent will overwrite it
         target.fireEvent('on' + eventName, evObj);
       }
@@ -183,10 +202,10 @@ export class EventGroup {
     } else {
       let parent = this._parent;
       let eventRecord: IEventRecord = {
-        target: target,
-        eventName: eventName,
-        parent: parent,
-        callback: callback,
+        target,
+        eventName,
+        parent,
+        callback,
         options,
       };
 

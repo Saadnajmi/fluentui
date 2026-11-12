@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { getWindow } from './dom/getWindow';
+import { IReactProps } from './React.types';
 
 /**
  * DelayedRender component props.
  *
  * @public
  */
-// eslint-disable-next-line deprecation/deprecation
-export interface IDelayedRenderProps extends React.Props<{}> {
+export interface IDelayedRenderProps extends IReactProps<{}> {
   /**
    * Number of milliseconds to delay rendering children.
    */
@@ -31,8 +31,13 @@ export interface IDelayedRenderState {
  * requires a single child component; don't pass in many components. Wrap multiple components in a DIV
  * if necessary.
  *
- * @public
+ * Utility component for delaying the render of a child component after a given delay. This component
+ * requires a single child component; don't pass in many components. Wrap multiple components in a DIV
+ * if necessary.
+ *
  * {@docCategory DelayedRender}
+ *
+ * @public
  */
 export class DelayedRender extends React.Component<IDelayedRenderProps, IDelayedRenderState> {
   public static defaultProps = {
@@ -50,6 +55,7 @@ export class DelayedRender extends React.Component<IDelayedRenderProps, IDelayed
 
   public componentDidMount(): void {
     let { delay } = this.props;
+    // eslint-disable-next-line no-restricted-globals
     this._timeoutId = window.setTimeout(() => {
       this.setState({
         isRendered: true,

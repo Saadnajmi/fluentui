@@ -1,24 +1,20 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
 <div
-  className="ms-BasePicker ms-BaseExtendedPicker"
-  onCopy={[Function]}
-  onKeyDown={[Function]}
+  class="ms-BasePicker ms-BaseExtendedPicker"
 >
   <div
-    className=
+    class=
         ms-FocusZone
         &:focus {
           outline: none;
         }
     data-focuszone-id="FocusZone0"
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onMouseDownCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {}}"
   >
     <div
-      className=
+      class=
           ms-SelectionZone
           ms-UnifiedPicker-selectionZone
           ms-UnifiedPicker-selectionZone
@@ -26,18 +22,10 @@ exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
             display: flex;
             flex: 1 1 auto;
           }
-      onClick={[Function]}
-      onContextMenu={[Function]}
-      onDoubleClick={[Function]}
-      onFocusCapture={[Function]}
-      onKeyDown={[Function]}
-      onKeyDownCapture={[Function]}
-      onMouseDown={[Function]}
-      onMouseDownCapture={[Function]}
       role="presentation"
     >
       <div
-        className=
+        class=
             ms-BasePicker-text
             ms-UnifiedPicker-text
             {
@@ -58,13 +46,13 @@ exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
       >
         <div
           aria-live="polite"
-          className=""
+          class=""
           role="status"
         />
         <div
           aria-multiselectable="true"
           aria-orientation="horizontal"
-          className=
+          class=
               ms-UnifiedPicker-listDiv
               ms-UnifiedPicker-listDiv
               {
@@ -75,24 +63,22 @@ exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
           role=""
         >
           <div
-            aria-expanded={false}
+            aria-expanded="false"
             aria-haspopup="listbox"
-            className=
+            class=
                 ms-BasePicker-div
                 ms-UnifiedPicker-div
                 {
                   display: flex;
                   flex: 1 1 auto;
                 }
-            onDragOver={[Function]}
-            onDrop={[Function]}
             role="combobox"
           >
             <input
               aria-autocomplete="list"
-              autoCapitalize="off"
-              autoComplete="off"
-              className=
+              autocapitalize="off"
+              autocomplete="off"
+              class=
                   ms-BasePicker-input
                   ms-UnifiedPicker-input
                   {
@@ -119,22 +105,9 @@ exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
                   &::-ms-clear {
                     display: none;
                   }
-              data-lpignore={true}
-              disabled={false}
-              onChange={[Function]}
-              onClick={[Function]}
-              onCompositionEnd={[Function]}
-              onCompositionStart={[Function]}
-              onCompositionUpdate={[Function]}
-              onFocus={[Function]}
-              onInput={[Function]}
-              onKeyDown={[Function]}
-              onPaste={[Function]}
-              style={
-                Object {
-                  "fontFamily": "inherit",
-                }
-              }
+              data-lpignore="true"
+              style="font-family: inherit;"
+              tabindex="0"
               value=""
             />
           </div>
@@ -143,7 +116,7 @@ exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
     </div>
   </div>
   <div
-    className=
+    class=
         ms-BasePicker
         ms-BaseFloatingPicker
         ms-FloatingSuggestions
@@ -154,23 +127,19 @@ exports[`UnifiedPeoplePicker renders correctly with no items 1`] = `
 
 exports[`UnifiedPeoplePicker renders correctly with selected and suggested items 1`] = `
 <div
-  className="ms-BasePicker ms-BaseExtendedPicker"
-  onCopy={[Function]}
-  onKeyDown={[Function]}
+  class="ms-BasePicker ms-BaseExtendedPicker"
 >
   <div
-    className=
+    class=
         ms-FocusZone
         &:focus {
           outline: none;
         }
     data-focuszone-id="FocusZone1"
-    onFocus={[Function]}
-    onKeyDown={[Function]}
-    onMouseDownCapture={[Function]}
+    data-tabster="{\\"uncontrolled\\": {}}"
   >
     <div
-      className=
+      class=
           ms-SelectionZone
           ms-UnifiedPicker-selectionZone
           ms-UnifiedPicker-selectionZone
@@ -178,18 +147,10 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
             display: flex;
             flex: 1 1 auto;
           }
-      onClick={[Function]}
-      onContextMenu={[Function]}
-      onDoubleClick={[Function]}
-      onFocusCapture={[Function]}
-      onKeyDown={[Function]}
-      onKeyDownCapture={[Function]}
-      onMouseDown={[Function]}
-      onMouseDownCapture={[Function]}
       role="presentation"
     >
       <div
-        className=
+        class=
             ms-BasePicker-text
             ms-UnifiedPicker-text
             {
@@ -210,13 +171,13 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
       >
         <div
           aria-live="polite"
-          className=""
+          class=""
           role="status"
         />
         <div
           aria-multiselectable="true"
           aria-orientation="horizontal"
-          className=
+          class=
               ms-UnifiedPicker-listDiv
               ms-UnifiedPicker-listDiv
               {
@@ -228,8 +189,8 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
         >
           <div
             aria-labelledby="selectedItemPersona-id__2"
-            aria-selected={false}
-            className=
+            aria-selected="false"
+            class=
                 ms-PickerPersona-container
                 {
                   align-items: center;
@@ -268,25 +229,27 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                 @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& .ms-PickerItem-removeButton {
                   color: ButtonText;
                 }
-            data-is-draggable={true}
-            data-is-focusable={true}
-            data-is-sub-focuszone={true}
-            data-selection-index={0}
-            draggable={true}
+            data-is-draggable="true"
+            data-is-focusable="true"
+            data-is-sub-focuszone="true"
+            data-selection-index="0"
+            draggable="true"
             role="option"
+            tabindex="0"
           >
             <div
-              hidden={true}
+              hidden=""
             >
               <button
                 aria-label="Remove"
-                className=
+                class=
                     ms-Button
                     ms-Button--icon
                     ms-PickerItem-removeButton
                     {
                       -moz-osx-font-smoothing: grayscale;
                       -webkit-font-smoothing: antialiased;
+                      align-items: center;
                       background-color: transparent;
                       border-radius: 15px 0px 0px 15px;
                       border: none;
@@ -298,10 +261,8 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                       font-size: 14px;
                       font-weight: 400;
                       height: 32px;
-                      margin-bottom: 0px;
-                      margin-left: 0px;
+                      justify-content: center;
                       margin-right: -17px;
-                      margin-top: 0px;
                       outline: transparent;
                       padding-bottom: 0;
                       padding-left: 4px;
@@ -334,502 +295,7 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                       right: -2px;
                       top: -2px;
                     }
-                    &:active > span {
-                      left: 0px;
-                      position: relative;
-                      top: 0px;
-                    }
-                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
-                      background-color: inherit;
-                      color: inherit;
-                    }
-                    &:hover {
-                      background-color: #c7e0f4;
-                      color: #005a9e;
-                    }
-                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
-                      background: inherit;
-                      border-color: Highlight;
-                      color: inherit;
-                    }
-                    &:active {
-                      background-color: #106ebe;
-                      color: #ffffff;
-                    }
-                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:active {
-                      background: inherit;
-                      color: inherit;
-                    }
-                data-is-focusable={true}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                onKeyPress={[Function]}
-                onKeyUp={[Function]}
-                onMouseDown={[Function]}
-                onMouseUp={[Function]}
-                type="button"
-              >
-                <span
-                  className=
-                      ms-Button-flexContainer
-                      {
-                        align-items: center;
-                        display: flex;
-                        flex-wrap: nowrap;
-                        height: 100%;
-                        justify-content: center;
-                      }
-                  data-automationid="splitbuttonprimary"
-                >
-                  <i
-                    aria-hidden={true}
-                    className=
-                        ms-Icon
-                        ms-Button-icon
-                        {
-                          display: inline-block;
-                        }
-                        {
-                          -moz-osx-font-smoothing: grayscale;
-                          -webkit-font-smoothing: antialiased;
-                          font-family: "FabricMDL2Icons";
-                          font-style: normal;
-                          font-weight: normal;
-                          speak: none;
-                        }
-                        {
-                          flex-shrink: 0;
-                          font-size: 16px;
-                          height: 16px;
-                          line-height: 16px;
-                          margin-bottom: 0;
-                          margin-left: 4px;
-                          margin-right: 4px;
-                          margin-top: 0;
-                          text-align: center;
-                        }
-                    data-icon-name="Add"
-                    style={
-                      Object {
-                        "fontFamily": "\\"FabricMDL2Icons\\"",
-                        "fontSize": "14px",
-                      }
-                    }
-                  >
-                    
-                  </i>
-                </span>
-              </button>
-            </div>
-            <div
-              className=
-
-                  {
-                    display: inherit;
-                    position: relative;
-                  }
-            >
-              <div
-                className=
-                    ms-PickerItem-content
-                    {
-                      flex: 0 1 auto;
-                      max-width: 100%;
-                      min-width: 0px;
-                    }
-                id="selectedItemPersona-id__2"
-              >
-                <div
-                  className=
-                      ms-Persona
-                      ms-Persona--size32
-                      ms-Persona--online
-                      {
-                        -moz-osx-font-smoothing: grayscale;
-                        -webkit-font-smoothing: antialiased;
-                        align-items: center;
-                        box-shadow: none;
-                        box-sizing: border-box;
-                        color: inherit;
-                        display: flex;
-                        font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-                        font-size: 14px;
-                        font-weight: 400;
-                        height: 32px;
-                        margin-bottom: 0px;
-                        margin-left: 0px;
-                        margin-right: 0px;
-                        margin-top: 0px;
-                        min-width: 32px;
-                        padding-bottom: 0px;
-                        padding-left: 0px;
-                        padding-right: 0px;
-                        padding-top: 0px;
-                        position: relative;
-                      }
-                      & .contextualHost {
-                        display: none;
-                      }
-                >
-                  <div
-                    className=
-                        ms-Persona-coin
-                        ms-Persona--size32
-                        {
-                          -moz-osx-font-smoothing: grayscale;
-                          -webkit-font-smoothing: antialiased;
-                          font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-                          font-size: 14px;
-                          font-weight: 400;
-                        }
-                    role="presentation"
-                  >
-                    <div
-                      className=
-                          ms-Persona-imageArea
-                          {
-                            flex: 0 0 auto;
-                            height: 32px;
-                            position: relative;
-                            text-align: center;
-                            width: 32px;
-                          }
-                      role="presentation"
-                    >
-                      <div
-                        className=
-                            ms-Image
-                            ms-Persona-image
-                            {
-                              -moz-osx-font-smoothing: grayscale;
-                              -webkit-font-smoothing: antialiased;
-                              border-radius: 50%;
-                              border: 0px;
-                              font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-                              font-size: 14px;
-                              font-weight: 400;
-                              height: 32px;
-                              left: 0px;
-                              margin-right: 10px;
-                              overflow: hidden;
-                              perspective: 1px;
-                              position: absolute;
-                              top: 0px;
-                              width: 32px;
-                            }
-                        style={
-                          Object {
-                            "height": 32,
-                            "width": 32,
-                          }
-                        }
-                      >
-                        <img
-                          alt=""
-                          className=
-                              ms-Image-image
-                              ms-Image-image--cover
-                              ms-Image-image--portrait
-                              is-notLoaded
-                              is-fadeIn
-                              {
-                                display: block;
-                                height: 100%;
-                                object-fit: cover;
-                                opacity: 0;
-                                width: 100%;
-                              }
-                          onError={[Function]}
-                          onLoad={[Function]}
-                          src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/persona-female.png"
-                        />
-                      </div>
-                      <div
-                        className=
-                            ms-Persona-presence
-                            {
-                              -ms-high-contrast-adjust: none;
-                              background-clip: border-box;
-                              background-color: #6BB700;
-                              border-radius: 50%;
-                              border: 2px solid #ffffff;
-                              bottom: -2px;
-                              box-sizing: content-box;
-                              forced-color-adjust: none;
-                              height: 8px;
-                              position: absolute;
-                              right: -2px;
-                              text-align: center;
-                              top: auto;
-                              width: 8px;
-                            }
-                            @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
-                              background-color: Highlight;
-                              border-color: Window;
-                            }
-                        role="presentation"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className=
-                        ms-Persona-details
-                        {
-                          display: flex;
-                          flex-direction: column;
-                          justify-content: space-around;
-                          min-width: 0px;
-                          padding-bottom: 0;
-                          padding-left: 8px;
-                          padding-right: 8px;
-                          padding-top: 0;
-                          text-align: left;
-                          width: 100%;
-                        }
-                  >
-                    <div
-                      className=
-                          ms-Persona-primaryText
-                          {
-                            color: #005a9e;
-                            font-size: 14px;
-                            font-weight: 400;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                          }
-                          &:hover {
-                            color: #005a9e;
-                          }
-                          @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
-                            color: inherit;
-                          }
-                          @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
-                            color: inherit;
-                          }
-                      dir="auto"
-                    >
-                      <div
-                        className=
-                            ms-TooltipHost
-                            {
-                              display: inline;
-                            }
-                        onBlurCapture={[Function]}
-                        onFocusCapture={[Function]}
-                        onKeyDown={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        role="none"
-                      >
-                        Annie Lindqvist
-                        <div
-                          hidden={true}
-                          id="tooltip6"
-                          style={
-                            Object {
-                              "border": 0,
-                              "height": 1,
-                              "margin": -1,
-                              "overflow": "hidden",
-                              "padding": 0,
-                              "position": "absolute",
-                              "whiteSpace": "nowrap",
-                              "width": 1,
-                            }
-                          }
-                        >
-                          Annie Lindqvist
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className=
-                          ms-Persona-secondaryText
-                          {
-                            color: #605e5c;
-                            display: none;
-                            font-size: 12px;
-                            font-weight: 400;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                          }
-                      dir="auto"
-                    >
-                      <div
-                        className=
-                            ms-TooltipHost
-                            {
-                              display: inline;
-                            }
-                        onBlurCapture={[Function]}
-                        onFocusCapture={[Function]}
-                        onKeyDown={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        role="none"
-                      >
-                        Designer
-                        <div
-                          hidden={true}
-                          id="tooltip7"
-                          style={
-                            Object {
-                              "border": 0,
-                              "height": 1,
-                              "margin": -1,
-                              "overflow": "hidden",
-                              "padding": 0,
-                              "position": "absolute",
-                              "whiteSpace": "nowrap",
-                              "width": 1,
-                            }
-                          }
-                        >
-                          Designer
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className=
-                          ms-Persona-tertiaryText
-                          {
-                            color: #605e5c;
-                            display: none;
-                            font-size: 14px;
-                            font-weight: 400;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                          }
-                      dir="auto"
-                    >
-                      <div
-                        className=
-                            ms-TooltipHost
-                            {
-                              display: inline;
-                            }
-                        onBlurCapture={[Function]}
-                        onFocusCapture={[Function]}
-                        onKeyDown={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        role="none"
-                      >
-                        In a meeting
-                        <div
-                          hidden={true}
-                          id="tooltip8"
-                          style={
-                            Object {
-                              "border": 0,
-                              "height": 1,
-                              "margin": -1,
-                              "overflow": "hidden",
-                              "padding": 0,
-                              "position": "absolute",
-                              "whiteSpace": "nowrap",
-                              "width": 1,
-                            }
-                          }
-                        >
-                          In a meeting
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className=
-                          ms-Persona-optionalText
-                          {
-                            color: #605e5c;
-                            display: none;
-                            font-size: 14px;
-                            font-weight: 400;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                          }
-                      dir="auto"
-                    >
-                      <div
-                        className=
-                            ms-TooltipHost
-                            {
-                              display: inline;
-                            }
-                        onBlurCapture={[Function]}
-                        onFocusCapture={[Function]}
-                        onKeyDown={[Function]}
-                        onMouseEnter={[Function]}
-                        onMouseLeave={[Function]}
-                        role="none"
-                      >
-                        Available at 4:00pm
-                        <div
-                          hidden={true}
-                          id="tooltip9"
-                          style={
-                            Object {
-                              "border": 0,
-                              "height": 1,
-                              "margin": -1,
-                              "overflow": "hidden",
-                              "padding": 0,
-                              "position": "absolute",
-                              "whiteSpace": "nowrap",
-                              "width": 1,
-                            }
-                          }
-                        >
-                          Available at 4:00pm
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button
-                aria-label="Remove"
-                className=
-                    ms-Button
-                    ms-Button--icon
-                    ms-PickerItem-removeButton
-                    {
-                      -moz-osx-font-smoothing: grayscale;
-                      -webkit-font-smoothing: antialiased;
-                      background-color: transparent;
-                      border-radius: 15px;
-                      border: none;
-                      box-sizing: border-box;
-                      color: #005a9e;
-                      cursor: pointer;
-                      display: inline-block;
-                      flex: 0 0 auto;
-                      font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
-                      font-size: 14px;
-                      font-weight: 400;
-                      height: 32px;
-                      margin-bottom: 0px;
-                      margin-left: 0px;
-                      margin-right: 0px;
-                      margin-top: 0px;
-                      outline: transparent;
-                      padding-bottom: 0;
-                      padding-left: 4px;
-                      padding-right: 4px;
-                      padding-top: 0;
-                      position: relative;
-                      text-align: center;
-                      text-decoration: none;
-                      user-select: none;
-                      width: 32px;
-                    }
-                    &::-moz-focus-inner {
-                      border: 0;
-                    }
-                    .ms-Fabric--isFocusVisible &:focus:after {
+                    :host(.ms-Fabric--isFocusVisible) &:focus:after {
                       border: 1px solid transparent;
                       bottom: 2px;
                       content: "";
@@ -840,7 +306,7 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                       top: 2px;
                       z-index: 1;
                     }
-                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus:after {
+                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
                       bottom: -2px;
                       left: -2px;
                       outline-color: ButtonText;
@@ -873,17 +339,12 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                       background: inherit;
                       color: inherit;
                     }
-                data-is-focusable={true}
-                onClick={[Function]}
-                onKeyDown={[Function]}
-                onKeyPress={[Function]}
-                onKeyUp={[Function]}
-                onMouseDown={[Function]}
-                onMouseUp={[Function]}
+                data-is-focusable="true"
+                tabindex="-1"
                 type="button"
               >
                 <span
-                  className=
+                  class=
                       ms-Button-flexContainer
                       {
                         align-items: center;
@@ -895,12 +356,462 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                   data-automationid="splitbuttonprimary"
                 >
                   <i
-                    aria-hidden={true}
-                    className=
+                    aria-hidden="true"
+                    class=
                         ms-Icon
                         ms-Button-icon
                         {
                           display: inline-block;
+                          text-decoration: inherit;
+                        }
+                        {
+                          -moz-osx-font-smoothing: grayscale;
+                          -webkit-font-smoothing: antialiased;
+                          font-family: "FabricMDL2Icons";
+                          font-style: normal;
+                          font-weight: normal;
+                          speak: none;
+                        }
+                        {
+                          flex-shrink: 0;
+                          font-size: 16px;
+                          height: 16px;
+                          line-height: 16px;
+                          margin-bottom: 0;
+                          margin-left: 4px;
+                          margin-right: 4px;
+                          margin-top: 0;
+                          text-align: center;
+                        }
+                    data-icon-name="Add"
+                    style="font-family: \\"FabricMDL2Icons\\"; font-size: 14px;"
+                  >
+                    
+                  </i>
+                </span>
+              </button>
+            </div>
+            <div
+              class=
+
+                  {
+                    display: inherit;
+                    position: relative;
+                  }
+            >
+              <div
+                class=
+                    ms-PickerItem-content
+                    {
+                      flex: 0 1 auto;
+                      max-width: 100%;
+                      min-width: 0px;
+                    }
+                id="selectedItemPersona-id__2"
+              >
+                <div
+                  class=
+                      ms-Persona
+                      ms-Persona--size32
+                      ms-Persona--online
+                      {
+                        -moz-osx-font-smoothing: grayscale;
+                        -webkit-font-smoothing: antialiased;
+                        align-items: center;
+                        box-shadow: none;
+                        box-sizing: border-box;
+                        color: inherit;
+                        display: flex;
+                        font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                        font-size: 14px;
+                        font-weight: 400;
+                        height: 32px;
+                        margin-bottom: 0px;
+                        margin-left: 0px;
+                        margin-right: 0px;
+                        margin-top: 0px;
+                        min-width: 32px;
+                        padding-bottom: 0px;
+                        padding-left: 0px;
+                        padding-right: 0px;
+                        padding-top: 0px;
+                        position: relative;
+                      }
+                      & .contextualHost {
+                        display: none;
+                      }
+                >
+                  <div
+                    class=
+                        ms-Persona-coin
+                        ms-Persona--size32
+                        {
+                          -moz-osx-font-smoothing: grayscale;
+                          -webkit-font-smoothing: antialiased;
+                          font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                          font-size: 14px;
+                          font-weight: 400;
+                        }
+                    role="presentation"
+                  >
+                    <div
+                      class=
+                          ms-Persona-imageArea
+                          {
+                            flex: 0 0 auto;
+                            height: 32px;
+                            position: relative;
+                            text-align: center;
+                            width: 32px;
+                          }
+                      role="presentation"
+                    >
+                      <div
+                        class=
+                            ms-Image
+                            ms-Persona-image
+                            {
+                              -moz-osx-font-smoothing: grayscale;
+                              -webkit-font-smoothing: antialiased;
+                              border-radius: 50%;
+                              border: 0px;
+                              font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                              font-size: 14px;
+                              font-weight: 400;
+                              height: 32px;
+                              left: 0px;
+                              margin-right: 10px;
+                              overflow: hidden;
+                              perspective: 1px;
+                              position: absolute;
+                              top: 0px;
+                              width: 32px;
+                            }
+                        style="width: 32px; height: 32px;"
+                      >
+                        <img
+                          alt=""
+                          class=
+                              ms-Image-image
+                              ms-Image-image--cover
+                              ms-Image-image--portrait
+                              is-notLoaded
+                              is-fadeIn
+                              {
+                                display: block;
+                                height: 100%;
+                                object-fit: cover;
+                                opacity: 0;
+                                width: 100%;
+                              }
+                          src="https://res-1.cdn.office.net/files/fabric-cdn-prod_20230815.002/office-ui-fabric-react-assets/persona-female.png"
+                        />
+                      </div>
+                      <div
+                        class=
+                            ms-Persona-presence
+                            {
+                              -ms-high-contrast-adjust: none;
+                              background-clip: border-box;
+                              background-color: #6BB700;
+                              border-radius: 50%;
+                              border: 2px solid #ffffff;
+                              bottom: -2px;
+                              box-sizing: content-box;
+                              forced-color-adjust: none;
+                              height: 8px;
+                              position: absolute;
+                              right: -2px;
+                              text-align: center;
+                              top: auto;
+                              width: 8px;
+                            }
+                            @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
+                              background-color: Highlight;
+                              border-color: Window;
+                            }
+                        role="presentation"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class=
+                        ms-Persona-details
+                        {
+                          display: flex;
+                          flex-direction: column;
+                          justify-content: space-around;
+                          min-width: 0px;
+                          padding-bottom: 0;
+                          padding-left: 8px;
+                          padding-right: 8px;
+                          padding-top: 0;
+                          text-align: left;
+                          width: 100%;
+                        }
+                  >
+                    <div
+                      class=
+                          ms-Persona-primaryText
+                          {
+                            color: #005a9e;
+                            font-size: 14px;
+                            font-weight: 400;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                          }
+                          &:hover {
+                            color: #005a9e;
+                          }
+                          @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
+                            color: inherit;
+                          }
+                          @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
+                            color: inherit;
+                          }
+                      dir="auto"
+                    >
+                      <div
+                        class=
+                            ms-TooltipHost
+                            {
+                              display: inline;
+                            }
+                        role="none"
+                      >
+                        Annie Lindqvist
+                        <div
+                          hidden=""
+                          id="tooltip6"
+                          style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0px; border: 0px; overflow: hidden; white-space: nowrap;"
+                        >
+                          Annie Lindqvist
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class=
+                          ms-Persona-secondaryText
+                          {
+                            color: #605e5c;
+                            display: none;
+                            font-size: 12px;
+                            font-weight: 400;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                          }
+                      dir="auto"
+                    >
+                      <div
+                        class=
+                            ms-TooltipHost
+                            {
+                              display: inline;
+                            }
+                        role="none"
+                      >
+                        Designer
+                        <div
+                          hidden=""
+                          id="tooltip7"
+                          style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0px; border: 0px; overflow: hidden; white-space: nowrap;"
+                        >
+                          Designer
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class=
+                          ms-Persona-tertiaryText
+                          {
+                            color: #605e5c;
+                            display: none;
+                            font-size: 14px;
+                            font-weight: 400;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                          }
+                      dir="auto"
+                    >
+                      <div
+                        class=
+                            ms-TooltipHost
+                            {
+                              display: inline;
+                            }
+                        role="none"
+                      >
+                        In a meeting
+                        <div
+                          hidden=""
+                          id="tooltip8"
+                          style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0px; border: 0px; overflow: hidden; white-space: nowrap;"
+                        >
+                          In a meeting
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class=
+                          ms-Persona-optionalText
+                          {
+                            color: #605e5c;
+                            display: none;
+                            font-size: 14px;
+                            font-weight: 400;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                          }
+                      dir="auto"
+                    >
+                      <div
+                        class=
+                            ms-TooltipHost
+                            {
+                              display: inline;
+                            }
+                        role="none"
+                      >
+                        Available at 4:00pm
+                        <div
+                          hidden=""
+                          id="tooltip9"
+                          style="position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0px; border: 0px; overflow: hidden; white-space: nowrap;"
+                        >
+                          Available at 4:00pm
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                aria-label="Remove"
+                class=
+                    ms-Button
+                    ms-Button--icon
+                    ms-PickerItem-removeButton
+                    {
+                      -moz-osx-font-smoothing: grayscale;
+                      -webkit-font-smoothing: antialiased;
+                      align-items: center;
+                      background-color: transparent;
+                      border-radius: 15px;
+                      border: none;
+                      box-sizing: border-box;
+                      color: #005a9e;
+                      cursor: pointer;
+                      display: inline-flex;
+                      flex: 0 0 auto;
+                      font-family: 'Segoe UI', 'Segoe UI Web (West European)', 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif;
+                      font-size: 14px;
+                      font-weight: 400;
+                      height: 32px;
+                      justify-content: center;
+                      outline: transparent;
+                      padding-bottom: 0;
+                      padding-left: 4px;
+                      padding-right: 4px;
+                      padding-top: 0;
+                      position: relative;
+                      text-align: center;
+                      text-decoration: none;
+                      user-select: none;
+                      width: 32px;
+                    }
+                    &::-moz-focus-inner {
+                      border: 0;
+                    }
+                    .ms-Fabric--isFocusVisible &:focus:after {
+                      border: 1px solid transparent;
+                      bottom: 2px;
+                      content: "";
+                      left: 2px;
+                      outline: 1px solid #605e5c;
+                      position: absolute;
+                      right: 2px;
+                      top: 2px;
+                      z-index: 1;
+                    }
+                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus:after {
+                      bottom: -2px;
+                      left: -2px;
+                      outline-color: ButtonText;
+                      right: -2px;
+                      top: -2px;
+                    }
+                    :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                      border: 1px solid transparent;
+                      bottom: 2px;
+                      content: "";
+                      left: 2px;
+                      outline: 1px solid #605e5c;
+                      position: absolute;
+                      right: 2px;
+                      top: 2px;
+                      z-index: 1;
+                    }
+                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus:after {
+                      bottom: -2px;
+                      left: -2px;
+                      outline-color: ButtonText;
+                      right: -2px;
+                      top: -2px;
+                    }
+                    &:active > span {
+                      left: 0px;
+                      position: relative;
+                      top: 0px;
+                    }
+                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
+                      background-color: inherit;
+                      color: inherit;
+                    }
+                    &:hover {
+                      background-color: #c7e0f4;
+                      color: #005a9e;
+                    }
+                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:hover {
+                      background: inherit;
+                      border-color: Highlight;
+                      color: inherit;
+                    }
+                    &:active {
+                      background-color: #106ebe;
+                      color: #ffffff;
+                    }
+                    @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){&:active {
+                      background: inherit;
+                      color: inherit;
+                    }
+                data-is-focusable="true"
+                tabindex="-1"
+                type="button"
+              >
+                <span
+                  class=
+                      ms-Button-flexContainer
+                      {
+                        align-items: center;
+                        display: flex;
+                        flex-wrap: nowrap;
+                        height: 100%;
+                        justify-content: center;
+                      }
+                  data-automationid="splitbuttonprimary"
+                >
+                  <i
+                    aria-hidden="true"
+                    class=
+                        ms-Icon
+                        ms-Button-icon
+                        {
+                          display: inline-block;
+                          text-decoration: inherit;
                         }
                         {
                           -moz-osx-font-smoothing: grayscale;
@@ -922,12 +833,7 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                           text-align: center;
                         }
                     data-icon-name="Cancel"
-                    style={
-                      Object {
-                        "fontFamily": "\\"FabricMDL2Icons\\"",
-                        "fontSize": "14px",
-                      }
-                    }
+                    style="font-family: \\"FabricMDL2Icons\\"; font-size: 14px;"
                   >
                     
                   </i>
@@ -936,24 +842,22 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
             </div>
           </div>
           <div
-            aria-expanded={false}
+            aria-expanded="false"
             aria-haspopup="listbox"
-            className=
+            class=
                 ms-BasePicker-div
                 ms-UnifiedPicker-div
                 {
                   display: flex;
                   flex: 1 1 auto;
                 }
-            onDragOver={[Function]}
-            onDrop={[Function]}
             role="combobox"
           >
             <input
               aria-autocomplete="list"
-              autoCapitalize="off"
-              autoComplete="off"
-              className=
+              autocapitalize="off"
+              autocomplete="off"
+              class=
                   ms-BasePicker-input
                   ms-UnifiedPicker-input
                   {
@@ -980,22 +884,9 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
                   &::-ms-clear {
                     display: none;
                   }
-              data-lpignore={true}
-              disabled={false}
-              onChange={[Function]}
-              onClick={[Function]}
-              onCompositionEnd={[Function]}
-              onCompositionStart={[Function]}
-              onCompositionUpdate={[Function]}
-              onFocus={[Function]}
-              onInput={[Function]}
-              onKeyDown={[Function]}
-              onPaste={[Function]}
-              style={
-                Object {
-                  "fontFamily": "inherit",
-                }
-              }
+              data-lpignore="true"
+              style="font-family: inherit;"
+              tabindex="-1"
               value=""
             />
           </div>
@@ -1004,7 +895,7 @@ exports[`UnifiedPeoplePicker renders correctly with selected and suggested items
     </div>
   </div>
   <div
-    className=
+    class=
         ms-BasePicker
         ms-BaseFloatingPicker
         ms-FloatingSuggestions

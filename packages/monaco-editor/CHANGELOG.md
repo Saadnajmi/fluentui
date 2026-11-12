@@ -1,8 +1,44 @@
 # Change Log - @fluentui/monaco-editor
 
-This log was last generated on Thu, 14 Apr 2022 07:38:08 GMT and should not be manually modified.
+<!-- This log was last generated on Thu, 01 Oct 2026 07:11:33 GMT and should not be manually modified. -->
 
 <!-- Start content -->
+
+## [1.3.25](https://github.com/microsoft/fluentui/tree/@fluentui/monaco-editor_v1.3.25)
+
+Thu, 01 Oct 2026 07:11:33 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/monaco-editor_v1.3.24..@fluentui/monaco-editor_v1.3.25)
+
+### Patches
+
+- Pin @microsoft/load-themed-styles version to prevent yarn modern duplication ([PR #35747](https://github.com/microsoft/fluentui/pull/35747) by vgenaev@gmail.com)
+
+## [1.3.24](https://github.com/microsoft/fluentui/tree/@fluentui/monaco-editor_v1.3.24)
+
+Thu, 01 Aug 2024 07:24:45 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/monaco-editor_v1.3.11..@fluentui/monaco-editor_v1.3.24)
+
+### Patches
+
+- fix: revert incorectly set npm versions in all packages ([PR #31937](https://github.com/microsoft/fluentui/pull/31937) by martinhochel@microsoft.com)
+
+## [1.3.9](https://github.com/microsoft/fluentui/tree/@fluentui/monaco-editor_v1.3.9)
+
+Fri, 05 May 2023 18:14:05 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/monaco-editor_v1.3.8..@fluentui/monaco-editor_v1.3.9)
+
+### Patches
+
+- fix: explicitly ship dist/ folder. ([PR #27769](https://github.com/microsoft/fluentui/pull/27769) by tristan.watanabe@gmail.com)
+
+## [1.3.8](https://github.com/microsoft/fluentui/tree/@fluentui/monaco-editor_v1.3.8)
+
+Tue, 02 May 2023 22:20:23 GMT 
+[Compare changes](https://github.com/microsoft/fluentui/compare/@fluentui/monaco-editor_v1.3.6..@fluentui/monaco-editor_v1.3.8)
+
+### Patches
+
+- fix: update npmignore files to fix npm8/node16 regression with how npm publish works. ([PR #27745](https://github.com/microsoft/fluentui/pull/27745) by tristan.watanabe@gmail.com)
 
 ## [1.3.0](https://github.com/microsoft/fluentui/tree/@fluentui/monaco-editor_v1.3.0)
 

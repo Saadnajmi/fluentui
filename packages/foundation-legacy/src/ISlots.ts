@@ -14,7 +14,7 @@ export interface ISlotCreator<TProps extends ValidProps, TShorthandProp extends 
  */
 export type ISlottableComponentType<
   TProps extends ValidProps,
-  TShorthandProp extends ValidShorthand
+  TShorthandProp extends ValidShorthand,
 > = React.ComponentType<TProps> & ISlotCreator<TProps, TShorthandProp>;
 
 /**
@@ -22,7 +22,7 @@ export type ISlottableComponentType<
  */
 export type ISlottableReactType<
   TProps extends ValidProps,
-  TShorthandProp extends ValidShorthand
+  TShorthandProp extends ValidShorthand,
 > = React.ElementType<TProps> & ISlotCreator<TProps, TShorthandProp>;
 
 /**
@@ -130,5 +130,5 @@ export interface ISlotOptions<TProps> {
  */
 export type ISlotRender<TProps> = (
   props: React.PropsWithChildren<TProps>,
-  defaultComponent: React.ComponentType<TProps>,
-) => ReturnType<React.FunctionComponent<TProps>>;
+  defaultComponent: React.ComponentType<React.PropsWithChildren<TProps>>,
+) => ReturnType<React.FunctionComponent<React.PropsWithChildren<TProps>>>;

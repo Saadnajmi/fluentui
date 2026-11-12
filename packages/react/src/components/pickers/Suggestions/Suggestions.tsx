@@ -15,6 +15,8 @@ import type { ISpinnerStyleProps, ISpinnerStyles } from '../../../Spinner';
 import type { ISuggestionsProps, ISuggestionsStyleProps, ISuggestionsStyles } from './Suggestions.types';
 import type { ISuggestionItemProps, ISuggestionsItemStyleProps, ISuggestionsItemStyles } from './SuggestionsItem.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const legacyStyles: any = stylesImport;
 
 const getClassNames = classNamesFunction<ISuggestionsStyleProps, ISuggestionsStyles>();
@@ -68,7 +70,7 @@ export class Suggestions<T> extends React.Component<ISuggestionsProps<T>, ISugge
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       forceResolveText,
       mostRecentlyUsedHeaderText,
@@ -146,16 +148,18 @@ export class Suggestions<T> extends React.Component<ISuggestionsProps<T>, ISugge
           className: css('ms-Suggestions-spinner', legacyStyles.suggestionsSpinner),
         };
 
-    const noResults = () => (
-      // This ID can be used by the parent to set aria-activedescendant to this
-      <div id="sug-noResultsFound" role="option">
-        {onRenderNoResultFound ? (
-          onRenderNoResultFound(undefined, noResults)
-        ) : (
-          <div className={this._classNames.noSuggestions}>{noResultsFoundText}</div>
-        )}
-      </div>
-    );
+    const noResults = () => {
+      const defaultRender = () => {
+        return <div className={this._classNames.noSuggestions}>{noResultsFoundText}</div>;
+      };
+
+      return (
+        // This ID can be used by the parent to set aria-activedescendant to this
+        <div id="sug-noResultsFound" role="option">
+          {onRenderNoResultFound ? onRenderNoResultFound(undefined, defaultRender) : defaultRender()}
+        </div>
+      );
+    };
 
     // MostRecently Used text should supercede the header text if it's there and available.
     let headerText: string | undefined = suggestionsHeaderText;
@@ -163,7 +167,7 @@ export class Suggestions<T> extends React.Component<ISuggestionsProps<T>, ISugge
       headerText = mostRecentlyUsedHeaderText;
     }
 
-    let footerTitle: ((props: ISuggestionsProps<T>) => JSX.Element) | undefined = undefined;
+    let footerTitle: ((props: ISuggestionsProps<T>) => JSXElement) | undefined = undefined;
     if (isResultsFooterVisible) {
       footerTitle = suggestions.length >= (resultsMaximumNumber as number) ? resultsFooterFull : resultsFooter;
     }
@@ -374,7 +378,7 @@ export class Suggestions<T> extends React.Component<ISuggestionsProps<T>, ISugge
     return '';
   };
 
-  private _renderSuggestions(): JSX.Element | null {
+  private _renderSuggestions(): JSXElement | null {
     const {
       onRenderSuggestion,
       removeSuggestionAriaLabel,

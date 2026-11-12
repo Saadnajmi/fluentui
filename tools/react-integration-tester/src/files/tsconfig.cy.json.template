@@ -1,0 +1,3 @@
+{
+  "include": <%- JSON.stringify([`${relativePathToProjectRoot}/**/*.cy.ts`, `${relativePathToProjectRoot}/**/*.cy.tsx`]) %>
+}

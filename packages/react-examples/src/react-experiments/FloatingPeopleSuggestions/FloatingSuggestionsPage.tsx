@@ -6,14 +6,18 @@ import {
   PropertiesTableSet,
 } from '@fluentui/react-docsite-components';
 import { FloatingPeopleSuggestionsExample } from './FloatingPeopleSuggestions.Example';
-const FloatingPeoplePickerSuggestionsExampleCode = require('!raw-loader?esModule=false!./FloatingPeopleSuggestions.Example') as string;
+const FloatingPeoplePickerSuggestionsExampleCode =
+  require('!raw-loader?esModule=false!./FloatingPeopleSuggestions.Example') as string;
 import { FloatingPeopleSuggestionsCustomRenderExample } from './FloatingPeopleSuggestions.CustomRender.Example';
-const FloatingPeoplePickerSuggestionsCustomRenderCode = require('!raw-loader?esModule=false!./FloatingPeopleSuggestions.CustomRender.Example') as string;
+const FloatingPeoplePickerSuggestionsCustomRenderCode =
+  require('!raw-loader?esModule=false!./FloatingPeopleSuggestions.CustomRender.Example') as string;
 import { FloatingPeopleSuggestionsHeaderFooterExample } from './FloatingPeopleSuggestions.HeaderFooter.Example';
-const FloatingPeoplePickerSuggestionsHeaderFooterCode = require('!raw-loader?esModule=false!./FloatingPeopleSuggestions.HeaderFooter.Example') as string;
+import type { JSXElement } from '@fluentui/utilities';
+const FloatingPeoplePickerSuggestionsHeaderFooterCode =
+  require('!raw-loader?esModule=false!./FloatingPeopleSuggestions.HeaderFooter.Example') as string;
 
 export class FloatingSuggestionPage extends React.Component<IComponentDemoPageProps, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <ComponentPage
         title="FloatingPeopleSuggestions"

@@ -7,13 +7,16 @@ import {
 } from '@fluentui/react-docsite-components';
 
 import { SignalFieldBasicExample } from './SignalField.Basic.Example';
-const SignalFieldBasicExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-experiments/Signals/SignalField.Basic.Example.tsx') as string;
+const SignalFieldBasicExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-experiments/Signals/SignalField.Basic.Example.tsx') as string;
 
 import { SignalsBasicExample } from './Signals.Basic.Example';
-const SignalsBasicExampleCode = require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-experiments/Signals/Signals.Basic.Example.tsx') as string;
+import type { JSXElement } from '@fluentui/utilities';
+const SignalsBasicExampleCode =
+  require('!raw-loader?esModule=false!@fluentui/react-examples/src/react-experiments/Signals/Signals.Basic.Example.tsx') as string;
 
 export class SignalsPage extends React.Component<IComponentDemoPageProps, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <ComponentPage
         title="Signals"

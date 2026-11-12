@@ -7,13 +7,15 @@ import { withResponsiveMode } from '../../ResponsiveMode';
 import type { IDialogContentProps, IDialogContentStyleProps, IDialogContentStyles } from './DialogContent.types';
 import type { IDialogFooterProps } from './DialogFooter.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<IDialogContentStyleProps, IDialogContentStyles>();
 
 const DialogFooterType = ((<DialogFooter />) as React.ReactElement<IDialogFooterProps>).type;
 
 const COMPONENT_NAME = 'DialogContent';
 
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 @withResponsiveMode
 export class DialogContentBase extends React.Component<IDialogContentProps, {}> {
   public static defaultProps: IDialogContentProps = {
@@ -32,7 +34,7 @@ export class DialogContentBase extends React.Component<IDialogContentProps, {}> 
     });
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       showCloseButton,
       className,
@@ -41,7 +43,7 @@ export class DialogContentBase extends React.Component<IDialogContentProps, {}> 
       subTextId,
       subText,
       titleProps = {},
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       titleId,
       title,
       type,

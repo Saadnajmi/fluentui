@@ -1,14 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar-multiline
       {
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #f3f2f1;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -27,24 +28,36 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: Window;
+        background: transparent;
         border: 1px solid WindowText;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid WindowText;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -57,10 +70,13 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -71,6 +87,7 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -84,7 +101,7 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -100,6 +117,9 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -108,7 +128,7 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -128,7 +148,7 @@ exports[`MessageBar snapshots renders MessageBar correctly 1`] = `
 
 exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--error
       ms-MessageBar-multiline
@@ -136,6 +156,7 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #FDE7E9;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -154,24 +175,36 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(255, 0, 0, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #ff0000;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #e81123;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -184,10 +217,13 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -198,6 +234,7 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -211,7 +248,7 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
     </div>
     <div
       aria-live="assertive"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -227,6 +264,9 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -235,7 +275,7 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
       role="alert"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -255,13 +295,14 @@ exports[`MessageBar snapshots renders a error MessageBar correctly 1`] = `
 
 exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar-multiline
       {
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #f3f2f1;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -280,24 +321,36 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: Window;
+        background: transparent;
         border: 1px solid WindowText;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid WindowText;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -310,10 +363,13 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -324,6 +380,7 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -337,7 +394,7 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -353,6 +410,9 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -361,7 +421,7 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -381,13 +441,14 @@ exports[`MessageBar snapshots renders a info MessageBar correctly 1`] = `
 
 exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar-multiline
       {
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #f3f2f1;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -406,24 +467,36 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: Window;
+        background: transparent;
         border: 1px solid WindowText;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid WindowText;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -436,10 +509,13 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -450,6 +526,7 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -463,7 +540,7 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -479,6 +556,9 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -487,7 +567,7 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -507,7 +587,7 @@ exports[`MessageBar snapshots renders a multiline MessageBar correctly 1`] = `
 
 exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--error
       ms-MessageBar-multiline
@@ -515,6 +595,7 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #FDE7E9;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -533,24 +614,36 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(255, 0, 0, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #ff0000;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #e81123;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -563,10 +656,13 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -577,6 +673,7 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -590,7 +687,7 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
     </div>
     <div
       aria-live="assertive"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -606,6 +703,9 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -614,7 +714,7 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
       role="alert"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -634,13 +734,14 @@ exports[`MessageBar snapshots renders a multiline error MessageBar correctly 1`]
 
 exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar-multiline
       {
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #f3f2f1;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -659,24 +760,36 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: Window;
+        background: transparent;
         border: 1px solid WindowText;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid WindowText;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -689,10 +802,13 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -703,6 +819,7 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -716,7 +833,7 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -732,6 +849,9 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -740,7 +860,7 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -760,7 +880,7 @@ exports[`MessageBar snapshots renders a multiline info MessageBar correctly 1`] 
 
 exports[`MessageBar snapshots renders a multiline severeWarning MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--severeWarning
       ms-MessageBar-multiline
@@ -768,6 +888,7 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #FED9CC;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -786,24 +907,36 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(255, 0, 0, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #ff0000;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #d83b01;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -816,10 +949,13 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -830,6 +966,7 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -843,7 +980,7 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
     </div>
     <div
       aria-live="assertive"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -859,6 +996,9 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -867,7 +1007,7 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
       role="alert"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -887,7 +1027,7 @@ exports[`MessageBar snapshots renders a multiline severeWarning MessageBar corre
 
 exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--success
       ms-MessageBar-multiline
@@ -895,6 +1035,7 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #DFF6DD;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -913,24 +1054,36 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(48, 241, 73, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #bad80a;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #107c10;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -943,10 +1096,13 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -957,6 +1113,7 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -970,7 +1127,7 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -986,6 +1143,9 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -994,7 +1154,7 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -1014,7 +1174,7 @@ exports[`MessageBar snapshots renders a multiline success MessageBar correctly 1
 
 exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--warning
       ms-MessageBar-multiline
@@ -1022,6 +1182,7 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #FFF4CE;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -1040,24 +1201,36 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(255, 254, 57, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #fff100;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #966400;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -1070,10 +1243,13 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -1084,6 +1260,7 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -1097,7 +1274,7 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -1113,6 +1290,9 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -1121,7 +1301,7 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -1141,7 +1321,7 @@ exports[`MessageBar snapshots renders a multiline warning MessageBar correctly 1
 
 exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--severeWarning
       ms-MessageBar-multiline
@@ -1149,6 +1329,7 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #FED9CC;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -1167,24 +1348,36 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(255, 0, 0, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #ff0000;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #d83b01;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -1197,10 +1390,13 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -1211,6 +1407,7 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -1224,7 +1421,7 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
     </div>
     <div
       aria-live="assertive"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -1240,6 +1437,9 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -1248,7 +1448,7 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
       role="alert"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -1268,7 +1468,7 @@ exports[`MessageBar snapshots renders a severeWarning MessageBar correctly 1`] =
 
 exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--success
       ms-MessageBar-multiline
@@ -1276,6 +1476,7 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #DFF6DD;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -1294,24 +1495,36 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(48, 241, 73, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #bad80a;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #107c10;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -1324,10 +1537,13 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -1338,6 +1554,7 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -1351,7 +1568,7 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -1367,6 +1584,9 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -1375,7 +1595,7 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;
@@ -1395,7 +1615,7 @@ exports[`MessageBar snapshots renders a success MessageBar correctly 1`] = `
 
 exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
 <div
-  className=
+  class=
       ms-MessageBar
       ms-MessageBar--warning
       ms-MessageBar-multiline
@@ -1403,6 +1623,7 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         background: #FFF4CE;
+        box-sizing: border-box;
         color: #323130;
         display: flex;
         flex-direction: column;
@@ -1421,24 +1642,36 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
       }
       @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
         -ms-high-contrast-adjust: none;
-        background: rgba(255, 254, 57, 0.3);
-        border: 1px solid WindowText;
+        background: transparent;
+        border: 1px solid #fff100;
         color: WindowText;
         forced-color-adjust: none;
       }
+      @media screen and (-ms-high-contrast: black-on-white), screen and (forced-colors: active) and (prefers-color-scheme: light){& {
+        border: 1px solid #966400;
+      }
 >
   <div
-    className=
+    class=
         ms-MessageBar-content
         {
           display: flex;
           line-height: normal;
           width: 100%;
         }
+        @media only screen and (min-width: 0px) and (max-width: 479px){& {
+          display: grid;
+          grid-template-areas: 
+                    "icon text close"
+                    "action action action"
+                  ;
+          grid-template-columns: auto 1fr auto;
+          grid-template-rows: 1fr auto;
+        }
   >
     <div
-      aria-hidden={true}
-      className=
+      aria-hidden="true"
+      class=
           ms-MessageBar-icon
           {
             display: flex;
@@ -1451,10 +1684,13 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
             min-height: 16px;
             min-width: 16px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: icon;
+          }
     >
       <i
-        aria-hidden={true}
-        className=
+        aria-hidden="true"
+        class=
 
             {
               -moz-osx-font-smoothing: grayscale;
@@ -1465,6 +1701,7 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
               font-style: normal;
               font-weight: normal;
               speak: none;
+              text-decoration: inherit;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
               -ms-high-contrast-adjust: none;
@@ -1478,7 +1715,7 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
     </div>
     <div
       aria-live="polite"
-      className=
+      class=
           ms-MessageBar-text
           {
             -moz-osx-font-smoothing: grayscale;
@@ -1494,6 +1731,9 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
             margin-top: 8px;
             min-width: 0px;
           }
+          @media only screen and (min-width: 0px) and (max-width: 479px){& {
+            grid-area: text;
+          }
           @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){& {
             -ms-high-contrast-adjust: none;
             forced-color-adjust: none;
@@ -1502,7 +1742,7 @@ exports[`MessageBar snapshots renders a warning MessageBar correctly 1`] = `
       role="status"
     >
       <span
-        className=
+        class=
             ms-MessageBar-innerText
             {
               line-height: 16px;

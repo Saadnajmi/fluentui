@@ -273,6 +273,7 @@ function useWeekCornerStyles(props: ICalendarDayGridProps) {
 }
 
 export const CalendarDayGridBase: React.FunctionComponent<ICalendarDayGridProps> = props => {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   const navigatedDayRef = React.useRef<HTMLTableCellElement>(null) as React.MutableRefObject<HTMLTableCellElement>;
 
   const activeDescendantId = useId();
@@ -358,13 +359,13 @@ export const CalendarDayGridBase: React.FunctionComponent<ICalendarDayGridProps>
 
   const classNames = getClassNames(styles, {
     theme: theme!,
-    className: className,
-    dateRangeType: dateRangeType,
-    showWeekNumbers: showWeekNumbers,
+    className,
+    dateRangeType,
+    showWeekNumbers,
     lightenDaysOutsideNavigatedMonth:
       lightenDaysOutsideNavigatedMonth === undefined ? true : lightenDaysOutsideNavigatedMonth,
-    animationDirection: animationDirection,
-    animateBackwards: animateBackwards,
+    animationDirection,
+    animateBackwards,
   });
 
   // When the month is highlighted get the corner dates so that styles can be added to them

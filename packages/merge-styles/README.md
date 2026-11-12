@@ -485,6 +485,20 @@ renderStatic(() => ReactDOM.renderToString(<App/>);
 
 - Rehydration on the client may result in mismatched rules. You can apply a namespace on the server side to ensure there aren't name collisions.
 
+### Untrusted style data
+
+The `css` returned by `renderStatic` (and by `Stylesheet.getRules`) is raw CSS text that is normally written into a `<style>` element. A `<style>` element is HTML raw text, so a case-insensitive `</style` sequence would otherwise terminate it and inject markup.
+
+To prevent that, `merge-styles` escapes these sequences at the CSS serialization boundary. Declaration values also emit `<` and `>` as the CSS code point escapes `\3C ` and `\3E `. These escapes are semantics-preserving and decode back to the same characters without changing selectors, combinators, at-rules, custom properties, or keyframe syntax. Likewise, `Stylesheet.serialize` emits `<` as `\u003C` so its output can be embedded in an inline `<script>` for rehydration.
+
+This escaping is defense in depth, not a substitute for validating input. Applications remain responsible for:
+
+- Validating any untrusted data (user- or tenant-supplied brand colors, accents, background image URLs) before using it as a style value.
+- `Stylesheet.insertRule`, which is intentionally **not** escaped because it accepts complete rules including selectors, and selectors legitimately contain `<` and `>` adjacent characters such as the `>` child combinator. Never pass untrusted data to it.
+- Serving a Content Security Policy, which limits the impact of any injection.
+
+Note also that rules registered with `preserve` - which is what `fontFace` and `keyframes` do - are intentionally retained by `Stylesheet.reset`, so they are re-emitted by every later `getRules(true)` call in the same process. Do not derive font faces or keyframes from per-request untrusted data in a shared server process.
+
 ## Working with content security policy (CSP)
 
 Some content security policies prevent style injection without a nonce. To set the nonce used by `merge-styles`:
@@ -502,5 +516,78 @@ window.FabricConfig = {
   mergeStyles: {
     cspSettings: { nonce: 'your nonce here' },
   },
+};
+```
+
+## Shadow DOM
+
+`merge-styles` has support for [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM). This feature is opt-in and incrementally adoptable. To enable the feature you need to include two [React Providers](https://react.dev/reference/react/createContext#provider):
+
+1. `MergeStylesRootProvider`: acts as the "global" context for your application. You should have one of these per page.
+2. `MergeStylesShadowRootProvider`: a context for each shadow root in your application. You should have one of these per shadow root.
+
+`merge-styles` does not provide an option for creating shadow roots in React as how you get a shadow root doesn't matter, just that you have a reference to one. [`react-shadow`](https://www.npmjs.com/package/react-shadow) is one library that can create shadow roots in React and will be used in examples.
+
+### Shadow DOM example
+
+```tsx
+import { PrimaryButton } from '@fluentui/react';
+import { MergeStylesRootProvider, MergeStylesShadowRootProvider } from '@fluentui/utilities';
+import root from 'react-shadow';
+
+const ShadowRoot = ({ children }) => {
+  // This is a ref but we're using state to manage it so we can force
+  // a re-render.
+  const [shadowRootEl, setShadowRootEl] = React.useState<HTMLElement | null>(null);
+
+  return (
+    <MergeStylesRootProvider>
+      <root.div className="shadow-root" delegatesFocus ref={setShadowRootEl}>
+        <MergeStylesShadowRootProvider shadowRoot={shadowRootEl?.shadowRoot}>{children}</MergeStylesShadowRootProvider>
+      </root.div>
+    </MergeStylesRootProvider>
+  );
+};
+
+<ShadowRoot>
+  <PrimaryButton>I'm in the shadow DOM!</PrimaryButton>
+</ShadowRoot>
+<PrimaryButton>I'm in the light DOM!</PrimaryButton>
+```
+
+### Scoping styles for more efficient CSS
+
+You do not _need_ to update your `merge-styles` styles to support shadow DOM but you can make styles more efficient with some updates.
+
+Shadow DOM support is achieved in `merge-styles` by using [constructable stylesheets](https://web.dev/articles/constructable-stylesheets) and is scoped by "stylesheet keys". `merge-styles` creates one stylesheet per key and in Fluent this means each component has its own stylesheet. Each `MergeStylesShadowRootProvider` will only adopt styles for components it contains plus the global sheet (we cannot be certain whether we need this sheet or not so we always adopt it). This means a `MergeStylesShadowRootProvider` that contains a button will only adopt button styles (plus the global styles) but not checkbox styles, making styling within the shadow root more efficient.
+
+If you use `customizable` or `styled` the existing "scope" value provided to these functions is used a unique key. If no key is provided `merge-styles` falls back to a "global" key. This global key is a catch-all and allows us to support code that was written before shadow DOM support was added or code that is called outside of React context.
+
+All `@fluentui/react` styles are scoped via `customizable` and `styled` (and some updates to specific component styles where needed). If your components use these functions and you set the "scope" property your components will automatically be scoped.
+If you're using `mergeStyles()` (and other `merge-styles` APIs) directly, your styles will be placed in the global scope and still be available in shadow roots, just not as optimally as possible.
+
+#### Style scoping example
+
+```tsx
+import { useMergeStylesHooks } from '@fluentui/react';
+import { mergeStyles } from '@fluentui/merge-styles';
+import type { ShadowConfig } from '@fluentui/merge-styles';
+
+// This must be globally unique for the application
+const MY_COMPONENT_STYLESHEET_KEY: string = 'my-unique-key';
+
+const MyComponent = props => {
+  const { useWindow, useShadowConfig, useAdoptedStylesheet } = useMergeStylesHooks();
+
+  // Make sure multi-window scenarios work (e.g., pop outs)
+  const win: Window = useWindow();
+  const shadowConfig: ShadowConfig = useShadowConfig(MY_COMPONENT_STYLESHEET_KEY, win);
+
+  const styles = React.useMemo(() => {
+    // shadowConfig must be the first parameter when it is used
+    return mergeStyles(shadowConfig, myStyles);
+  }, [shadowConfig, myStyles]);
+
+  useAdoptedStylesheet(MY_COMPONENT_STYLESHEET_KEY);
 };
 ```

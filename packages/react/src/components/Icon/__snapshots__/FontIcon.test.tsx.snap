@@ -1,12 +1,13 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`FontIcon renders FontIcon correctly 1`] = `
 <i
-  aria-hidden={true}
-  className=
+  aria-hidden="true"
+  class=
       ms-Icon
       {
         display: inline-block;
+        text-decoration: inherit;
       }
       {
         -moz-osx-font-smoothing: grayscale;
@@ -17,11 +18,7 @@ exports[`FontIcon renders FontIcon correctly 1`] = `
         speak: none;
       }
   data-icon-name="CompassNW"
-  style={
-    Object {
-      "fontFamily": "\\"FabricMDL2Icons-2\\"",
-    }
-  }
+  style="font-family: \\"FabricMDL2Icons-2\\";"
 >
   
 </i>
@@ -29,11 +26,12 @@ exports[`FontIcon renders FontIcon correctly 1`] = `
 
 exports[`FontIcon renders FontIcon with children correctly 1`] = `
 <i
-  aria-hidden={true}
-  className=
+  aria-hidden="true"
+  class=
       ms-Icon
       {
         display: inline-block;
+        text-decoration: inherit;
       }
       {
         -moz-osx-font-smoothing: grayscale;
@@ -44,11 +42,7 @@ exports[`FontIcon renders FontIcon with children correctly 1`] = `
         speak: none;
       }
   data-icon-name="Upload"
-  style={
-    Object {
-      "fontFamily": "\\"FabricMDL2Icons\\"",
-    }
-  }
+  style="font-family: \\"FabricMDL2Icons\\";"
 >
   
 </i>
@@ -57,10 +51,11 @@ exports[`FontIcon renders FontIcon with children correctly 1`] = `
 exports[`FontIcon renders named FontIcon correctly 1`] = `
 <i
   aria-label="compass"
-  className=
+  class=
       ms-Icon
       {
         display: inline-block;
+        text-decoration: inherit;
       }
       {
         -moz-osx-font-smoothing: grayscale;
@@ -72,11 +67,7 @@ exports[`FontIcon renders named FontIcon correctly 1`] = `
       }
   data-icon-name="CompassNW"
   role="img"
-  style={
-    Object {
-      "fontFamily": "\\"FabricMDL2Icons-2\\"",
-    }
-  }
+  style="font-family: \\"FabricMDL2Icons-2\\";"
 >
   
 </i>

@@ -11,15 +11,18 @@ import type { IBaseExtendedPickerProps, IBaseExtendedPicker } from './BaseExtend
 import type { IBaseFloatingPickerProps } from '../../FloatingPicker';
 import type { IBaseSelectedItemsListProps } from '../../SelectedItemsList';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const styles: any = stylesImport;
 
 export interface IBaseExtendedPickerState<T> {
   queryString: string | null;
 }
 
-export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
+export class BaseExtendedPicker<T extends {}, P extends IBaseExtendedPickerProps<T>>
   extends React.Component<P, IBaseExtendedPickerState<T>>
-  implements IBaseExtendedPicker<T> {
+  implements IBaseExtendedPicker<T>
+{
   public floatingPicker = React.createRef<BaseFloatingPicker<T, IBaseFloatingPickerProps<T>>>();
   public selectedItemsList = React.createRef<BaseSelectedItemsList<T, IBaseSelectedItemsListProps<T>>>();
 
@@ -66,7 +69,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
     return this.selectedItemsList.current ? this.selectedItemsList.current.highlightedItems() : [];
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { className, inputProps, disabled, focusZoneProps } = this.props;
     const activeDescendant =
       this.floatingPicker.current && this.floatingPicker.current.currentSelectedSuggestionIndex !== -1
@@ -127,7 +130,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
     return itemLimit === undefined || this.items.length < itemLimit;
   }
 
-  protected renderFloatingPicker(): JSX.Element {
+  protected renderFloatingPicker(): JSXElement {
     const FloatingPicker: React.ComponentType<IBaseFloatingPickerProps<T>> = this.props.onRenderFloatingPicker;
     return (
       <FloatingPicker
@@ -143,7 +146,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
     );
   }
 
-  protected renderSelectedItemsList(): JSX.Element {
+  protected renderSelectedItemsList(): JSXElement {
     const SelectedItems: React.ComponentType<IBaseSelectedItemsListProps<T>> = this.props.onRenderSelectedItems;
     return (
       <SelectedItems
@@ -192,7 +195,7 @@ export class BaseExtendedPicker<T, P extends IBaseExtendedPickerProps<T>>
   // This is protected because we may expect the backspace key to work differently in a different kind of picker.
   // This lets the subclass override it and provide it's own onBackspace. For an example see the BasePickerListBelow
   protected onBackspace = (ev: React.KeyboardEvent<HTMLElement>): void => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (ev.which !== KeyCodes.backspace) {
       return;
     }

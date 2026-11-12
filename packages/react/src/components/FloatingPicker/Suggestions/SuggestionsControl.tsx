@@ -12,6 +12,8 @@ import type {
   ISuggestionsHeaderFooterProps,
 } from './Suggestions.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const styles: any = stylesImport;
 
 export enum SuggestionItemType {
@@ -33,7 +35,7 @@ export class SuggestionsHeaderFooterItem extends React.Component<ISuggestionsHea
     initializeComponentRef(this);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { renderItem, onExecute, isSelected, id, className } = this.props;
     return onExecute ? (
       <div
@@ -56,14 +58,16 @@ export class SuggestionsHeaderFooterItem extends React.Component<ISuggestionsHea
 /**
  * Class when used with SuggestionsStore, renders a suggestions control with customizable headers and footers
  */
-export class SuggestionsControl<T> extends React.Component<ISuggestionsControlProps<T>, ISuggestionsControlState<T>> {
+export class SuggestionsControl<T extends {}> extends React.Component<
+  ISuggestionsControlProps<T>,
+  ISuggestionsControlState<T>
+> {
   protected _forceResolveButton: IButton;
   protected _searchForMoreButton: IButton;
   protected _selectedElement = React.createRef<HTMLDivElement>();
   protected _suggestions = React.createRef<SuggestionsCore<T>>();
-  private SuggestionsOfProperType: new (
-    props: ISuggestionsCoreProps<T>,
-  ) => SuggestionsCore<T> = SuggestionsCore as new (props: ISuggestionsCoreProps<T>) => SuggestionsCore<T>;
+  private SuggestionsOfProperType: new (props: ISuggestionsCoreProps<T>) => SuggestionsCore<T> =
+    SuggestionsCore as new (props: ISuggestionsCoreProps<T>) => SuggestionsCore<T>;
 
   constructor(suggestionsProps: ISuggestionsControlProps<T>) {
     super(suggestionsProps);
@@ -93,7 +97,7 @@ export class SuggestionsControl<T> extends React.Component<ISuggestionsControlPr
     this._suggestions.current?.deselectAllSuggestions();
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { className, headerItemsProps, footerItemsProps, suggestionsAvailableAlertText } = this.props;
 
     const screenReaderTextStyles = mergeStyles(hiddenContentStyle);
@@ -216,7 +220,7 @@ export class SuggestionsControl<T> extends React.Component<ISuggestionsControlPr
     }
   }
 
-  protected renderHeaderItems(): JSX.Element | null {
+  protected renderHeaderItems(): JSXElement | null {
     const { headerItemsProps, suggestionsHeaderContainerAriaLabel } = this.props;
     const { selectedHeaderIndex } = this.state;
 
@@ -251,7 +255,7 @@ export class SuggestionsControl<T> extends React.Component<ISuggestionsControlPr
     ) : null;
   }
 
-  protected renderFooterItems(): JSX.Element | null {
+  protected renderFooterItems(): JSXElement | null {
     const { footerItemsProps, suggestionsFooterContainerAriaLabel } = this.props;
     const { selectedFooterIndex } = this.state;
     return footerItemsProps ? (
@@ -285,7 +289,7 @@ export class SuggestionsControl<T> extends React.Component<ISuggestionsControlPr
     ) : null;
   }
 
-  protected _renderSuggestions(): JSX.Element {
+  protected _renderSuggestions(): JSXElement {
     const TypedSuggestions = this.SuggestionsOfProperType;
 
     return <TypedSuggestions ref={this._suggestions} {...this.props} suggestions={this.state.suggestions} />;

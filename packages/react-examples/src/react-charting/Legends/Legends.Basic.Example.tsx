@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Legends, ILegend } from '@fluentui/react-charting';
-import { DefaultPalette } from '@fluentui/react/lib/Styling';
+import { Legends, ILegend, DataVizPalette, getColorFromToken } from '@fluentui/react-charting';
+import type { JSXElement } from '@fluentui/utilities';
 
 export class LegendBasicExample extends React.Component<{}, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const legends: ILegend[] = [
       {
-        title: 'fsd 1',
-        color: DefaultPalette.blue,
+        title: 'Legend 1',
+        color: getColorFromToken(DataVizPalette.color1),
         action: () => {
           console.log('click from LegendsPage');
           alert('Legend1 clicked');
@@ -21,7 +21,7 @@ export class LegendBasicExample extends React.Component<{}, {}> {
       },
       {
         title: 'Legend 2',
-        color: DefaultPalette.red,
+        color: getColorFromToken(DataVizPalette.color2),
         action: () => {
           alert('Legend2 clicked');
         },
@@ -31,7 +31,7 @@ export class LegendBasicExample extends React.Component<{}, {}> {
       },
       {
         title: 'Legend 3',
-        color: DefaultPalette.green,
+        color: getColorFromToken(DataVizPalette.color3),
         action: () => {
           alert('Legend3 clicked');
         },
@@ -42,7 +42,7 @@ export class LegendBasicExample extends React.Component<{}, {}> {
       },
       {
         title: 'Legend 4',
-        color: DefaultPalette.yellow,
+        color: getColorFromToken(DataVizPalette.color4),
         shape: 'triangle',
         action: () => {
           alert('Legend4 clicked');

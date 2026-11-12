@@ -16,13 +16,14 @@ const getClassNames = classNamesFunction<ISearchBoxStyleProps, ISearchBoxStyles>
 
 const useComponentRef = (
   componentRef: React.Ref<ISearchBox> | undefined,
-  inputElementRef: React.RefObject<HTMLInputElement>,
+  inputElementRef: React.RefObject<HTMLInputElement | null>,
   hasFocus: boolean,
 ) => {
   React.useImperativeHandle(
     componentRef,
     () => ({
       focus: () => inputElementRef.current?.focus(),
+      blur: () => inputElementRef.current?.blur(),
       hasFocus: () => hasFocus,
     }),
     [inputElementRef, hasFocus],
@@ -40,9 +41,9 @@ export const SearchBoxBase: React.FunctionComponent<ISearchBoxProps> = React.for
     disabled,
     underlined,
     styles,
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     labelText,
-    // eslint-disable-next-line deprecation/deprecation
+
     placeholder = labelText,
     theme,
     clearButtonProps = defaultClearButtonProps,
@@ -56,13 +57,13 @@ export const SearchBoxBase: React.FunctionComponent<ISearchBoxProps> = React.for
     iconProps,
     role,
     onChange,
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     onChanged,
   } = props;
 
   const [hasFocus, setHasFocus] = React.useState(false);
 
-  const prevChangeTimestamp = React.useRef<number | undefined>();
+  const prevChangeTimestamp = React.useRef<number | undefined>(undefined);
   const [uncastValue, setValue] = useControllableValue(
     props.value,
     defaultValue,
@@ -155,7 +156,7 @@ export const SearchBoxBase: React.FunctionComponent<ISearchBoxProps> = React.for
   };
 
   const onKeyDown = (ev: React.KeyboardEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     switch (ev.which) {
       case KeyCodes.escape:
         customOnEscape?.(ev);

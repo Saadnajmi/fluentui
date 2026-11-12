@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`ColorPicker renders correctly 1`] = `
 <div>
@@ -53,6 +53,12 @@ exports[`ColorPicker renders correctly 1`] = `
               outline: 1px solid #605e5c;
             }
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus {
+              outline: 2px solid CanvasText;
+            }
+            :host(.ms-Fabric--isFocusVisible) &:focus {
+              outline: 1px solid #605e5c;
+            }
+            @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus {
               outline: 2px solid CanvasText;
             }
         data-is-focusable="true"
@@ -239,6 +245,7 @@ exports[`ColorPicker renders correctly 1`] = `
                     right: 0px;
                     top: 0px;
                   }
+              style="background: linear-gradient(to right, transparent, #abcdef);"
             />
             <div
               class=
@@ -1210,6 +1217,12 @@ exports[`ColorPicker renders correctly with preview 1`] = `
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus {
               outline: 2px solid CanvasText;
             }
+            :host(.ms-Fabric--isFocusVisible) &:focus {
+              outline: 1px solid #605e5c;
+            }
+            @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus {
+              outline: 2px solid CanvasText;
+            }
         data-is-focusable="true"
         role="slider"
         style="background-color: rgb(0, 128, 255);"
@@ -1394,6 +1407,7 @@ exports[`ColorPicker renders correctly with preview 1`] = `
                     right: 0px;
                     top: 0px;
                   }
+              style="background: linear-gradient(to right, transparent, #abcdef);"
             />
             <div
               class=
@@ -1428,6 +1442,7 @@ exports[`ColorPicker renders correctly with preview 1`] = `
                 is-preview
                 {
                   border: 1px solid #c8c6c4;
+                  forced-color-adjust: none;
                   height: 48px;
                   margin-bottom: 0;
                   margin-left: 8px;
@@ -2388,6 +2403,12 @@ exports[`ColorPicker renders correctly with transparency 1`] = `
             @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){.ms-Fabric--isFocusVisible &:focus {
               outline: 2px solid CanvasText;
             }
+            :host(.ms-Fabric--isFocusVisible) &:focus {
+              outline: 1px solid #605e5c;
+            }
+            @media screen and (-ms-high-contrast: active), screen and (forced-colors: active){:host(.ms-Fabric--isFocusVisible) &:focus {
+              outline: 2px solid CanvasText;
+            }
         data-is-focusable="true"
         role="slider"
         style="background-color: rgb(0, 128, 255);"
@@ -2572,6 +2593,7 @@ exports[`ColorPicker renders correctly with transparency 1`] = `
                     right: 0px;
                     top: 0px;
                   }
+              style="background: linear-gradient(to right, #abcdef, transparent);"
             />
             <div
               class=

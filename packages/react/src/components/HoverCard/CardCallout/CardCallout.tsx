@@ -6,12 +6,15 @@ import { Callout, FocusTrapCallout } from '../../../Callout';
 import type { IBaseCardProps } from '../BaseCard.types';
 import type { ICalloutProps } from '../../../Callout';
 
-export interface ICardCalloutProps extends IBaseCardProps<{}, {}, {}> {
+import type { JSXElement } from '@fluentui/utilities';
+
+export interface ICardCalloutProps extends Omit<IBaseCardProps<{}, {}, {}>, 'content'> {
   finalHeight?: number;
-  content?: JSX.Element;
+
+  content?: JSXElement;
 }
 
-export const CardCallout = (props: ICardCalloutProps) => {
+export const CardCallout = (props: ICardCalloutProps): JSXElement | null => {
   const {
     gapSpace = 0,
     directionalHint = DirectionalHint.bottomLeftEdge,
@@ -28,15 +31,15 @@ export const CardCallout = (props: ICardCalloutProps) => {
 
   const mergedCalloutProps: ICalloutProps = {
     ...getNativeProps(props, divProperties),
-    className: className,
+    className,
     target: targetElement,
     isBeakVisible: false,
-    directionalHint: directionalHint,
-    directionalHintFixed: directionalHintFixed,
-    finalHeight: finalHeight,
+    directionalHint,
+    directionalHintFixed,
+    finalHeight,
     minPagePadding: 24,
     onDismiss: onLeave,
-    gapSpace: gapSpace,
+    gapSpace,
     ...calloutProps,
   };
 

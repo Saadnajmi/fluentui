@@ -69,8 +69,15 @@ export function getStyles(props: ITagItemStyleProps): ITagItemStyles {
         !disabled && [
           classNames.isSelected,
           {
-            background: palette.themePrimary,
-            color: palette.white,
+            ':focus-within': {
+              background: palette.themePrimary,
+              color: palette.white,
+
+              [HighContrastSelector]: {
+                color: 'HighLightText',
+                background: 'Highlight',
+              },
+            },
           },
         ],
       className,
@@ -108,7 +115,7 @@ export function getStyles(props: ITagItemStyleProps): ITagItemStyles {
             background: palette.neutralQuaternaryAlt,
             color: palette.neutralPrimary,
           },
-          [`.${classNames.isSelected} &, :focus`]: {
+          [`.${classNames.isSelected} &:focus`]: {
             color: palette.white,
             background: palette.themePrimary,
           },

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { JSXElement } from '@fluentui/utilities';
 import {
   IChartProps,
   ILineChartPoints,
@@ -6,8 +7,8 @@ import {
   LineChart,
   ChartHoverCard,
   ICustomizedCalloutData,
+  DataVizPalette,
 } from '@fluentui/react-charting';
-import { DefaultPalette } from '@fluentui/react/lib/Styling';
 
 interface IStyledLineChartExampleState {
   width: number;
@@ -23,7 +24,7 @@ export class LineChartStyledExample extends React.Component<{}, IStyledLineChart
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return <div>{this._styledExample()}</div>;
   }
 
@@ -34,22 +35,22 @@ export class LineChartStyledExample extends React.Component<{}, IStyledLineChart
     this.setState({ height: parseInt(e.target.value, 10) });
   };
 
-  private _styledExample(): JSX.Element {
+  private _styledExample(): JSXElement {
     const points: ILineChartPoints[] = [
       {
         data: [
-          { x: new Date('2018/01/06'), y: 10 },
-          { x: new Date('2018/01/16'), y: 18 },
-          { x: new Date('2018/01/20'), y: 24 },
-          { x: new Date('2018/01/24'), y: 35 },
-          { x: new Date('2018/01/26'), y: 35 },
-          { x: new Date('2018/01/29'), y: 90 },
+          { x: new Date('2018/01/06'), y: 10, xAxisCalloutData: 'Appointment 1' },
+          { x: new Date('2018/01/16'), y: 18, xAxisCalloutData: 'Appointment 2' },
+          { x: new Date('2018/01/20'), y: 24, xAxisCalloutData: 'Appointment 3' },
+          { x: new Date('2018/01/24'), y: 35, xAxisCalloutData: 'Appointment 4' },
+          { x: new Date('2018/01/26'), y: 35, xAxisCalloutData: 'Appointment 5' },
+          { x: new Date('2018/01/29'), y: 90, xAxisCalloutData: 'Appointment 6' },
         ],
-        legend: 'Week',
+        legend: 'first legend',
         lineOptions: {
           lineBorderWidth: '4',
         },
-        color: DefaultPalette.blue,
+        color: DataVizPalette.color10,
       },
     ];
 
@@ -62,7 +63,7 @@ export class LineChartStyledExample extends React.Component<{}, IStyledLineChart
       height: `${this.state.height}px`,
     };
     return (
-      <>
+      <div className="containerDiv">
         <label htmlFor="changeWidth_Styled">Change Width:</label>
         <input
           type="range"
@@ -88,7 +89,6 @@ export class LineChartStyledExample extends React.Component<{}, IStyledLineChart
             data={data}
             strokeWidth={4}
             yMaxValue={90}
-            hideLegend={true}
             showXAxisLablesTooltip
             height={this.state.height}
             width={this.state.width}
@@ -98,16 +98,25 @@ export class LineChartStyledExample extends React.Component<{}, IStyledLineChart
             onRenderCalloutPerDataPoint={(props: ICustomizedCalloutData) =>
               props ? (
                 <ChartHoverCard
-                  XValue={'Custom XVal'}
+                  XValue={`${props.values[0].xAxisCalloutData}`}
                   Legend={'Custom Legend'}
                   YValue={`${props.values[0].yAxisCalloutData || props.values[0].y} h`}
                   color={'red'}
                 />
               ) : null
             }
+            enablePerfOptimization={true}
+            legendProps={{
+              styles: {
+                legend: {
+                  textTransform: 'none',
+                },
+              },
+            }}
+            useUTC={false}
           />
         </div>
-      </>
+      </div>
     );
   }
 }

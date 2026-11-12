@@ -8,6 +8,8 @@ import { getIconContent } from './FontIcon';
 import type { IIconProps, IIconStyleProps, IIconStyles } from './Icon.types';
 import type { IImageProps } from '../Image/Image.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 export interface IIconState {
   imageLoadError: boolean;
 }
@@ -27,11 +29,11 @@ export class IconBase extends React.Component<IIconProps, IIconState> {
     };
   }
 
-  public render() {
+  public render(): JSXElement {
     const { children, className, styles, iconName, imageErrorAs, theme } = this.props;
     const isPlaceholder = typeof iconName === 'string' && iconName.length === 0;
     const isImage =
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       !!this.props.imageProps || this.props.iconType === IconType.image || this.props.iconType === IconType.Image;
     const iconContent = getIconContent(iconName) || {};
     const { iconClassName, children: iconContentChildren, mergeImageProps } = iconContent;
@@ -55,7 +57,7 @@ export class IconBase extends React.Component<IIconProps, IIconState> {
     };
     const ImageType = (imageLoadError && imageErrorAs) || Image;
 
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const ariaLabel = this.props['aria-label'] || this.props.ariaLabel;
     const accessibleName = imageProps.alt || ariaLabel || this.props.title;
     const hasName = !!(

@@ -1,44 +1,41 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import { ColorPicker, Fabric } from '@fluentui/react';
 
-storiesOf('ColorPicker', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story =>
-    // prettier-ignore
-    <Screener
-      steps={new Screener.Steps()
-        .snapshot('default', { cropTo: '.testWrapper' })
-        .end()}
-    >
-      {story()}
-    </Screener>,
-  )
-  .addStory(
-    'Root',
-    () => (
-      <Fabric>
-        <ColorPicker
-          color="#FFF"
-          styles={{
-            input: { fontFamily: 'Segoe UI' },
-          }}
-        />
-      </Fabric>
-    ),
-    {
-      includeRtl: true,
+export default {
+  title: 'ColorPicker',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps().snapshot('default', { cropTo: '.testWrapper' }).end(),
     },
-  )
-  .addStory('Blue', () => (
-    <Fabric>
-      <ColorPicker
-        color="#48B"
-        styles={{
-          input: { fontFamily: 'Segoe UI' },
-        }}
-      />
-    </Fabric>
-  ));
+  } satisfies StoryParameters,
+} satisfies Meta<typeof ColorPicker>;
+
+export const Root = () => (
+  <Fabric>
+    <ColorPicker
+      color="#FFF"
+      styles={{
+        input: { fontFamily: 'Segoe UI' },
+      }}
+    />
+  </Fabric>
+);
+
+export const RootRTL = getStoryVariant(Root, RTL);
+
+export const Blue = () => (
+  <Fabric>
+    <ColorPicker
+      color="#48B"
+      styles={{
+        input: { fontFamily: 'Segoe UI' },
+      }}
+    />
+  </Fabric>
+);

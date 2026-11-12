@@ -8,11 +8,13 @@ import { getCalloutStyles, getCalloutOffsetStyles } from './Keytip.styles';
 import type { IKeytipProps } from './Keytip.types';
 import type { Target } from '@fluentui/react-hooks';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 /**
  * A callout corresponding to another Fabric component to describe a key sequence that will activate that component
  */
 export class Keytip extends React.Component<IKeytipProps, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { keySequences, offset, overflowSetSequence } = this.props;
     let { calloutProps } = this.props;
 
@@ -36,9 +38,9 @@ export class Keytip extends React.Component<IKeytipProps, {}> {
       // Set callout to top-left corner, will be further positioned in
       // getCalloutOffsetStyles
       calloutProps = {
-        ...calloutProps,
         coverTarget: true,
         directionalHint: DirectionalHint.topLeftEdge,
+        ...calloutProps,
       };
     }
 

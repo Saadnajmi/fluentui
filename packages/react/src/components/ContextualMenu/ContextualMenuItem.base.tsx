@@ -4,6 +4,8 @@ import { getRTL, initializeComponentRef } from '../../Utilities';
 import { Icon } from '../../Icon';
 import type { IContextualMenuItemProps, IContextualMenuItemRenderFunctions } from './ContextualMenuItem.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const defaultIconRenderer = (props: IContextualMenuItemProps) => {
   const { item, classNames } = props;
   const { iconProps } = item;
@@ -42,11 +44,11 @@ const renderCheckMarkIcon = ({ onCheckmarkClick, item, classNames }: IContextual
 };
 
 const renderItemName = ({ item, classNames }: IContextualMenuItemProps) => {
-  /* eslint-disable deprecation/deprecation */
+  /* eslint-disable @typescript-eslint/no-deprecated */
   if (item.text || item.name) {
     return <span className={classNames.label}>{item.text || item.name}</span>;
   }
-  /* eslint-enable deprecation/deprecation */
+  /* eslint-enable @typescript-eslint/no-deprecated */
   return null;
 };
 
@@ -77,7 +79,7 @@ export class ContextualMenuItemBase extends React.Component<IContextualMenuItemP
     initializeComponentRef(this);
   }
 
-  public render() {
+  public render(): JSXElement {
     const { item, classNames } = this.props;
     const renderContent = item.onRenderContent || this._renderLayout;
 

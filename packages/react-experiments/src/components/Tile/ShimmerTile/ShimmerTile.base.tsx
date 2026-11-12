@@ -4,6 +4,7 @@ import { TileLayoutSizes } from '../Tile';
 import { ShimmerGap, ShimmerElementsGroup, ShimmerElementType } from '@fluentui/react/lib/Shimmer';
 import type { IShimmerTileProps, IShimmerTileStyleProps, IShimmerTileStyles } from './ShimmerTile.types';
 import type { TileSize } from '../Tile.types';
+import type { JSXElement } from '@fluentui/utilities';
 
 const ShimmerTileLayoutValues = {
   largeSquareWidth: 96,
@@ -59,7 +60,7 @@ export class ShimmerTileBase extends React.Component<IShimmerTileProps, {}> {
     initializeComponentRef(this);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       styles,
       contentSize = { width: 176, height: 171 },
@@ -69,13 +70,11 @@ export class ShimmerTileBase extends React.Component<IShimmerTileProps, {}> {
       tileSize = 'large',
     } = this.props;
 
-    const { nameplatePadding, nameplateMargin, nameplateActivityHeight, nameplateNameHeight } = TileLayoutSizes[
-      tileSize
-    ];
+    const { nameplatePadding, nameplateMargin, nameplateActivityHeight, nameplateNameHeight } =
+      TileLayoutSizes[tileSize];
 
-    const { squareWidth, squareHeight, nameWidth, nameHeight, activityWidth, activityHeight } = PLACEHOLDER_SIZES[
-      tileSize
-    ];
+    const { squareWidth, squareHeight, nameWidth, nameHeight, activityWidth, activityHeight } =
+      PLACEHOLDER_SIZES[tileSize];
 
     let nameplateHeight = 0;
 

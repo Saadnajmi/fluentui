@@ -1,13 +1,12 @@
 // @ts-check
-const { AST_NODE_TYPES } = require('@typescript-eslint/experimental-utils');
+const { AST_NODE_TYPES } = require('@typescript-eslint/utils');
 const createRule = require('../../utils/createRule');
 
 /**
- * @typedef {import("@typescript-eslint/types/dist/ts-estree").ImportClause} ImportClause
- * @typedef {import("@typescript-eslint/types/dist/ts-estree").ImportDeclaration} ImportDeclaration
+ * @import { TSESTree } from "@typescript-eslint/utils"
  *
  * Lookup for insertion point for new imports when moving a restricted import to a preferred import.
- * @typedef {{[preferredPkgName: string] : ImportDeclaration}} FixMap
+ * @typedef {{[preferredPkgName: string] : TSESTree.ImportDeclaration}} FixMap
  *
  * @typedef {{
  *   forbidden: string[],
@@ -25,11 +24,10 @@ module.exports = createRule({
     type: 'problem',
     docs: {
       description: 'Restricts imports of certain packages',
-      category: 'Best Practices',
-      recommended: false,
     },
     messages: {
-      restrictedImport: 'Import from {{ packageName }} detected which is not allowed.',
+      restrictedImport:
+        'Import from {{ packageName }} detected which is not allowed. Use the barrel export @fluentui/react-components instead. See docs/architecture/layers.md',
     },
     fixable: 'code',
     schema: [
@@ -40,15 +38,18 @@ module.exports = createRule({
             type: 'array',
             minItems: 1,
             items: {
-              forbidden: {
-                type: 'array',
-                minItems: 1,
-                items: {
+              type: 'object',
+              properties: {
+                forbidden: {
+                  type: 'array',
+                  minItems: 1,
+                  items: {
+                    type: 'string',
+                  },
+                },
+                preferred: {
                   type: 'string',
                 },
-              },
-              preferred: {
-                type: 'string',
               },
             },
           },
@@ -56,9 +57,8 @@ module.exports = createRule({
       },
     ],
   },
-  defaultOptions: [],
+  defaultOptions: /** @type {Options[]} */ ([]),
   create: context => {
-    /** @type {Options[]} */
     const options = context.options;
 
     if (!options.length) {
@@ -107,7 +107,7 @@ module.exports = createRule({
 
     return {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      ImportDeclaration: (/** @type {ImportDeclaration} */ imprt) => {
+      ImportDeclaration: imprt => {
         if (!imprt.source || (imprt.source && imprt.source.type !== AST_NODE_TYPES.Literal)) {
           return;
         }
@@ -132,9 +132,11 @@ module.exports = createRule({
         function getUpdatedImportStatement(fixMap, preferredImportForCurrentPkg) {
           const isTypeImport = imprt.importKind === 'type';
           const currentSpecifiers = fixMap[preferredImportForCurrentPkg].specifiers.map(
-            (/** @type {ImportClause} */ specifier) => specifier.local.name,
+            (/** @type {TSESTree.ImportClause} */ specifier) => specifier.local.name,
           );
-          const specifiersToAdd = imprt.specifiers.map((/** @type {ImportClause} */ specifier) => specifier.local.name);
+          const specifiersToAdd = imprt.specifiers.map(
+            (/** @type {TSESTree.ImportClause} */ specifier) => specifier.local.name,
+          );
           const combinedSpecifiers = currentSpecifiers.concat(specifiersToAdd).join(', ');
 
           return `import${

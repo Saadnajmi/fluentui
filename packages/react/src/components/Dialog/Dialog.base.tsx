@@ -12,6 +12,8 @@ import type { IDialogContentProps } from './DialogContent.types';
 import type { IModalProps } from '../../Modal';
 import type { ILayerProps } from '../../Layer';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const DefaultModalProps: IModalProps = {
   isDarkOverlay: false,
   isBlocking: false,
@@ -27,7 +29,7 @@ const DefaultDialogContentProps: IDialogContentProps = {
   topButtonsProps: [],
 };
 
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 @withResponsiveMode
 export class DialogBase extends React.Component<IDialogProps, {}> {
   public static defaultProps: IDialogProps = {
@@ -64,10 +66,10 @@ export class DialogBase extends React.Component<IDialogProps, {}> {
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const props = this.props;
     const {
-      /* eslint-disable deprecation/deprecation */
+      /* eslint-disable @typescript-eslint/no-deprecated */
       className,
       containerClassName,
       contentClassName,
@@ -90,7 +92,7 @@ export class DialogBase extends React.Component<IDialogProps, {}> {
       title,
       topButtonsProps,
       type,
-      /* eslint-enable deprecation/deprecation */
+      /* eslint-enable @typescript-eslint/no-deprecated */
       minWidth,
       maxWidth,
       modalProps,
@@ -142,7 +144,7 @@ export class DialogBase extends React.Component<IDialogProps, {}> {
       ...props.dialogContentProps,
       draggableHeaderClassName: dialogDraggableClassName,
       titleProps: {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         id: props.dialogContentProps?.titleId || this._defaultTitleTextId,
         ...props.dialogContentProps?.titleProps,
       },
@@ -179,7 +181,7 @@ export class DialogBase extends React.Component<IDialogProps, {}> {
   }
 
   private _getSubTextId = (): string | undefined => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { ariaDescribedById, modalProps, dialogContentProps, subText } = this.props;
     let id = (modalProps && modalProps.subtitleAriaId) || ariaDescribedById;
 
@@ -191,7 +193,7 @@ export class DialogBase extends React.Component<IDialogProps, {}> {
   };
 
   private _getTitleTextId = (): string | undefined => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { ariaLabelledById, modalProps, dialogContentProps, title } = this.props;
     let id = (modalProps && modalProps.titleAriaId) || ariaLabelledById;
 

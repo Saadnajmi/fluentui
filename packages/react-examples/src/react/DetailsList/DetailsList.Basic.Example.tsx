@@ -4,7 +4,7 @@ import { TextField, ITextFieldStyles } from '@fluentui/react/lib/TextField';
 import { DetailsList, DetailsListLayoutMode, Selection, IColumn } from '@fluentui/react/lib/DetailsList';
 import { MarqueeSelection } from '@fluentui/react/lib/MarqueeSelection';
 import { mergeStyles } from '@fluentui/react/lib/Styling';
-import { Text } from '@fluentui/react/lib/Text';
+import type { JSXElement } from '@fluentui/utilities';
 
 const exampleChildClass = mergeStyles({
   display: 'block',
@@ -57,16 +57,12 @@ export class DetailsListBasicExample extends React.Component<{}, IDetailsListBas
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { items, selectionDetails } = this.state;
 
     return (
       <div>
         <div className={exampleChildClass}>{selectionDetails}</div>
-        <Text>
-          Note: While focusing a row, pressing enter or double clicking will execute onItemInvoked, which in this
-          example will show an alert.
-        </Text>
         <Announced message={selectionDetails} />
         <TextField
           className={exampleChildClass}
@@ -86,7 +82,6 @@ export class DetailsListBasicExample extends React.Component<{}, IDetailsListBas
             ariaLabelForSelectionColumn="Toggle selection"
             ariaLabelForSelectAllCheckbox="Toggle selection for all items"
             checkButtonAriaLabel="select row"
-            onItemInvoked={this._onItemInvoked}
           />
         </MarqueeSelection>
       </div>
@@ -110,9 +105,5 @@ export class DetailsListBasicExample extends React.Component<{}, IDetailsListBas
     this.setState({
       items: text ? this._allItems.filter(i => i.name.toLowerCase().indexOf(text) > -1) : this._allItems,
     });
-  };
-
-  private _onItemInvoked = (item: IDetailsListBasicExampleItem): void => {
-    alert(`Item invoked: ${item.name}`);
   };
 }

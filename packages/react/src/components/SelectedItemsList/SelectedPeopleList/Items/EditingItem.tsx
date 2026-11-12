@@ -17,6 +17,8 @@ import type {
   IEditingSelectedPeopleItemStylesProps,
 } from './EditingItem.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 export class EditingItem extends React.Component<IEditingSelectedPeopleItemProps, IPeoplePickerItemState> {
   private _editingInput: HTMLInputElement;
   private _editingFloatingPicker = React.createRef<FloatingPeoplePicker>();
@@ -25,7 +27,6 @@ export class EditingItem extends React.Component<IEditingSelectedPeopleItemProps
     super(props);
 
     initializeComponentRef(this);
-    // eslint-disable-next-line react/no-unused-state
     this.state = { contextualMenuVisible: false };
   }
 
@@ -38,7 +39,7 @@ export class EditingItem extends React.Component<IEditingSelectedPeopleItemProps
     this._editingInput.focus();
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const itemId = getId();
     const nativeProps = getNativeProps<React.InputHTMLAttributes<HTMLInputElement>>(this.props, inputProperties);
     const getClassNames = classNamesFunction<IEditingSelectedPeopleItemStylesProps, IEditingSelectedPeopleItemStyles>();
@@ -63,7 +64,7 @@ export class EditingItem extends React.Component<IEditingSelectedPeopleItemProps
     );
   }
 
-  private _renderEditingSuggestions = (): JSX.Element => {
+  private _renderEditingSuggestions = (): JSXElement => {
     const FloatingPicker = this.props.onRenderFloatingPicker;
     const floatingPickerProps = this.props.floatingPickerProps;
     if (!FloatingPicker || !floatingPickerProps) {
@@ -117,7 +118,7 @@ export class EditingItem extends React.Component<IEditingSelectedPeopleItemProps
   };
 
   private _onInputKeyDown(ev: React.KeyboardEvent<HTMLInputElement>): void {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (ev.which === KeyCodes.backspace || ev.which === KeyCodes.del) {
       ev.stopPropagation();
     }

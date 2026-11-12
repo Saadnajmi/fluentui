@@ -1,7 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import { GroupedList } from '@fluentui/react';
 
 /* eslint-disable @fluentui/max-len */
@@ -85,31 +86,31 @@ const onRenderCell = (nestingDepth: number, item: any, itemIndex: number) => {
   return <div>{item.name}</div>;
 };
 
-storiesOf('GroupedList', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'GroupedList',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.testWrapper' })
         .hover('.ms-GroupHeader-expand')
         .snapshot('hover', { cropTo: '.testWrapper' })
         .click('.ms-GroupHeader-expand')
         .hover('.ms-GroupHeader-expand')
         .snapshot('click', { cropTo: '.testWrapper' })
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory(
-    'Root',
-    () => (
-      <GroupedList
-        groups={groups}
-        items={items}
-        onRenderCell={onRenderCell}
-        styles={{ root: { color: '#333333' } }}
-      />
-    ),
-    { includeRtl: true },
-  );
+        .end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof GroupedList>;
+
+export const Root = () => (
+  <GroupedList
+    groups={groups}
+    items={items}
+    onRenderCell={onRenderCell}
+    styles={{ root: { color: '#333333' } }}
+  />
+);
+
+export const RootRTL = getStoryVariant(Root, RTL);

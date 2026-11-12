@@ -6,12 +6,15 @@ import { getStyles } from './TagItem.styles';
 import { useId } from '@fluentui/react-hooks';
 import type { ITagItemProps, ITagItemStyleProps, ITagItemStyles } from './TagPicker.types';
 
+import type { JSXElement } from '@fluentui/utilities';
+
 const getClassNames = classNamesFunction<ITagItemStyleProps, ITagItemStyles>();
 
 /**
  * {@docCategory TagPicker}
  */
-export const TagItemBase = (props: ITagItemProps) => {
+
+export const TagItemBase = (props: ITagItemProps): JSXElement => {
   const {
     theme,
     styles,
@@ -25,6 +28,7 @@ export const TagItemBase = (props: ITagItemProps) => {
     removeButtonAriaLabel,
     title = typeof props.children === 'string' ? props.children : props.item.name,
     removeButtonIconProps,
+    removeButtonProps,
   } = props;
 
   const buttonRef = React.createRef<IButton>();
@@ -48,7 +52,7 @@ export const TagItemBase = (props: ITagItemProps) => {
         tabindex: 0,
       }
     : {
-        disabled: disabled,
+        disabled,
       };
 
   return (
@@ -65,6 +69,7 @@ export const TagItemBase = (props: ITagItemProps) => {
         styles={{ icon: { fontSize: '12px' } }}
         className={classNames.close}
         aria-labelledby={`${itemId}-removeLabel ${itemId}-text`}
+        {...removeButtonProps}
       />
       <span id={`${itemId}-removeLabel`} hidden>
         {removeButtonAriaLabel}

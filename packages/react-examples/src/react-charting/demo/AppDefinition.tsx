@@ -75,6 +75,12 @@ export const AppDefinition: IAppDefinition = {
           url: '#/examples/Donutchart',
         },
         {
+          component: require<any>('../GaugeChart/GaugeChartPage').GaugeChartPage,
+          key: 'GaugeChart',
+          name: 'Gauge Chart',
+          url: '#/examples/GaugeChart',
+        },
+        {
           component: require<any>('../HeatMapChart/HeatMapChartPage').HeatMapChart,
           key: 'HeatMapChart',
           name: 'Heat Map Chart',
@@ -98,6 +104,25 @@ export const AppDefinition: IAppDefinition = {
           name: 'Sparkline Chart',
           url: '#/examples/sparkline',
         },
+        {
+          component: require<any>('../HorizontalBarChartWithAxis/HorizontalBarChartWithAxisPage')
+            .HorizontalBarChartWithAxisPage,
+          key: 'HorizontalBarChartWithAxis',
+          name: 'Horizontal Bar Chart With Axis',
+          url: '#/examples/HorizontalBarChartWithAxis',
+        },
+        {
+          component: require<any>('../DeclarativeChart/DeclarativeChartPage').DeclarativeChartPage,
+          key: 'DeclarativeChart',
+          name: 'Declarative Chart',
+          url: '#/examples/declarativechart',
+        },
+        {
+          component: require<any>('../GanttChart/GanttChartPage').GanttChartPage,
+          key: 'GanttChart',
+          name: 'Gantt Chart',
+          url: '#/examples/GanttChart',
+        },
       ],
     },
   ],
@@ -112,7 +137,7 @@ export const AppDefinition: IAppDefinition = {
     },
     {
       name: 'GitHub',
-      url: 'https://github.com/microsoft/fluentui/tree/master/packages/react-charting',
+      url: 'https://github.com/microsoft/fluentui/tree/master/packages/charts/react-charting',
     },
   ],
 };

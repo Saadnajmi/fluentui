@@ -12,6 +12,7 @@ import {
   Async,
   initializeComponentRef,
   KeyCodes,
+  isElementVisibleAndNotHidden,
 } from '../../Utilities';
 import { KeytipManager } from '../../utilities/keytips/KeytipManager';
 import { KeytipTree } from './KeytipTree';
@@ -27,6 +28,10 @@ import type { IKeytipLayerProps, IKeytipLayerStyles, IKeytipLayerStyleProps } fr
 import type { IKeytipProps } from '../../Keytip';
 import type { IKeytipTreeNode } from './IKeytipTreeNode';
 import type { KeytipTransitionModifier, IKeytipTransitionKey } from '../../utilities/keytips/IKeytipTransitionKey';
+import { WindowContext } from '@fluentui/react-window-provider';
+import { getDocumentEx, getWindowEx } from '../../utilities/dom';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 export interface IKeytipLayerState {
   inKeytipMode: boolean;
@@ -62,7 +67,11 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
     content: '',
   };
 
+  public static contextType = WindowContext;
+  public context: any;
+
   private _events: EventGroup;
+  private _activationEvents?: EventGroup;
   private _async: Async;
 
   private _keytipTree: KeytipTree;
@@ -76,6 +85,15 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
   private _delayedQueueTimeout: number;
 
   private _keyHandled = false;
+
+  private _activationKey?: string;
+  private _pendingActivation?: IKeytipTransitionKey;
+  private _consumeActivationKeyUp?: string;
+  private _exitingActivationKey?: string;
+  private _consecutiveActivationEligible = false;
+  private _isComposing = false;
+  private _handledKeyDowns = new WeakSet<React.KeyboardEvent<HTMLElement>>();
+  private _pendingKeyDowns = new Set<React.KeyboardEvent<HTMLElement>>();
 
   constructor(props: IKeytipLayerProps, context: any) {
     super(props, context);
@@ -105,7 +123,7 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
     this._events.on(this._keytipManager, KeytipEvents.PERSISTED_KEYTIP_EXECUTE, this._onPersistedKeytipExecute);
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { content, styles } = this.props;
 
     const { keytips, visibleKeytips } = this.state;
@@ -132,20 +150,45 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
   }
 
   public componentDidMount(): void {
+    const win = getWindowEx(this.context);
     // Add window listeners
-    this._events.on(window, 'mouseup', this._onDismiss, true /* useCapture */);
-    this._events.on(window, 'pointerup', this._onDismiss, true /* useCapture */);
-    this._events.on(window, 'resize', this._onDismiss);
-    this._events.on(window, 'keydown', this._onKeyDown, true /* useCapture */);
-    this._events.on(window, 'keypress', this._onKeyPress, true /* useCapture */);
-    this._events.on(window, 'scroll', this._onDismiss, true /* useCapture */);
+    this._events.on(win, 'mouseup', this._onDismiss, true /* useCapture */);
+    this._events.on(win, 'pointerup', this._onDismiss, true /* useCapture */);
+    this._events.on(win, 'resize', this._onDismiss);
+    this._events.on(win, 'keydown', this._onKeyDown, true /* useCapture */);
+    this._events.on(win, 'keypress', this._onKeyPress, true /* useCapture */);
+    this._events.on(win, 'scroll', this._onDismiss, true /* useCapture */);
+
+    if (this.props.keytipActivationBehavior) {
+      this._updateActivationListeners();
+    }
 
     // Add keytip listeners
     this._events.on(this._keytipManager, KeytipEvents.ENTER_KEYTIP_MODE, this._enterKeytipMode);
     this._events.on(this._keytipManager, KeytipEvents.EXIT_KEYTIP_MODE, this._exitKeytipMode);
   }
 
+  public componentDidUpdate(prevProps: IKeytipLayerProps): void {
+    const behavior = this.props.keytipActivationBehavior;
+    if (!!prevProps.keytipActivationBehavior !== !!behavior) {
+      this._updateActivationListeners();
+    }
+    if ((behavior && this.props.enabled === false) || (prevProps.keytipActivationBehavior && !behavior)) {
+      if (this._keytipTree.currentKeytip) {
+        this._exitKeytipMode();
+      }
+      this._resetActivationGesture();
+      this._isComposing = false;
+    }
+  }
+
   public componentWillUnmount(): void {
+    if (this.props.keytipActivationBehavior) {
+      this._resetActivationGesture();
+      this._keytipManager.inKeytipMode = false;
+      this._keytipManager.getKeytips().forEach(keytip => (keytip.visible = false));
+    }
+    this._activationEvents?.dispose();
     this._async.dispose();
     this._events.dispose();
   }
@@ -196,9 +239,16 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
       }
     } else if (transitionKeysContain(this.props.keytipStartSequences!, transitionKey) && !currKtp) {
       // If key sequence is in 'entry sequences' and currentKeytip is null, we enter keytip mode
-      this._keyHandled = true;
-      this._enterKeytipMode(transitionKey);
-      this._warnIfDuplicateKeytips();
+      if (this.props.keytipActivationBehavior) {
+        this._keyHandled = !!this._enterKeytipMode(transitionKey);
+        if (this._keyHandled) {
+          this._warnIfDuplicateKeytips();
+        }
+      } else {
+        this._keyHandled = true;
+        this._enterKeytipMode(transitionKey);
+        this._warnIfDuplicateKeytips();
+      }
     }
   }
 
@@ -207,8 +257,9 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
    *
    * @param key - Key pressed by the user
    */
-  public processInput(key: string, ev?: React.KeyboardEvent<HTMLElement>): void {
+  public processInput(key: string, ev?: React.KeyboardEvent<HTMLElement>): 'handled' | 'partial' | 'unmatched' | void {
     // Concat the input key with the current sequence
+    const behavior = this.props.keytipActivationBehavior;
     const currSequence: string = this._currentSequence + key;
     let currKtp = this._keytipTree.currentKeytip;
 
@@ -224,6 +275,10 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
           currKtp.onExecute(this._getKtpExecuteTarget(currKtp), this._getKtpTarget(currKtp));
           // Reset currKtp, this might have changed from the onExecute
           currKtp = this._keytipTree.currentKeytip;
+          if (behavior && !currKtp) {
+            this._currentSequence = '';
+            return 'handled';
+          }
         }
 
         // To exit keytipMode after executing the keytip it must not have a menu or have dynamic children
@@ -237,7 +292,7 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
 
         // Clear currentSequence
         this._currentSequence = '';
-        return;
+        return behavior ? 'handled' : undefined;
       }
 
       const partialNodes = this._keytipTree.getPartiallyMatchedNodes(currSequence, currKtp);
@@ -255,8 +310,10 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
 
         // Save currentSequence
         this._currentSequence = currSequence;
+        return behavior ? 'partial' : undefined;
       }
     }
+    return behavior ? 'unmatched' : undefined;
   }
 
   /**
@@ -282,11 +339,33 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
     this._setKeytips();
   }
 
+  private _updateActivationListeners(): void {
+    if (this.props.keytipActivationBehavior) {
+      const win = getWindowEx(this.context);
+      this._activationEvents = new EventGroup(this);
+      this._activationEvents.on(win, 'keydown', this._onKeyDownBubble);
+      this._activationEvents.on(win, 'keyup', this._onKeyUp, true /* useCapture */);
+      this._activationEvents.on(win, 'blur', this._onBlur);
+      this._activationEvents.on(win, 'compositionstart', this._onCompositionStart, true /* useCapture */);
+      this._activationEvents.on(win, 'compositionend', this._onCompositionEnd, true /* useCapture */);
+    } else {
+      this._activationEvents?.dispose();
+      this._activationEvents = undefined;
+    }
+  }
+
   /**
    * Enters keytip mode for this layer
    */
-  private _enterKeytipMode(transitionKey?: IKeytipTransitionKey): void {
-    if (this._keytipManager.shouldEnterKeytipMode) {
+  private _enterKeytipMode(
+    transitionKey?: IKeytipTransitionKey,
+    ev?: React.KeyboardEvent<HTMLElement>,
+  ): boolean | void {
+    const behavior = this.props.keytipActivationBehavior;
+    if ((!behavior || this.props.enabled !== false) && this._keytipManager.shouldEnterKeytipMode) {
+      if (behavior) {
+        this._resetActivationGesture(false);
+      }
       if (this._keytipManager.delayUpdatingKeytipChange) {
         this._buildTree();
         this._setKeytips();
@@ -297,10 +376,24 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
 
       this._setInKeytipMode(true /* inKeytipMode */);
 
+      if (ev && transitionKey && behavior) {
+        const modifierOnly = this._isModifierKey(transitionKey.key) && !transitionKey.modifierKeys;
+        if (modifierOnly) {
+          this._activationKey = transitionKey.key;
+          this._consecutiveActivationEligible = true;
+        }
+        // Host callbacks may transfer focus, exit, or replace the layer. Claim the gesture first.
+        if (behavior.consumeActivationEvent) {
+          this._consumeKeyEvent(ev);
+        }
+      }
+
       if (this.props.onEnterKeytipMode) {
         this.props.onEnterKeytipMode(transitionKey);
       }
+      return behavior ? true : undefined;
     }
+    return behavior ? false : undefined;
   }
 
   private _buildTree(): void {
@@ -321,6 +414,10 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
    * Exits keytip mode for this layer
    */
   private _exitKeytipMode(ev?: React.KeyboardEvent<HTMLElement> | React.MouseEvent<HTMLElement>): void {
+    if (this.props.keytipActivationBehavior) {
+      // Preserve the exiting gesture until release, even when activation passes through.
+      this._resetActivationGesture(false);
+    }
     this._keytipTree.currentKeytip = undefined;
     this._currentSequence = '';
     // Hide all keytips
@@ -376,9 +473,24 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
         keytipId = sequencesToID(mergeOverflows(keytip.keySequences, keytip.overflowSetSequence));
       }
       seenIds[keytipId] = seenIds[keytipId] ? seenIds[keytipId] + 1 : 1;
-      return keytip.visible && seenIds[keytipId] === 1;
+
+      // Return true only if the keytip is visible and the corresponding target is also visible
+      return keytip.visible && this._isKeytipInstanceTargetVisible(keytip.keySequences, seenIds[keytipId]);
     });
   }
+
+  private _isKeytipInstanceTargetVisible = (keySequences: string[], instanceCount: number): boolean => {
+    const doc = getDocumentEx(this.context);
+    const win = getWindowEx(this.context);
+    const targetSelector = ktpTargetFromSequences(keySequences);
+    const matchingElements = doc?.querySelectorAll(targetSelector) ?? [];
+
+    // If there are multiple elements for the keytip sequence, return true if the element instance
+    // that corresponds to the keytip instance is visible, otherwise return if there is only one instance
+    return matchingElements.length > 1 && instanceCount <= matchingElements.length
+      ? isElementVisibleAndNotHidden(matchingElements[instanceCount - 1] as HTMLElement, win ?? undefined)
+      : instanceCount === 1;
+  };
 
   private _onDismiss = (ev?: React.MouseEvent<HTMLElement>): void => {
     // if we are in keytip mode, then exit keytip mode
@@ -389,6 +501,10 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
 
   private _onKeyDown = (ev: React.KeyboardEvent<HTMLElement>): void => {
     this._keyHandled = false;
+    if (this.props.keytipActivationBehavior) {
+      this._onActivationKeyDown(ev);
+      return;
+    }
     // using key since which has been deprecated and key is now widely suporrted.
     // See: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/which
     let key = ev.key;
@@ -429,6 +545,278 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
     }
   };
 
+  private _normalizeKey(key: string): string {
+    return key === 'Esc' ? 'Escape' : key === 'OS' || key === 'Win' ? 'Meta' : key;
+  }
+
+  private _isModifierKey(key: string): boolean {
+    return key === 'Alt' || key === 'Control' || key === 'Shift' || key === 'Meta' || key === 'AltGraph';
+  }
+
+  private _isModifierHeld(key: string | undefined, ev: React.KeyboardEvent<HTMLElement>): boolean {
+    switch (key) {
+      case 'Alt':
+        return ev.altKey;
+      case 'Control':
+        return ev.ctrlKey;
+      case 'Shift':
+        return ev.shiftKey;
+      case 'Meta':
+        return ev.metaKey;
+      default:
+        return false;
+    }
+  }
+
+  private _isIgnoredKeyboardEvent(ev: React.KeyboardEvent<HTMLElement>): boolean {
+    return (
+      this._isComposing ||
+      ev.nativeEvent?.isComposing ||
+      ('isComposing' in ev && ev.isComposing === true) ||
+      // eslint-disable-next-line @typescript-eslint/no-deprecated -- Legacy IME events use keyCode 229.
+      ev.keyCode === 229 ||
+      ev.key === 'Process' ||
+      ev.key === 'AltGraph' ||
+      ev.getModifierState?.('AltGraph') ||
+      (ev.altKey && ev.ctrlKey)
+    );
+  }
+
+  private _consumeKeyEvent(ev: React.KeyboardEvent<HTMLElement>): void {
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+
+  private _resetActivationGesture(resetKeyUp = true): void {
+    this._activationKey = undefined;
+    this._pendingActivation = undefined;
+    this._consecutiveActivationEligible = false;
+    this._pendingKeyDowns.clear();
+    if (resetKeyUp) {
+      this._consumeActivationKeyUp = undefined;
+      this._exitingActivationKey = undefined;
+    }
+  }
+
+  private _onActivationKeyDown(ev: React.KeyboardEvent<HTMLElement>): void {
+    const behavior = this.props.keytipActivationBehavior!;
+    const key = this._normalizeKey(ev.key);
+    const transitionKey: IKeytipTransitionKey = { key, modifierKeys: this._getModifierKey(key, ev) };
+
+    const keytipsAllowed = this.props.enabled !== false && this._keytipManager.shouldEnterKeytipMode;
+    if (this._isIgnoredKeyboardEvent(ev) || !keytipsAllowed) {
+      if (this._keytipTree.currentKeytip) {
+        this._exitKeytipMode(ev);
+      }
+      this._resetActivationGesture();
+      return;
+    }
+
+    if (
+      this._consumeActivationKeyUp &&
+      key !== this._consumeActivationKeyUp &&
+      !this._isModifierHeld(this._consumeActivationKeyUp, ev)
+    ) {
+      this._consumeActivationKeyUp = undefined;
+    }
+
+    if (
+      this._exitingActivationKey &&
+      ((key === this._exitingActivationKey && !ev.repeat) || !this._isModifierHeld(this._exitingActivationKey, ev))
+    ) {
+      this._exitingActivationKey = undefined;
+    }
+
+    if (this._pendingActivation && key !== this._pendingActivation.key) {
+      // Any other key makes this a chord, not a standalone modifier tap.
+      this._pendingActivation = undefined;
+    }
+
+    const isStart = transitionKeysContain(this.props.keytipStartSequences!, transitionKey);
+
+    if (!this._isModifierKey(key)) {
+      this._consecutiveActivationEligible = false;
+    }
+
+    if (isStart && this._isModifierKey(key) && !transitionKey.modifierKeys) {
+      this._handledKeyDowns.add(ev);
+      if (ev.repeat) {
+        if (this._consumeActivationKeyUp === key) {
+          this._consumeKeyEvent(ev);
+        }
+        return;
+      }
+
+      if (this._keytipTree.currentKeytip) {
+        const passThrough =
+          behavior.consecutiveActivationBehavior === 'exitAndPassThrough' &&
+          this._activationKey === key &&
+          this._consecutiveActivationEligible;
+        this._consumeActivationKeyUp = undefined;
+        if (!passThrough && behavior.consumeActivationEvent) {
+          this._consumeActivationKeyUp = key;
+          this._consumeKeyEvent(ev);
+        }
+        this._exitingActivationKey = key;
+        this._exitKeytipMode(ev);
+      } else if (!ev.defaultPrevented && !this._exitingActivationKey) {
+        this._pendingActivation = transitionKey;
+        if (behavior.consumeActivationEvent) {
+          this._consumeActivationKeyUp = key;
+          this._consumeKeyEvent(ev);
+        }
+      }
+      return;
+    }
+
+    if (!this._keytipTree.currentKeytip && isStart) {
+      this._handledKeyDowns.add(ev);
+      if (!this._exitingActivationKey && !ev.defaultPrevented && this._enterKeytipMode(transitionKey, ev)) {
+        this._warnIfDuplicateKeytips();
+      }
+      return;
+    }
+
+    if (this._keytipTree.currentKeytip && !this._isModifierKey(key)) {
+      this._pendingKeyDowns.add(ev);
+      // A stopped event never reaches the bubble listener. Clear stale badges after app arbitration.
+      this._async.setTimeout(() => {
+        if (this._pendingKeyDowns.delete(ev) && this._keytipTree.currentKeytip) {
+          this._exitKeytipMode(ev);
+        }
+      }, 0);
+    }
+  }
+
+  private _onKeyDownBubble = (ev: React.KeyboardEvent<HTMLElement>): void => {
+    const behavior = this.props.keytipActivationBehavior;
+    if (!behavior) {
+      return;
+    }
+    this._pendingKeyDowns.delete(ev);
+    if (this._handledKeyDowns.has(ev) || !this._keytipTree.currentKeytip) {
+      return;
+    }
+    if (ev.defaultPrevented) {
+      this._exitKeytipMode(ev);
+      return;
+    }
+
+    const key = this._normalizeKey(ev.key);
+    const transitionKey = { key, modifierKeys: this._getModifierKey(key, ev) };
+    if (transitionKeysContain(this.props.keytipExitSequences!, transitionKey)) {
+      if (behavior.consumeActivationEvent) {
+        this._consumeKeyEvent(ev);
+      }
+      this._exitKeytipMode(ev);
+      return;
+    }
+    this.processTransitionInput(transitionKey, ev);
+    if (this._keyHandled) {
+      this._consumeKeyEvent(ev);
+      return;
+    }
+    if (this._isModifierKey(key)) {
+      return;
+    }
+
+    const hasInputModifiers = ev.altKey || ev.ctrlKey || ev.metaKey || (ev.shiftKey && this._activationKey === 'Shift');
+    if (hasInputModifiers) {
+      this._exitKeytipMode(ev);
+      return;
+    }
+
+    const result = key.length === 1 ? this.processInput(key.toLocaleLowerCase(), ev) : 'unmatched';
+    if (result !== 'unmatched') {
+      this._consumeKeyEvent(ev);
+    } else if (
+      behavior.unmatchedInputBehavior === 'exitAndPassThrough' ||
+      [
+        'Tab',
+        'Enter',
+        'Spacebar',
+        ' ',
+        'ArrowUp',
+        'Up',
+        'ArrowDown',
+        'Down',
+        'ArrowLeft',
+        'Left',
+        'ArrowRight',
+        'Right',
+      ].indexOf(key) >= 0
+    ) {
+      this._exitKeytipMode(ev);
+    }
+  };
+
+  private _onKeyUp = (ev: React.KeyboardEvent<HTMLElement>): void => {
+    if (!this.props.keytipActivationBehavior) {
+      return;
+    }
+    if (
+      this._isIgnoredKeyboardEvent(ev) ||
+      this.props.enabled === false ||
+      !this._keytipManager.shouldEnterKeytipMode
+    ) {
+      if (this._keytipTree.currentKeytip) {
+        this._exitKeytipMode(ev);
+      }
+      this._resetActivationGesture();
+      return;
+    }
+    const key = this._normalizeKey(ev.key);
+    const pendingActivation = this._pendingActivation;
+    const wasDefaultPrevented = ev.defaultPrevented;
+    this._pendingActivation = undefined;
+    if (this._consumeActivationKeyUp === key) {
+      this._consumeActivationKeyUp = undefined;
+      this._consumeKeyEvent(ev);
+    }
+    if (this._consumeActivationKeyUp && !this._isModifierHeld(this._consumeActivationKeyUp, ev)) {
+      this._consumeActivationKeyUp = undefined;
+    }
+    if (this._exitingActivationKey === key || !this._isModifierHeld(this._exitingActivationKey, ev)) {
+      this._exitingActivationKey = undefined;
+    }
+    if (!this._isModifierKey(key)) {
+      this._consecutiveActivationEligible = false;
+    }
+    if (
+      pendingActivation?.key === key &&
+      !wasDefaultPrevented &&
+      !this._isModifierHeld(key, ev) &&
+      !this._getModifierKey(key, ev) &&
+      transitionKeysContain(this.props.keytipStartSequences!, pendingActivation) &&
+      this._enterKeytipMode(pendingActivation, ev)
+    ) {
+      this._warnIfDuplicateKeytips();
+    }
+  };
+
+  private _onBlur = (): void => {
+    if (this.props.keytipActivationBehavior) {
+      if (this._keytipTree.currentKeytip) {
+        this._exitKeytipMode();
+      }
+      this._resetActivationGesture();
+      this._isComposing = false;
+    }
+  };
+
+  private _onCompositionStart = (): void => {
+    if (this.props.keytipActivationBehavior) {
+      this._onBlur();
+      this._isComposing = true;
+    }
+  };
+
+  private _onCompositionEnd = (): void => {
+    if (this.props.keytipActivationBehavior) {
+      this._isComposing = false;
+    }
+  };
+
   /**
    * Gets the ModifierKeyCodes based on the keyboard event
    *
@@ -453,6 +841,9 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
   }
 
   private _onKeyPress = (ev: React.KeyboardEvent<HTMLElement>): void => {
+    if (this.props.keytipActivationBehavior) {
+      return;
+    }
     if (this.state.inKeytipMode && !this._keyHandled) {
       // Call processInput
       this.processInput(ev.key.toLocaleLowerCase(), ev);
@@ -653,7 +1044,7 @@ export class KeytipLayerBase extends React.Component<IKeytipLayerProps, IKeytipL
    * @param inKeytipMode - Boolean so set whether we are in keytip mode or not
    */
   private _setInKeytipMode = (inKeytipMode: boolean): void => {
-    this.setState({ inKeytipMode: inKeytipMode });
+    this.setState({ inKeytipMode });
     this._keytipManager.inKeytipMode = inKeytipMode;
   };
 

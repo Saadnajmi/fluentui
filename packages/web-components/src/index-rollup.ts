@@ -1,14 +1,8 @@
-// TODO: Is exporting Foundation still necessary with the updated API's?
-// export * from "@microsoft/fast-element";
-import { allComponents } from './custom-elements';
-import { provideFluentDesignSystem } from './fluent-design-system';
+import './define-all.js';
 
-export * from './index';
+// import setTheme for export on globalThis for CDN
+import { setTheme } from './theme/index.js';
 
-/**
- * The global Fluent Design System.
- * @remarks
- * Only available if the components are added through a script tag
- * rather than a module/build system.
- */
-export const FluentDesignSystem = provideFluentDesignSystem().register(allComponents);
+// Expose setTheme under Fluent namespace on globalThis for CDN/script-tag consumers
+// @ts-expect-error - CDN bundle intentionally sets globals
+globalThis.Fluent = { ...globalThis.Fluent, setTheme };

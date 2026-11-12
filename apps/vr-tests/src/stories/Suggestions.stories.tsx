@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
-import { DevOnlyStoryHeader } from '../utilities/index';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { TestWrapperDecorator } from '../utilities';
+import { DevOnlyStoryHeader } from '../utilities';
 import { Suggestions, ISuggestionsProps } from '@fluentui/react/lib/Pickers';
 import { Fabric } from '@fluentui/react/lib/Fabric';
 
@@ -70,8 +70,8 @@ const ProvinceSuggestionItem = ({ name, id }: Province) => (
 );
 const NoResultFound = () => <div>No Result Found ¯\_(ツ)_/¯</div>;
 
-// prettier-ignore
-const ProvinceSuggestions: new (props: ISuggestionsProps<Province>) => Suggestions<Province> = Suggestions;
+const ProvinceSuggestions: new (props: ISuggestionsProps<Province>) => Suggestions<Province> =
+  Suggestions;
 
 export class SimpleSuggestionsExample extends React.Component<{}, { Provinces: ProvincesMap }> {
   constructor(props: {}) {
@@ -81,7 +81,7 @@ export class SimpleSuggestionsExample extends React.Component<{}, { Provinces: P
     };
   }
 
-  public render(): JSX.Element {
+  public render(): React.ReactElement {
     return (
       <div
         className="testRoot"
@@ -127,11 +127,13 @@ export class SimpleSuggestionsExample extends React.Component<{}, { Provinces: P
   }
 }
 
-storiesOf('(Dev-Only) Suggestions', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: '(Dev-Only) Suggestions',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.testRoot' })
         .hover('#province-fake-long-province')
         .snapshot('Hovering over a wide suggestion element', { cropTo: '.testRoot' })
@@ -139,11 +141,14 @@ storiesOf('(Dev-Only) Suggestions', module)
         .snapshot('Hovering over the X button on a wide suggestion element', {
           cropTo: '.testRoot',
         })
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory('Test of closeButton with overflowing wide custom element', () => (
-    <SimpleSuggestionsExample />
-  ));
+        .end(),
+    },
+  } satisfies StoryParameters,
+
+  excludeStories: ['SimpleSuggestionsExample'],
+};
+
+export const TestOfCloseButtonWithOverflowingWideCustomElement = () => <SimpleSuggestionsExample />;
+
+TestOfCloseButtonWithOverflowingWideCustomElement.storyName =
+  'Test of closeButton with overflowing wide custom element';

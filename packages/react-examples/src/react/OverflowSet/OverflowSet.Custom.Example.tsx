@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { IOverflowSetItemProps, OverflowSet, Checkbox } from '@fluentui/react';
 import { CommandBarButton, IButtonStyles } from '@fluentui/react/lib/Button';
+import type { JSXElement } from '@fluentui/utilities';
 
 const noOp = () => undefined;
 
@@ -10,14 +11,14 @@ const checkboxStyles = {
   },
 };
 
-const onRenderItem = (item: IOverflowSetItemProps): JSX.Element => {
+const onRenderItem = (item: IOverflowSetItemProps): JSXElement => {
   if (item.onRender) {
     return item.onRender(item);
   }
   return <CommandBarButton iconProps={{ iconName: item.icon }} menuProps={item.subMenuProps} text={item.name} />;
 };
 
-const onRenderOverflowButton = (overflowItems: any[] | undefined): JSX.Element => {
+const onRenderOverflowButton = (overflowItems: any[] | undefined): JSXElement => {
   const buttonStyles: Partial<IButtonStyles> = {
     root: {
       minWidth: 0,
@@ -57,12 +58,12 @@ export const OverflowSetCustomExample: React.FunctionComponent = () => (
             {
               key: 'emailMessage',
               name: 'Email message',
-              icon: 'Mail',
+              iconProps: { iconName: 'Mail' },
             },
             {
               key: 'calendarEvent',
               name: 'Calendar event',
-              icon: 'Calendar',
+              iconProps: { iconName: 'Calendar' },
             },
           ],
         },
@@ -84,25 +85,25 @@ export const OverflowSetCustomExample: React.FunctionComponent = () => (
       {
         key: 'move',
         name: 'Move to...',
-        icon: 'MoveToFolder',
+        iconProps: { iconName: 'MoveToFolder' },
         onClick: noOp,
       },
       {
         key: 'copy',
         name: 'Copy to...',
-        icon: 'Copy',
+        iconProps: { iconName: 'Copy' },
         onClick: noOp,
       },
       {
         key: 'rename',
         name: 'Rename...',
-        icon: 'Edit',
+        iconProps: { iconName: 'Edit' },
         onClick: noOp,
       },
       {
         key: 'disabled',
         name: 'Disabled...',
-        icon: 'Cancel',
+        iconProps: { iconName: 'Cancel' },
         disabled: true,
         onClick: noOp,
       },

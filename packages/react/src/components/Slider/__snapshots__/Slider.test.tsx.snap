@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Slider renders correctly 1`] = `
 <div>
@@ -84,6 +84,17 @@ exports[`Slider renders correctly 1`] = `
               border: 0;
             }
             .ms-Fabric--isFocusVisible &:focus:after {
+              border: 1px solid #ffffff;
+              bottom: 1px;
+              content: "";
+              left: 1px;
+              outline: 1px solid #605e5c;
+              position: absolute;
+              right: 1px;
+              top: 1px;
+              z-index: 1;
+            }
+            :host(.ms-Fabric--isFocusVisible) &:focus:after {
               border: 1px solid #ffffff;
               bottom: 1px;
               content: "";
@@ -477,6 +488,17 @@ exports[`Slider renders range slider correctly 1`] = `
                   top: -3px;
                   z-index: 1;
                 }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: -3px;
+                  content: "";
+                  left: -3px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: -3px;
+                  top: -3px;
+                  z-index: 1;
+                }
             data-is-focusable="true"
             id="min-Slider0"
             role="slider"
@@ -512,6 +534,17 @@ exports[`Slider renders range slider correctly 1`] = `
                   border: 0;
                 }
                 .ms-Fabric--isFocusVisible &:focus:after {
+                  border: 1px solid #ffffff;
+                  bottom: -3px;
+                  content: "";
+                  left: -3px;
+                  outline: 1px solid #605e5c;
+                  position: absolute;
+                  right: -3px;
+                  top: -3px;
+                  z-index: 1;
+                }
+                :host(.ms-Fabric--isFocusVisible) &:focus:after {
                   border: 1px solid #ffffff;
                   bottom: -3px;
                   content: "";

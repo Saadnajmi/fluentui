@@ -13,12 +13,11 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "preserveConstEnums": true,
     "skipLibCheck": true,
     "typeRoots": ["../../node_modules/@types", "../../typings"],
-    "types": ["jest", "custom-global"]
+    "types": ["node", "jest", "custom-global", "@testing-library/jest-dom"]
   },
   "include": ["src"]
 }

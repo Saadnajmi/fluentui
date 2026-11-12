@@ -31,6 +31,8 @@ export interface IPageProps<TPlatforms extends string = string> {
   /** Optional title of the file to be passed to edit URL if different than the page title. */
   fileNamePrefix?: string;
 
+  banner?: IBanner;
+
   /** (1) Overview of the page as Markdown string */
   overview?: string;
 
@@ -125,6 +127,11 @@ export interface IExample extends IExampleCardProps {
   view: React.ReactNode;
 }
 
+export interface IBanner {
+  title?: string;
+  message?: string;
+}
+
 export interface IPageSectionProps<TPlatforms extends string = string>
   extends Pick<IPageProps<TPlatforms>, 'title' | 'componentUrl' | 'fileNamePrefix' | 'platform'> {
   /** ID for the section (auto-generated if not specified) */
@@ -150,7 +157,7 @@ export interface IPageSectionProps<TPlatforms extends string = string>
   jumpLinkName?: string;
 
   /** Content to render into the section. */
-  content?: JSX.Element | string;
+  content?: React.ReactElement | string;
 
   /** Optional className to wrap the section in. */
   className?: string;

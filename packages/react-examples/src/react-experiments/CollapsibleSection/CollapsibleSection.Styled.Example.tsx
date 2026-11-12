@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Customizer as DeprecatedCustomizer } from '@fluentui/react/lib/Utilities';
 import { ITheme, createTheme, DefaultPalette } from '@fluentui/react/lib/Styling';
 import { FocusZone } from '@fluentui/react/lib/FocusZone';
+import type { JSXElement } from '@fluentui/utilities';
 import {
   CollapsibleSection,
   CollapsibleSectionStateless,
@@ -12,7 +13,7 @@ import {
 } from '@fluentui/react-experiments/lib/CollapsibleSection';
 
 // Workaround to prevent errors on usage of Customizer in this file, without disabling all deprecation checks
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 const Customizer = DeprecatedCustomizer;
 
 const getPropStyles: ICollapsibleSectionComponent['styles'] = (props, theme): ICollapsibleSectionStylesReturnType => ({
@@ -70,7 +71,7 @@ const csPropTheme: ITheme = createTheme({
 });
 
 export class CollapsibleSectionStyledExample extends React.Component<{}, {}> {
-  public render(): JSX.Element {
+  public render(): JSXElement {
     return (
       <div>
         <p>

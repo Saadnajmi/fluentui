@@ -10,6 +10,7 @@ import type {
   IFloatingSuggestionsInnerSuggestionProps,
 } from './FloatingSuggestions.types';
 import type { ISuggestionModel } from '@fluentui/react/lib/Pickers';
+import type { JSXElement } from '@fluentui/utilities';
 
 export interface IFloatingSuggestionsState {
   queryString: string;
@@ -17,12 +18,13 @@ export interface IFloatingSuggestionsState {
   didBind: boolean;
 }
 
-export class FloatingSuggestions<TItem>
+export class FloatingSuggestions<TItem extends {}>
   extends React.Component<IFloatingSuggestionsProps<TItem>, IFloatingSuggestionsState>
-  implements IFloatingSuggestions<TItem> {
+  implements IFloatingSuggestions<TItem>
+{
   private root = React.createRef<HTMLDivElement>();
   private suggestionStore: SuggestionsStore<TItem>;
-  private suggestionsControl: React.RefObject<SuggestionsControl<TItem>> = React.createRef();
+  private suggestionsControl: React.RefObject<SuggestionsControl<TItem> | null> = React.createRef();
   private currentPromise: PromiseLike<TItem[]>;
   private isComponentMounted: boolean = false;
   private _async: Async;
@@ -69,7 +71,7 @@ export class FloatingSuggestions<TItem>
   public onQueryStringChanged = (queryString: string): void => {
     if (queryString !== this.state.queryString) {
       this.setState({
-        queryString: queryString,
+        queryString,
       });
 
       if (this.props.onInputChanged) {
@@ -143,7 +145,7 @@ export class FloatingSuggestions<TItem>
     }
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { className } = this.props;
     return (
       <div ref={this.root} className={css('ms-BasePicker ms-BaseFloatingPicker', className ? className : '')}>
@@ -188,11 +190,11 @@ export class FloatingSuggestions<TItem>
     }
   }
 
-  private _renderSuggestions(): JSX.Element | null {
+  private _renderSuggestions(): JSXElement | null {
     // Express this as 2 separate statements instead of a single one, because `undefined` isn't filtered out of the type
     // when using `|| SuggestionsControl`
-    let TypedSuggestionsControl: React.ComponentType<IFloatingSuggestionsInnerSuggestionProps<TItem>> | undefined = this
-      .props.onRenderSuggestionControl;
+    let TypedSuggestionsControl: React.ComponentType<IFloatingSuggestionsInnerSuggestionProps<TItem>> | undefined =
+      this.props.onRenderSuggestionControl;
     if (TypedSuggestionsControl === undefined) {
       TypedSuggestionsControl = SuggestionsControl;
     }
@@ -249,7 +251,7 @@ export class FloatingSuggestions<TItem>
     ) {
       return;
     }
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const keyCode = ev.which;
     switch (keyCode) {
       case KeyCodes.escape:
@@ -277,9 +279,8 @@ export class FloatingSuggestions<TItem>
       case KeyCodes.del:
         if (
           this.props.onRemoveSuggestion &&
-          this.suggestionsControl.current &&
-          this.suggestionsControl.current.hasSuggestionSelected &&
-          this.suggestionsControl.current.currentSuggestion &&
+          this.suggestionsControl.current?.hasSuggestionSelected &&
+          this.suggestionsControl.current?.currentSuggestion &&
           ev.shiftKey
         ) {
           this.props.onRemoveSuggestion(this.suggestionsControl.current.currentSuggestion!.item);

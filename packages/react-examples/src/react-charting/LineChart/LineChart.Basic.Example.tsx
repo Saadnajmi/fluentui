@@ -1,13 +1,23 @@
 import * as React from 'react';
-import { IChartProps, ILineChartProps, LineChart } from '@fluentui/react-charting';
-import { DefaultPalette } from '@fluentui/react/lib/Styling';
+import { IChartProps, ILineChartProps, LineChart, DataVizPalette } from '@fluentui/react-charting';
 import { Toggle } from '@fluentui/react/lib/Toggle';
+import { Checkbox } from '@fluentui/react/lib/Checkbox';
+import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react';
+import type { JSXElement } from '@fluentui/utilities';
 
 interface ILineChartBasicState {
   width: number;
   height: number;
   allowMultipleShapes: boolean;
+  showAxisTitles: boolean;
+  selectedCallout: string;
+  useUTC: boolean;
 }
+
+const options: IChoiceGroupOption[] = [
+  { key: 'singleCallout', text: 'Single callout' },
+  { key: 'MultiCallout', text: 'Stack callout' },
+];
 
 export class LineChartBasicExample extends React.Component<{}, ILineChartBasicState> {
   constructor(props: ILineChartProps) {
@@ -16,10 +26,31 @@ export class LineChartBasicExample extends React.Component<{}, ILineChartBasicSt
       width: 700,
       height: 300,
       allowMultipleShapes: false,
+      showAxisTitles: true,
+      selectedCallout: 'MultiCallout',
+      useUTC: true,
     };
   }
 
-  public render(): JSX.Element {
+  public componentDidMount(): void {
+    const style = document.createElement('style');
+    const focusStylingCSS = `
+    .containerDiv [contentEditable=true]:focus,
+    .containerDiv [tabindex]:focus,
+    .containerDiv area[href]:focus,
+    .containerDiv button:focus,
+    .containerDiv iframe:focus,
+    .containerDiv input:focus,
+    .containerDiv select:focus,
+    .containerDiv textarea:focus {
+      outline: -webkit-focus-ring-color auto 5px;
+    }
+    `;
+    style.appendChild(document.createTextNode(focusStylingCSS));
+    document.head.appendChild(style);
+  }
+
+  public render(): JSXElement {
     return <div>{this._basicExample()}</div>;
   }
 
@@ -32,8 +63,15 @@ export class LineChartBasicExample extends React.Component<{}, ILineChartBasicSt
   private _onShapeChange = (ev: React.MouseEvent<HTMLElement>, checked: boolean) => {
     this.setState({ allowMultipleShapes: checked });
   };
+  private _onToggleAxisTitlesCheckChange = (ev: React.MouseEvent<HTMLElement>, checked: boolean) => {
+    this.forceUpdate();
+    this.setState({ showAxisTitles: checked });
+  };
+  private _onCheckChange = (ev: React.FormEvent<HTMLInputElement>, checked: boolean) => {
+    this.setState({ useUTC: checked });
+  };
 
-  private _basicExample(): JSX.Element {
+  private _basicExample(): JSXElement {
     const data: IChartProps = {
       chartTitle: 'Line Chart',
       lineChartData: [
@@ -86,7 +124,7 @@ export class LineChartBasicExample extends React.Component<{}, ILineChartBasicSt
               onDataPointClick: () => alert('click on 218000'),
             },
           ],
-          color: DefaultPalette.blue,
+          color: DataVizPalette.color3,
           lineOptions: {
             lineBorderWidth: '4',
           },
@@ -124,7 +162,7 @@ export class LineChartBasicExample extends React.Component<{}, ILineChartBasicSt
               y: 298000,
             },
           ],
-          color: DefaultPalette.green,
+          color: DataVizPalette.color4,
           lineOptions: {
             lineBorderWidth: '4',
           },
@@ -133,20 +171,19 @@ export class LineChartBasicExample extends React.Component<{}, ILineChartBasicSt
           legend: 'single point',
           data: [
             {
-              x: new Date('2020-03-05T00:00:00.000Z'),
-              y: 282000,
+              x: new Date('2020-03-05T12:00:00.000Z'),
+              y: 232000,
             },
           ],
-          color: DefaultPalette.yellow,
+          color: DataVizPalette.color5,
         },
       ],
     };
 
     const rootStyle = { width: `${this.state.width}px`, height: `${this.state.height}px` };
-    const margins = { left: 35, top: 20, bottom: 35, right: 20 };
 
     return (
-      <>
+      <div className="containerDiv">
         <label htmlFor="changeWidth_basic">Change Width:</label>
         <input
           type="range"
@@ -174,21 +211,47 @@ export class LineChartBasicExample extends React.Component<{}, ILineChartBasicSt
           onChange={this._onShapeChange}
           checked={this.state.allowMultipleShapes}
         />
+        <Toggle
+          label="Toggle Axis titles"
+          onText="Show axis titles"
+          offText="Hide axis titles"
+          checked={this.state.showAxisTitles}
+          onChange={this._onToggleAxisTitlesCheckChange}
+          styles={{ root: { marginTop: '10px' } }}
+        />
+        <Checkbox
+          label="Use UTC time"
+          checked={this.state.useUTC}
+          onChange={this._onCheckChange}
+          styles={{ root: { marginTop: '20px' } }}
+        />
+        <ChoiceGroup
+          options={options}
+          defaultSelectedKey="MultiCallout"
+          // eslint-disable-next-line react/jsx-no-bind
+          onChange={(_ev, option) => option && this.setState({ selectedCallout: option.key })}
+          label="Pick one"
+        />
         <div style={rootStyle}>
           <LineChart
+            // Force rerender when any of the following states change
+            key={`${this.state.showAxisTitles}`}
             culture={window.navigator.language}
             data={data}
             legendsOverflowText={'Overflow Items'}
             yMinValue={200}
             yMaxValue={301}
+            isCalloutForStack={this.state.selectedCallout === 'MultiCallout'}
             height={this.state.height}
             width={this.state.width}
-            margins={margins}
-            xAxisTickCount={10}
             allowMultipleShapesForPoints={this.state.allowMultipleShapes}
+            enablePerfOptimization={true}
+            yAxisTitle={this.state.showAxisTitles ? 'Different categories of mail flow' : undefined}
+            xAxisTitle={this.state.showAxisTitles ? 'Values of each category' : undefined}
+            useUTC={this.state.useUTC}
           />
         </div>
-      </>
+      </div>
     );
   }
 }

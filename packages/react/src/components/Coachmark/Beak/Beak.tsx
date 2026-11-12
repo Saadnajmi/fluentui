@@ -30,12 +30,6 @@ export const Beak: React.FunctionComponent<IBeakProps> = React.forwardRef<HTMLDi
 
     switch (direction) {
       case RectangleEdge.top:
-      default:
-        pointOne = `${BEAK_WIDTH / 2}, 0`;
-        pointTwo = `${BEAK_WIDTH}, ${BEAK_HEIGHT}`;
-        pointThree = `0, ${BEAK_HEIGHT}`;
-        transform = 'translateY(-100%)';
-        break;
       case RectangleEdge.right:
         pointOne = `0, 0`;
         pointTwo = `${BEAK_HEIGHT}, ${BEAK_HEIGHT}`;
@@ -54,6 +48,12 @@ export const Beak: React.FunctionComponent<IBeakProps> = React.forwardRef<HTMLDi
         pointThree = `${BEAK_HEIGHT}, ${BEAK_WIDTH}`;
         transform = 'translateX(-100%)';
         break;
+      default:
+        pointOne = `${BEAK_WIDTH / 2}, 0`;
+        pointTwo = `${BEAK_WIDTH}, ${BEAK_HEIGHT}`;
+        pointThree = `0, ${BEAK_HEIGHT}`;
+        transform = 'translateY(-100%)';
+        break;
     }
 
     const getClassNames = classNamesFunction<IBeakStylesProps, IBeakStyles>();
@@ -64,7 +64,7 @@ export const Beak: React.FunctionComponent<IBeakProps> = React.forwardRef<HTMLDi
       right,
       height: `${svgHeight}px`,
       width: `${svgWidth}px`,
-      transform: transform,
+      transform,
       color,
     });
 

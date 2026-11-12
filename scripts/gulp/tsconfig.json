@@ -1,8 +1,0 @@
-{
-  "extends": "../tsconfig.scripts.json",
-  "compilerOptions": {
-    "types": ["node"]
-  },
-  "include": ["**/*.ts"],
-  "files": ["../../typings/json-stable-stringify-without-jsonify/index.d.ts"]
-}

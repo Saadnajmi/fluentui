@@ -1,6 +1,6 @@
-let path = require('path');
-let { createConfig, resolveMergeStylesSerializer } = require('@fluentui/scripts/jest/jest-resources');
+const { createV8Config: createConfig } = require('@fluentui/scripts-jest');
+
 module.exports = createConfig({
-  setupFiles: [path.resolve(path.join(__dirname, 'config', 'tests.js'))],
-  snapshotSerializers: [resolveMergeStylesSerializer()],
+  setupFilesAfterEnv: ['./config/tests.js'],
+  snapshotSerializers: [require.resolve('@fluentui/jest-serializer-merge-styles')],
 });

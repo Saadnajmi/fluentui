@@ -1,4 +1,5 @@
 import * as React from 'react';
+import type { JSXElement } from '@fluentui/utilities';
 import {
   Card,
   ICardStyles,
@@ -20,7 +21,7 @@ import {
   ITextStyles,
 } from '@fluentui/react';
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 export type FilledSectionKey = '0' | '1' | '2' | '3';
 
@@ -56,7 +57,7 @@ export class CardConfigureExample extends React.Component<{}, IExampleState> {
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const {
       cardChildrenGap,
       cardChildrenMargin,
@@ -132,7 +133,7 @@ export class CardConfigureExample extends React.Component<{}, IExampleState> {
     };
 
     // Debug card esction definition
-    const DebugCardSection = (props: { height: number; text: string }): JSX.Element => {
+    const DebugCardSection = (props: { height: number; text: string }): JSXElement => {
       const { height, text } = props;
 
       const debugCardSectionStyles: ICardSectionStyles = {

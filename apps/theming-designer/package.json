@@ -4,30 +4,24 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "just-scripts build",
-    "bundle": "just-scripts bundle",
-    "lint": "just-scripts lint",
-    "test": "just-scripts test",
-    "just": "just-scripts",
-    "clean": "just-scripts clean",
-    "code-style": "just-scripts code-style",
-    "start": "just-scripts dev"
-  },
-  "devDependencies": {
-    "@fluentui/eslint-plugin": "*",
-    "@fluentui/scripts": "^1.0.0"
+    "bundle": "yarn run -T just-scripts build && yarn run -T just-scripts bundle",
+    "lint": "yarn run -T just-scripts lint",
+    "just": "yarn run -T just-scripts",
+    "clean": "yarn run -T just-scripts clean",
+    "code-style": "yarn run -T just-scripts code-style",
+    "start": "yarn run -T just-scripts dev"
   },
   "dependencies": {
-    "@fluentui/react": "^8.98.2",
-    "@fluentui/merge-styles": "^8.5.3",
-    "@fluentui/react-docsite-components": "^8.10.11",
-    "@fluentui/foundation-legacy": "^8.2.21",
-    "@fluentui/scheme-utilities": "^8.3.17",
-    "@fluentui/set-version": "^8.2.2",
-    "@fluentui/font-icons-mdl2": "^8.5.1",
+    "@fluentui/font-icons-mdl2": "*",
+    "@fluentui/foundation-legacy": "*",
+    "@fluentui/merge-styles": "*",
+    "@fluentui/react": "*",
+    "@fluentui/react-docsite-components": "*",
+    "@fluentui/scheme-utilities": "*",
+    "@fluentui/set-version": "*",
     "@microsoft/load-themed-styles": "^1.10.26",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
     "tslib": "^2.1.0"
   }
 }

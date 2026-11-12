@@ -1,16 +1,11 @@
 // @ts-check
-const { AST_NODE_TYPES } = require('@typescript-eslint/experimental-utils');
+const { AST_NODE_TYPES } = require('@typescript-eslint/utils');
 const createRule = require('../utils/createRule');
 
-// Nasty syntax required for type imports until https://github.com/microsoft/TypeScript/issues/22160 is implemented.
-// For some reason just importing TSESTree and accessing properties off that doesn't work.
 /**
- * @typedef {import("@typescript-eslint/typescript-estree").TSESTree.ExportNamedDeclaration} ExportNamedDeclaration
- * @typedef {import("@typescript-eslint/typescript-estree").TSESTree.ExportSpecifier} ExportSpecifier
- * @typedef {import("@typescript-eslint/typescript-estree").TSESTree.Identifier} Identifier
- * @typedef {import("@typescript-eslint/typescript-estree").TSESTree.ImportDeclaration} ImportDeclaration
- * @typedef {import("@typescript-eslint/typescript-estree").TSESTree.ImportSpecifier} ImportSpecifier
- *
+ * @import { TSESTree } from '@typescript-eslint/utils'; */
+
+/**
  * @typedef {{
  *   path?: string;
  *   pathRegex?: string;
@@ -24,15 +19,12 @@ const createRule = require('../utils/createRule');
  * }} Options
  */
 
-/** */
 module.exports = createRule({
   name: 'ban-imports', // inspired by TSLint import-blacklist
   meta: {
     type: 'problem',
     docs: {
       description: 'Ban importing (or re-exporting) certain identifiers from certain paths or modules.',
-      category: 'Best Practices',
-      recommended: false,
     },
     messages: {
       pathNotAllowed: "{{verb}} from '{{path}}' is not allowed{{message}}",
@@ -106,9 +98,9 @@ module.exports = createRule({
     }
 
     /**
-     * @param {ImportDeclaration | ExportNamedDeclaration} importOrExport the whole import/export node
+     * @param {TSESTree.ImportDeclaration | TSESTree.ExportNamedDeclaration} importOrExport the whole import/export node
      * @param {string} importPath path importing/exporting from
-     * @param {Identifier[]} identifiers imported/exported identifiers
+     * @param {TSESTree.Identifier[]} identifiers imported/exported identifiers
      */
     function checkImportOrExport(importOrExport, importPath, identifiers) {
       for (const rule of options) {
@@ -154,10 +146,12 @@ module.exports = createRule({
           return;
         }
 
-        const specifiers = /** @type {ImportSpecifier[]} */ (imprt.specifiers.filter(
-          // Filter out default imports and namespace (star) imports
-          spec => spec.type === AST_NODE_TYPES.ImportSpecifier,
-        ))
+        const specifiers = /** @type {TSESTree.ImportSpecifier[]} */ (
+          imprt.specifiers.filter(
+            // Filter out default imports and namespace (star) imports
+            spec => spec.type === AST_NODE_TYPES.ImportSpecifier,
+          )
+        )
           // spec.imported is the original name: `foo` in `import { foo as bar } from 'whatever'`
           .map(spec => spec.imported);
 

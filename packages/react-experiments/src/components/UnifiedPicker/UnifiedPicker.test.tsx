@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { UnifiedPicker } from './UnifiedPicker';
-import { mount, ReactWrapper } from 'enzyme';
 import { BaseFloatingSuggestions } from '../FloatingSuggestionsComposite';
-import { create } from 'react-test-renderer';
+import { fireEvent, render } from '@testing-library/react';
 import { SelectedItemsList } from '../SelectedItemsList';
 import type { ISelectedItemProps, ISelectedItemsListProps } from '../SelectedItemsList/SelectedItemsList.types';
 import type { IBaseFloatingSuggestionsProps } from '../FloatingSuggestionsComposite';
@@ -12,7 +11,6 @@ export interface ISimple {
   key: string;
   name: string;
 }
-type InputElementWrapper = ReactWrapper<React.InputHTMLAttributes<any>, any>;
 
 const basicSuggestionRenderer = (props: ISimple) => {
   return <div key={props.key}> {props.name} </div>;
@@ -52,13 +50,13 @@ const allColors = [
   'yellow',
 ];
 
-let floatingPickerProps = ({
+let floatingPickerProps = {
   onRenderSuggestion: basicSuggestionRenderer,
   onRenderSuggestionsItem: basicSuggestionRenderer,
   isSuggestionsVisible: false,
   suggestions: [],
   targetElement: null,
-} as unknown) as IBaseFloatingSuggestionsProps<ISimple>;
+} as unknown as IBaseFloatingSuggestionsProps<ISimple>;
 
 let selectedItemsListProps = {
   onRenderItem: basicItemRenderer,
@@ -67,7 +65,7 @@ let selectedItemsListProps = {
 
 describe('UnifiedPicker', () => {
   it('renders correctly with no items', () => {
-    const component = create(
+    const { container } = render(
       <UnifiedPicker
         floatingSuggestionProps={floatingPickerProps}
         selectedItemsListProps={selectedItemsListProps}
@@ -75,12 +73,11 @@ describe('UnifiedPicker', () => {
         onRenderSelectedItems={basicRenderSelectedItemsList}
       />,
     );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('renders correctly with selected and suggested items', () => {
-    floatingPickerProps = ({
+    floatingPickerProps = {
       onRenderSuggestion: basicSuggestionRenderer,
       onRenderSuggestionsItem: basicSuggestionRenderer,
       isSuggestionsVisible: false,
@@ -94,7 +91,7 @@ describe('UnifiedPicker', () => {
         },
       ],
       targetElement: null,
-    } as unknown) as IBaseFloatingSuggestionsProps<ISimple>;
+    } as unknown as IBaseFloatingSuggestionsProps<ISimple>;
 
     selectedItemsListProps = {
       onRenderItem: basicItemRenderer,
@@ -109,7 +106,7 @@ describe('UnifiedPicker', () => {
         },
       ],
     };
-    const component = create(
+    const { container } = render(
       <UnifiedPicker
         floatingSuggestionProps={floatingPickerProps}
         selectedItemsListProps={selectedItemsListProps}
@@ -117,15 +114,14 @@ describe('UnifiedPicker', () => {
         onRenderSelectedItems={basicRenderSelectedItemsList}
       />,
     );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
   it('force resolves to the first suggestion', () => {
-    floatingPickerProps = ({
+    floatingPickerProps = {
       onRenderSuggestion: basicSuggestionRenderer,
       targetElement: null,
-    } as unknown) as IBaseFloatingSuggestionsProps<ISimple>;
+    } as unknown as IBaseFloatingSuggestionsProps<ISimple>;
 
     selectedItemsListProps = {
       onRenderItem: basicItemRenderer,
@@ -139,10 +135,10 @@ describe('UnifiedPicker', () => {
           key: item,
           name: item,
         };
-        return ({ item: newItem, isSelected: false } as unknown) as IFloatingSuggestionItem<ISimple>;
+        return { item: newItem, isSelected: false } as unknown as IFloatingSuggestionItem<ISimple>;
       });
     };
-    const wrapper = mount(
+    const wrapper = render(
       <UnifiedPicker
         floatingSuggestionProps={floatingPickerProps}
         selectedItemsListProps={selectedItemsListProps}
@@ -151,15 +147,16 @@ describe('UnifiedPicker', () => {
         onInputChange={_onInputChange}
       />,
     );
-    expect(wrapper.find('.ms-BaseExtendedPicker')).toHaveLength(1);
-    expect(wrapper.find('.ms-FloatingSuggestions')).toHaveLength(1);
-    const inputElement: InputElementWrapper = wrapper.find('input');
-    inputElement.simulate('input', { target: { value: 'bl' } });
-    floatingPickerProps = ({
+    expect(wrapper.container.querySelectorAll('.ms-BaseExtendedPicker')).toHaveLength(1);
+    expect(wrapper.container.querySelectorAll('.ms-FloatingSuggestions')).toHaveLength(1);
+    const inputElement = wrapper.container.querySelector('input') as HTMLInputElement;
+    fireEvent.input(inputElement, { target: { value: 'bl' } });
+
+    floatingPickerProps = {
       onRenderSuggestion: basicSuggestionRenderer,
       targetElement: null,
       suggestions: suggestionList,
-    } as unknown) as IBaseFloatingSuggestionsProps<ISimple>;
+    } as unknown as IBaseFloatingSuggestionsProps<ISimple>;
 
     // Due to https://github.com/enzymejs/enzyme/issues/2042, enzyme does not re-render when
     // we call update. Will use the array to validate the right results are returned, till this
@@ -170,7 +167,7 @@ describe('UnifiedPicker', () => {
     expect(suggestionList[1].item.name).toEqual('blue');
   });
   it('Can hide and show picker', () => {
-    floatingPickerProps = ({
+    floatingPickerProps = {
       onRenderSuggestion: basicSuggestionRenderer,
       targetElement: null,
       suggestions: [
@@ -189,7 +186,7 @@ describe('UnifiedPicker', () => {
           showRemoveButton: true,
         },
       ],
-    } as unknown) as IBaseFloatingSuggestionsProps<ISimple>;
+    } as unknown as IBaseFloatingSuggestionsProps<ISimple>;
 
     let suggestionList: IFloatingSuggestionItem<ISimple>[] = [];
     const _onInputChange = (filterText: string): void => {
@@ -199,11 +196,11 @@ describe('UnifiedPicker', () => {
           key: item,
           name: item,
         };
-        return ({ item: newItem, isSelected: false } as unknown) as IFloatingSuggestionItem<ISimple>;
+        return { item: newItem, isSelected: false } as unknown as IFloatingSuggestionItem<ISimple>;
       });
     };
 
-    const wrapper = mount(
+    const wrapper = render(
       <UnifiedPicker
         floatingSuggestionProps={floatingPickerProps}
         selectedItemsListProps={selectedItemsListProps}
@@ -213,18 +210,18 @@ describe('UnifiedPicker', () => {
       />,
     );
 
-    const inputElement: InputElementWrapper = wrapper.find('input');
-    expect(inputElement).toHaveLength(1);
-    inputElement.simulate('input', { target: { value: 'bl' } });
-    expect(wrapper.find('.ms-FloatingSuggestionsList-container')).toHaveLength(1);
+    const inputElement = wrapper.container.querySelector('input') as HTMLInputElement;
+    expect(inputElement).toBeDefined();
+    fireEvent.input(inputElement, { target: { value: 'bl' } });
+    expect(wrapper.baseElement.querySelectorAll('.ms-FloatingSuggestionsList-container')).toHaveLength(1);
     expect(suggestionList).toHaveLength(2);
     // Both suggestions are shown, picker is shown
-    expect(wrapper.find('#FloatingSuggestionsItemId-0')).toHaveLength(1);
-    expect(wrapper.find('#FloatingSuggestionsItemId-1')).toHaveLength(1);
-    expect(wrapper.find('.ms-FloatingSuggestions-callout').length).toBeGreaterThan(1);
+    expect(wrapper.baseElement.querySelectorAll('#FloatingSuggestionsItemId-0')).toHaveLength(1);
+    expect(wrapper.baseElement.querySelectorAll('#FloatingSuggestionsItemId-1')).toHaveLength(1);
+    expect(wrapper.baseElement.querySelectorAll('.ms-FloatingSuggestions-callout')).toHaveLength(1);
 
     floatingPickerProps.isSuggestionsVisible = false;
-    const secondwrapper = mount(
+    const secondwrapper = render(
       <UnifiedPicker
         floatingSuggestionProps={floatingPickerProps}
         selectedItemsListProps={selectedItemsListProps}
@@ -234,7 +231,7 @@ describe('UnifiedPicker', () => {
       />,
     );
     // Hidden suggestion, no picker
-    expect(secondwrapper.find('#FloatingSuggestionsItemId-0')).toHaveLength(0);
-    expect(secondwrapper.find('.ms-FloatingSuggestions-callout')).toHaveLength(0);
+    expect(secondwrapper.container.querySelectorAll('#FloatingSuggestionsItemId-0')).toHaveLength(0);
+    expect(secondwrapper.container.querySelectorAll('.ms-FloatingSuggestions-callout')).toHaveLength(0);
   });
 });

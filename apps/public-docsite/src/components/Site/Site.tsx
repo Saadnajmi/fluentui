@@ -11,8 +11,8 @@ import {
   trackEvent,
   trackPageView,
   IWithPlatformProps,
+  TopBanner,
   TopNav,
-  ScrollBars,
   INavPage,
   PlatformPicker,
   PlatformBar,
@@ -29,6 +29,8 @@ import { AppThemesContext, extractAnchorLink } from '@fluentui/react-docsite-com
 import { getItem, setItem } from '@fluentui/utilities/lib/sessionStorage';
 import * as styles from './Site.module.scss';
 import { appMaximumWidthLg } from '../../styles/constants';
+import { cdnUrl } from '../../utilities/cdn';
+import { SiteNav } from './SiteNav';
 
 export interface ISiteProps<TPlatforms extends string = string> {
   children?: React.ReactNode;
@@ -62,6 +64,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
   private _disposables: Function[];
   private _jumpInterval: number | undefined;
   private _isStrict: boolean;
+  private _content = React.createRef<HTMLDivElement>();
 
   constructor(props: ISiteProps<TPlatforms>) {
     super(props);
@@ -96,7 +99,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     let platform = 'default' as TPlatforms;
 
     // If current page doesn't have pages for the active platform, switch to its first platform.
-    if (Object.keys(navData.pagePlatforms).length > 0 && navData.activePages.length === 0) {
+    if (Object.keys(navData.pagePlatforms!).length > 0 && navData.activePages!.length === 0) {
       const firstPlatform = getPageFirstPlatform(getSiteArea(siteDefinition.pages), siteDefinition);
       const currentPage = getSiteArea(siteDefinition.pages);
       platform = firstPlatform;
@@ -142,7 +145,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     const { siteDefinition } = this.props;
 
     // If current page doesn't have pages for the active platform, switch to its first platform.
-    if (Object.keys(pagePlatforms).length > 0 && activePages.length === 0) {
+    if (Object.keys(pagePlatforms!).length > 0 && activePages!.length === 0) {
       const firstPlatform = getPageFirstPlatform(getSiteArea(siteDefinition.pages), siteDefinition);
       this._onPlatformChanged(firstPlatform);
     }
@@ -156,13 +159,15 @@ export class Site<TPlatforms extends string = string> extends React.Component<
       React.cloneElement(child, { platform }),
     );
 
-    const SiteContent = () => (
+    const siteContent = (
       <div key="site" className={styles.siteRoot}>
         {this._renderTopNav()}
+        {this._renderTopBanner()}
         {this._renderMessageBar()}
         <div className={css(styles.siteWrapper, isContentFullBleed && styles.fullWidth)}>
           {this._renderPageNav()}
           <div
+            ref={this._content}
             className={styles.siteContent}
             data-is-scrollable="true"
             data-app-content-div="true"
@@ -179,13 +184,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     const app = (
       <PlatformContext.Provider value={platform}>
         <AppThemesContext.Provider value={AppThemes}>
-          {theme ? (
-            <ThemeProvider theme={theme}>
-              <SiteContent />
-            </ThemeProvider>
-          ) : (
-            <SiteContent />
-          )}
+          {theme ? <ThemeProvider theme={theme}>{siteContent}</ThemeProvider> : siteContent}
         </AppThemesContext.Provider>
       </PlatformContext.Provider>
     );
@@ -243,12 +242,12 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     };
   }
 
-  private _renderMessageBar(): JSX.Element | null {
+  private _renderMessageBar(): React.ReactElement | null {
     const { pagePath } = this.state;
     const { siteDefinition } = this.props;
     const { messageBars } = siteDefinition;
 
-    let _messageBar: JSX.Element | null = null;
+    let _messageBar: React.ReactElement | null = null;
 
     if (messageBars && pagePath) {
       for (const messageBar of messageBars) {
@@ -274,28 +273,39 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     return _messageBar;
   }
 
-  private _renderPageNav(): JSX.Element | null {
+  private _renderPageNav(): React.ReactElement | null {
     const { activePages, searchablePageTitle, isContentFullBleed } = this.state;
 
-    if (!isContentFullBleed && activePages) {
+    if (!isContentFullBleed && activePages && activePages.length > 0) {
       return (
-        <div className={styles.siteNavScrollWrapper}>
-          <ScrollBars>
+        <SiteNav pagePath={this.state.pagePath} onNavigate={this._onSectionNavigate}>
+          {isSmallScreen => (
             <div className={styles.siteNavWrapper}>
               <div className={styles.siteNavHeader}>{this._renderPlatformPicker()}</div>
               <Nav
+                key={this.state.pagePath}
                 pages={activePages}
                 searchablePageTitle={searchablePageTitle}
                 onLinkClick={this._onLeftNavLinkClick}
                 onSearchBoxClick={this._onLeftNavSearchBoxClick}
+                isSmallScreen={isSmallScreen}
+                navigationLabel={`${getSiteArea(this.props.siteDefinition.pages)} section navigation`}
               />
             </div>
-          </ScrollBars>
-        </div>
+          )}
+        </SiteNav>
       );
     }
     return null;
   }
+
+  private _onSectionNavigate = (hash: string): void => {
+    this._content.current?.focus();
+    const anchor = extractAnchorLink(hash);
+    if (anchor) {
+      this._jumpToAnchor(anchor);
+    }
+  };
 
   /**
    * Determines the current page's platform.
@@ -312,7 +322,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     return 'default' as TPlatforms;
   };
 
-  private _renderTopNav = (): JSX.Element | undefined => {
+  private _renderTopNav = (): React.ReactElement | undefined => {
     const { platform } = this.state;
     const { siteDefinition, hasUHF } = this.props;
 
@@ -330,7 +340,11 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     }
   };
 
-  private _renderPlatformPicker = (): JSX.Element | null => {
+  private _renderTopBanner = (): React.ReactElement | undefined => {
+    return <TopBanner cdnUrl={cdnUrl} />;
+  };
+
+  private _renderPlatformPicker = (): React.ReactElement | null => {
     const { siteDefinition } = this.props;
     const { hasPlatformPicker, platform, pagePlatforms } = this.state;
 
@@ -347,22 +361,19 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     return null;
   };
 
-  private _renderPlatformBar = (): JSX.Element | undefined => {
+  private _renderPlatformBar = (): React.ReactElement | null => {
     const { siteDefinition } = this.props;
     const { platform, pagePlatforms, hasPlatformPicker } = this.state;
 
-    return (
-      hasPlatformPicker &&
-      Object.keys(pagePlatforms).length > 0 && (
-        <PlatformBar
-          activePlatform={platform}
-          onPlatformClick={this._onPlatformChanged}
-          pagePlatforms={pagePlatforms}
-          platforms={siteDefinition.platforms}
-          innerWidth={appMaximumWidthLg}
-        />
-      )
-    );
+    return hasPlatformPicker && Object.keys(pagePlatforms!).length > 0 ? (
+      <PlatformBar
+        activePlatform={platform}
+        onPlatformClick={this._onPlatformChanged}
+        pagePlatforms={pagePlatforms}
+        platforms={siteDefinition.platforms!}
+        innerWidth={appMaximumWidthLg}
+      />
+    ) : null;
   };
 
   /**
@@ -500,7 +511,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
     document.title = [
       siteDefinition.siteTitle,
       siteArea,
-      currPlatform && platforms[currPlatform]?.name,
+      currPlatform && platforms![currPlatform]?.name,
       activePageName !== siteArea && activePageName,
     ]
       .filter(Boolean)
@@ -531,7 +542,7 @@ export class Site<TPlatforms extends string = string> extends React.Component<
       this._jumpInterval = this._async.setInterval(() => {
         const el = document.getElementById(anchor);
         if (el || Date.now() - start > 1000) {
-          this._async.clearInterval(this._jumpInterval);
+          this._async.clearInterval(this._jumpInterval!);
           this._jumpInterval = undefined;
           if (el) {
             jumpToAnchor(anchor);

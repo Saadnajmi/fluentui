@@ -4,6 +4,7 @@ import { TextField, ITextFieldStyles } from '@fluentui/react/lib/TextField';
 import { DetailsList, DetailsListLayoutMode, Selection, IColumn } from '@fluentui/react/lib/DetailsList';
 import { MarqueeSelection } from '@fluentui/react/lib/MarqueeSelection';
 import { mergeStyles } from '@fluentui/react/lib/Styling';
+import type { JSXElement } from '@fluentui/utilities';
 
 const exampleChildClass = mergeStyles({
   display: 'block',
@@ -55,7 +56,7 @@ export class DetailsListCompactExample extends React.Component<{}, IDetailsListC
     };
   }
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { items, selectionDetails } = this.state;
 
     return (
@@ -78,7 +79,6 @@ export class DetailsListCompactExample extends React.Component<{}, IDetailsListC
             layoutMode={DetailsListLayoutMode.justified}
             selection={this._selection}
             selectionPreservedOnEmptyClick={true}
-            onItemInvoked={this._onItemInvoked}
             ariaLabelForSelectionColumn="Toggle selection"
             ariaLabelForSelectAllCheckbox="Toggle selection for all items"
             checkButtonAriaLabel="select row"
@@ -106,8 +106,4 @@ export class DetailsListCompactExample extends React.Component<{}, IDetailsListC
       items: text ? this._allItems.filter(i => i.name.toLowerCase().indexOf(text) > -1) : this._allItems,
     });
   };
-
-  private _onItemInvoked(item: IDetailsListCompactExampleItem): void {
-    alert(`Item invoked: ${item.name}`);
-  }
 }

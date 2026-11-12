@@ -9,6 +9,7 @@ import {
   classNamesFunction,
   styled,
   initializeComponentRef,
+  IStyleFunctionOrObject,
 } from '../../Utilities';
 import { Callout } from '../../Callout';
 import { Selection, SelectionZone, SelectionMode } from '../../utilities/selection/index';
@@ -19,6 +20,7 @@ import { SuggestionsController } from './Suggestions/SuggestionsController';
 import { ValidationState } from './BasePicker.types';
 import { Autofill } from '../Autofill/index';
 import * as stylesImport from './BasePicker.scss';
+import { Label } from '../../Label';
 import type { IProcessedStyleSet } from '../../Styling';
 import type {
   ISuggestions,
@@ -29,6 +31,12 @@ import type {
 import type { IBasePicker, IBasePickerProps, IBasePickerStyleProps, IBasePickerStyles } from './BasePicker.types';
 import type { IAutofill } from '../Autofill/index';
 import type { IPickerItemProps } from './PickerItem.types';
+import { WindowContext } from '@fluentui/react-window-provider';
+import { getDocumentEx } from '../../utilities/dom';
+import type { ILabelStyleProps, ILabelStyles } from '../../Label';
+import type { ICalloutContentStyleProps, ICalloutContentStyles } from '../../Callout';
+
+import type { JSXElement } from '@fluentui/utilities';
 
 const legacyStyles: any = stylesImport;
 
@@ -47,6 +55,8 @@ export interface IBasePickerState<T> {
   isResultsFooterVisible?: boolean;
   selectedIndices?: number[];
   selectionRemoved?: T;
+
+  errorMessage?: string | JSXElement;
 }
 
 /**
@@ -70,6 +80,10 @@ export type IPickerAriaIds = {
    * Aria id for element with role=combobox
    */
   combobox: string;
+  /**
+   * Aria id for error message component
+   */
+  error: string;
 };
 
 const getClassNames = classNamesFunction<IBasePickerStyleProps, IBasePickerStyles>();
@@ -91,9 +105,13 @@ function getStyledSuggestions<T>(suggestionsType: new (props: ISuggestionsProps<
 /**
  * {@docCategory Pickers}
  */
-export class BasePicker<T, P extends IBasePickerProps<T>>
+export class BasePicker<T extends {}, P extends IBasePickerProps<T>>
   extends React.Component<P, IBasePickerState<T>>
-  implements IBasePicker<T> {
+  implements IBasePicker<T>
+{
+  public static contextType = WindowContext;
+  public context: any;
+
   // Refs
   protected root = React.createRef<HTMLDivElement>();
   protected input = React.createRef<IAutofill>();
@@ -106,12 +124,16 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
   protected SuggestionOfProperType = Suggestions as new (props: ISuggestionsProps<T>) => Suggestions<T>;
   protected currentPromise: PromiseLike<any> | undefined;
   protected _ariaMap: IPickerAriaIds;
-  // eslint-disable-next-line deprecation/deprecation
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   private _styledSuggestions = getStyledSuggestions(this.SuggestionOfProperType);
   private _id: string;
   private _async: Async;
+  private _isMounted: boolean = false;
+  private _onResolveSuggestionsDebounced: (updatedValue: string) => void;
+  private _overrideScrollDismiss = false;
+  private _overrideScrollDimissTimeout: number;
 
-  public static getDerivedStateFromProps(newProps: IBasePickerProps<any>) {
+  public static getDerivedStateFromProps(newProps: IBasePickerProps<any>): IBasePickerState<any> | null {
     if (newProps.selectedItems) {
       return { items: newProps.selectedItems };
     }
@@ -122,7 +144,6 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     super(basePickerProps);
 
     initializeComponentRef(this);
-    this._async = new Async(this);
 
     const items: T[] = basePickerProps.selectedItems || basePickerProps.defaultSelectedItems || [];
 
@@ -132,12 +153,13 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
       selectedSuggestionAlert: `selected-suggestion-alert-${this._id}`,
       suggestionList: `suggestion-list-${this._id}`,
       combobox: `combobox-${this._id}`,
+      error: `error-${this._id}`,
     };
     this.suggestionStore = new SuggestionsController<T>();
     this.selection = new Selection({ onSelectionChanged: () => this.onSelectionChange() });
     this.selection.setItems(items);
     this.state = {
-      items: items,
+      items,
       suggestedDisplayValue: '',
       isMostRecentlyUsedVisible: false,
       moreSuggestionsAvailable: false,
@@ -153,11 +175,14 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
   }
 
   public componentDidMount(): void {
+    this._isMounted = true;
+    this._async = new Async(this);
+    this._updateErrorMessage(this.state.items);
     this.selection.setItems(this.state.items);
-    this._onResolveSuggestions = this._async.debounce(this._onResolveSuggestions, this.props.resolveDelay);
+    this._onResolveSuggestionsDebounced = this._async.debounce(this._onResolveSuggestions, this.props.resolveDelay);
   }
 
-  public componentDidUpdate(oldProps: P, oldState: IBasePickerState<T>) {
+  public componentDidUpdate(oldProps: P, oldState: IBasePickerState<T>): void {
     if (this.state.items && this.state.items !== oldState.items) {
       const currentSelectedIndex = this.selection.getSelectedIndices()[0];
       this.selection.setItems(this.state.items);
@@ -174,22 +199,34 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         }
       }
     }
+
+    this._updateErrorMessage(this.state.items);
+
+    // handle dismiss buffer after suggestions are opened
+    if (this.state.suggestionsVisible && !oldState.suggestionsVisible) {
+      this._overrideScrollDismiss = true;
+      this._async.clearTimeout(this._overrideScrollDimissTimeout);
+      this._overrideScrollDimissTimeout = this._async.setTimeout(() => {
+        this._overrideScrollDismiss = false;
+      }, 100);
+    }
   }
 
   public componentWillUnmount(): void {
+    this._isMounted = false;
     if (this.currentPromise) {
       this.currentPromise = undefined;
     }
     this._async.dispose();
   }
 
-  public focus() {
+  public focus(): void {
     if (this.input.current) {
       this.input.current.focus();
     }
   }
 
-  public focusInput() {
+  public focusInput(): void {
     if (this.input.current) {
       this.input.current.focus();
     }
@@ -227,7 +264,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     this.setState({ suggestionsVisible: false });
   };
 
-  public completeSuggestion(forceComplete?: boolean) {
+  public completeSuggestion(forceComplete?: boolean): void {
     if (this.suggestionStore.hasSelectedSuggestion() && this.input.current) {
       this.completeSelection(this.suggestionStore.currentSuggestion!.item);
     } else if (forceComplete) {
@@ -246,12 +283,13 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   };
 
-  public render(): JSX.Element {
+  public render(): JSXElement {
     const { suggestedDisplayValue, isFocused, items } = this.state;
     const { className, inputProps, disabled, selectionAriaLabel, selectionRole = 'list', theme, styles } = this.props;
 
     const suggestionsVisible = !!this.state.suggestionsVisible;
     const suggestionsAvailable = suggestionsVisible ? this._ariaMap.suggestionList : undefined;
+    const hasError = !!(this.state.errorMessage ?? this.props.errorMessage);
     // TODO
     // Clean this up by leaving only the first part after removing support for SASS.
     // Currently we can not remove the SASS styles from BasePicker class because it
@@ -267,10 +305,12 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
           className,
           isFocused,
           disabled,
+          hasErrorMessage: hasError,
           inputClassName: inputProps && inputProps.className,
         })
       : {
           root: css('ms-BasePicker', className ? className : ''),
+          error: 'ms-BasePicker-error',
           text: css('ms-BasePicker-text', legacyStyles.pickerText, this.state.isFocused && legacyStyles.inputFocused),
           itemsWrapper: legacyStyles.pickerItems,
           input: css('ms-BasePicker-input', legacyStyles.pickerInput, inputProps && inputProps.className),
@@ -278,6 +318,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         };
 
     const comboLabel = this.props['aria-label'] || inputProps?.['aria-label'];
+    const inputId = inputProps?.id ?? this._ariaMap.combobox;
 
     // selectionAriaLabel is contained in a separate <span> rather than an aria-label on the items list
     // because if the items list has an aria-label, the aria-describedby on the input will only read
@@ -292,6 +333,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         onBlur={this.onBlur}
         onClick={this.onWrapperClick}
       >
+        {this.renderLabel(inputId, classNames.subComponentStyles?.label)}
         {this.renderCustomAlert(classNames.screenReaderText)}
         <span id={`${this._ariaMap.selectedItems}-label`} hidden>
           {selectionAriaLabel || comboLabel}
@@ -314,7 +356,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
                 {...(inputProps as any)}
                 className={classNames.input}
                 componentRef={this.input}
-                id={inputProps?.id ? inputProps.id : this._ariaMap.combobox}
+                id={inputId}
                 onClick={this.onClick}
                 onFocus={this.onInputFocus}
                 onBlur={this.onInputBlur}
@@ -322,21 +364,34 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
                 suggestedDisplayValue={suggestedDisplayValue}
                 aria-activedescendant={suggestionsVisible ? this.getActiveDescendant() : undefined}
                 aria-controls={suggestionsAvailable}
-                aria-describedby={items.length > 0 ? this._ariaMap.selectedItems : undefined}
+                aria-describedby={this._getDescribedBy(items, hasError)}
                 aria-expanded={suggestionsVisible}
                 aria-haspopup="listbox"
                 aria-label={comboLabel}
                 role="combobox"
                 disabled={disabled}
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 onInputChange={this.props.onInputChange}
               />
             )}
           </div>
         </SelectionZone>
-        {this.renderSuggestions()}
+        {this.renderError(classNames.error)}
+        {this.renderSuggestions(classNames.subComponentStyles?.callout)}
       </div>
     );
   }
+
+  protected _getDescribedBy = (items: T[], hasError: boolean): string => {
+    let describedBy = '';
+    if (items.length > 0) {
+      describedBy += this._ariaMap.selectedItems + ' ';
+    }
+    if (hasError) {
+      describedBy += this._ariaMap.error;
+    }
+    return describedBy;
+  };
 
   protected canAddItems(): boolean {
     const { items } = this.state;
@@ -344,7 +399,36 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     return itemLimit === undefined || items.length < itemLimit;
   }
 
-  protected renderSuggestions(): JSX.Element | null {
+  protected renderLabel(
+    inputId: string,
+    styles: IStyleFunctionOrObject<ILabelStyleProps, ILabelStyles> | undefined,
+  ): JSXElement | null {
+    const { label, disabled, required } = this.props;
+    if (!label) {
+      return null;
+    }
+    return (
+      <Label className="ms-BasePicker-label" styles={styles} disabled={disabled} required={required} htmlFor={inputId}>
+        {label}
+      </Label>
+    );
+  }
+
+  protected renderError(className?: string): JSXElement | null {
+    const { errorMessage = this.state.errorMessage } = this.props;
+    if (!errorMessage) {
+      return null;
+    }
+    return (
+      <div role="alert" id={this._ariaMap.error} className={className}>
+        {errorMessage}
+      </div>
+    );
+  }
+
+  protected renderSuggestions(
+    styles: IStyleFunctionOrObject<ICalloutContentStyleProps, ICalloutContentStyles> | undefined,
+  ): JSXElement | null {
     const StyledTypedSuggestions: React.FunctionComponent<ISuggestionsProps<T>> = this._styledSuggestions;
 
     return this.state.suggestionsVisible && this.input ? (
@@ -355,6 +439,9 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         onDismiss={this.dismissSuggestions}
         directionalHint={DirectionalHint.bottomLeftEdge}
         directionalHintForRTL={DirectionalHint.bottomRightEdge}
+        // eslint-disable-next-line react/jsx-no-bind
+        preventDismissOnEvent={(ev: Event) => this._preventDismissOnScrollOrResize(ev)}
+        styles={styles}
         {...this.props.pickerCalloutProps}
       >
         <StyledTypedSuggestions
@@ -381,9 +468,10 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     ) : null;
   }
 
-  protected renderItems(): JSX.Element[] {
+  protected renderItems(): JSXElement[] {
     const { disabled, removeButtonAriaLabel, removeButtonIconProps } = this.props;
-    const onRenderItem = this.props.onRenderItem as (props: IPickerItemProps<T>) => JSX.Element;
+
+    const onRenderItem = this.props.onRenderItem as (props: IPickerItemProps<T>) => JSXElement;
 
     const { items, selectedIndices } = this.state;
     return items.map((item: any, index: number) =>
@@ -393,28 +481,28 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         key: item.key ? item.key : index,
         selected: selectedIndices!.indexOf(index) !== -1,
         onRemoveItem: () => this.removeItem(item),
-        disabled: disabled,
+        disabled,
         onItemChange: this.onItemChange,
-        removeButtonAriaLabel: removeButtonAriaLabel,
+        removeButtonAriaLabel,
         removeButtonIconProps,
       }),
     );
   }
 
-  protected resetFocus(index?: number) {
+  protected resetFocus(index?: number): void {
     const { items } = this.state;
 
-    if (items.length && index! >= 0) {
+    if (items.length) {
+      // default to focusing the last item
+      index = index ?? items.length - 1;
       const newEl: HTMLElement | null =
         this.root.current &&
-        (this.root.current.querySelectorAll('[data-selection-index]')[
+        (this.root.current.querySelectorAll('[data-selection-index] > button')[
           Math.min(index!, items.length - 1)
         ] as HTMLElement | null);
       if (newEl) {
         newEl.focus();
       }
-    } else if (!this.canAddItems()) {
-      this.resetFocus(items.length - 1);
     } else {
       if (this.input.current) {
         this.input.current.focus();
@@ -422,7 +510,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   }
 
-  protected onSuggestionSelect() {
+  protected onSuggestionSelect(): void {
     if (this.suggestionStore.currentSuggestion) {
       const currentValue: string = this.input.current ? this.input.current.value : '';
       const itemValue: string = this._getTextFromItem(this.suggestionStore.currentSuggestion.item, currentValue);
@@ -430,14 +518,15 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   }
 
-  protected onSelectionChange() {
+  protected onSelectionChange(): void {
     this.setState({
       selectedIndices: this.selection.getSelectedIndices(),
     });
   }
 
-  protected updateSuggestions(suggestions: any[]) {
-    this.suggestionStore.updateSuggestions(suggestions, 0);
+  protected updateSuggestions(suggestions: any[]): void {
+    const maxSuggestionsCount = this.props.pickerSuggestionsProps?.resultsMaximumNumber;
+    this.suggestionStore.updateSuggestions(suggestions, 0, maxSuggestionsCount);
     this.forceUpdate();
   }
 
@@ -445,10 +534,10 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
    * Only to be called when there is nothing in the input. Checks to see if the consumer has
    * provided a function to resolve suggestions
    */
-  protected onEmptyInputFocus() {
+  protected onEmptyInputFocus(): void {
     const emptyResolveSuggestions = this.props.onEmptyResolveSuggestions
       ? this.props.onEmptyResolveSuggestions
-      : // eslint-disable-next-line deprecation/deprecation
+      : // eslint-disable-next-line @typescript-eslint/no-deprecated
         this.props.onEmptyInputFocus;
 
     // Only attempt to resolve suggestions if it exists
@@ -465,11 +554,11 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   }
 
-  protected updateValue(updatedValue: string) {
-    this._onResolveSuggestions(updatedValue);
+  protected updateValue(updatedValue: string): void {
+    this._onResolveSuggestionsDebounced(updatedValue);
   }
 
-  protected updateSuggestionsList(suggestions: T[] | PromiseLike<T[]>, updatedValue?: string) {
+  protected updateSuggestionsList(suggestions: T[] | PromiseLike<T[]>, updatedValue?: string): void {
     // Check to see if the returned value is an array, if it is then just pass it into the next function .
     // If the returned value is not an array then check to see if it's a promise or PromiseLike.
     // If it is then resolve it asynchronously.
@@ -490,7 +579,8 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         });
       } else {
         this.setState({
-          suggestionsVisible: this.input.current! && this.input.current!.inputElement === document.activeElement,
+          suggestionsVisible:
+            this.input.current! && this.input.current!.inputElement === getDocumentEx(this.context)?.activeElement,
         });
       }
 
@@ -504,7 +594,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   }
 
-  protected resolveNewValue(updatedValue: string, suggestions: T[]) {
+  protected resolveNewValue(updatedValue: string, suggestions: T[]): void {
     this.updateSuggestions(suggestions);
     let itemValue: string | undefined = undefined;
 
@@ -524,7 +614,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     );
   }
 
-  protected onChange(items?: T[]) {
+  protected onChange(items?: T[]): void {
     if (this.props.onChange) {
       (this.props.onChange as any)(items);
     }
@@ -584,7 +674,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         // even when it's not. Using document.activeElement is another way
         // for us to be able to get what the relatedTarget without relying
         // on the event
-        relatedTarget = document.activeElement;
+        relatedTarget = getDocumentEx(this.context)!.activeElement;
       }
       if (relatedTarget && !elementContains(this.root.current!, relatedTarget as HTMLElement)) {
         this.setState({ isFocused: false });
@@ -599,7 +689,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
    * Resets focus to last element in wrapper div if clicking back into Picker that has hit item limit
    */
   protected onWrapperClick = (ev: React.MouseEvent<HTMLInputElement>): void => {
-    if (!this.canAddItems()) {
+    if (this.state.items.length && !this.canAddItems()) {
       this.resetFocus(this.state.items.length - 1);
     }
   };
@@ -619,14 +709,14 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   };
 
-  protected onFocus = () => {
+  protected onFocus = (): void => {
     if (!this.state.isFocused) {
       this.setState({ isFocused: true });
     }
   };
 
   protected onKeyDown = (ev: React.KeyboardEvent<HTMLElement>): void => {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const keyCode = ev.which;
     switch (keyCode) {
       case KeyCodes.escape:
@@ -792,7 +882,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     );
   };
 
-  protected completeSelection = (item: T) => {
+  protected completeSelection = (item: T): void => {
     this.addItem(item);
     this.updateValue('');
     if (this.input.current) {
@@ -837,6 +927,12 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
       const newItems: T[] = items.slice(0, index).concat(items.slice(index + 1));
       this.setState({ selectionRemoved: item });
       this._updateSelectedItems(newItems);
+
+      // reset selection removed text after a timeout so it isn't reached by screen reader virtual cursor.
+      // the exact timing isn't important, the live region will fully read even if the text is removed.
+      this._async.setTimeout(() => {
+        this.setState({ selectionRemoved: undefined });
+      }, 1000);
     }
   };
 
@@ -849,7 +945,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
 
   // This is protected because we may expect the backspace key to work differently in a different kind of picker.
   // This lets the subclass override it and provide it's own onBackspace. For an example see the BasePickerListBelow
-  protected onBackspace(ev: React.KeyboardEvent<HTMLElement>) {
+  protected onBackspace(ev: React.KeyboardEvent<HTMLElement>): void {
     if (
       (this.state.items.length && !this.input.current) ||
       (this.input.current && !this.input.current.isValueSelected && this.input.current.cursorLocation === 0)
@@ -868,7 +964,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
   protected _shouldFocusZoneEnterInnerZone = (ev: React.KeyboardEvent<HTMLElement>): boolean => {
     // If suggestions are shown const up/down keys control them, otherwise allow them through to control the focusZone.
     if (this.state.suggestionsVisible) {
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       switch (ev.which) {
         case KeyCodes.up:
         case KeyCodes.down:
@@ -876,7 +972,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
       }
     }
 
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     if (ev.which === KeyCodes.enter) {
       return true;
     }
@@ -884,7 +980,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     return false;
   };
 
-  protected getActiveDescendant() {
+  protected getActiveDescendant(): string | undefined {
     if (this.state.suggestionsLoading) {
       return undefined;
     }
@@ -910,7 +1006,9 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
   }
 
   /** @deprecated use renderCustomAlert instead */
-  protected getSuggestionsAlert(suggestionAlertClassName: string = legacyStyles.screenReaderOnly) {
+  protected getSuggestionsAlert(
+    suggestionAlertClassName: string = legacyStyles.screenReaderOnly,
+  ): JSXElement | undefined {
     const currentIndex = this.suggestionStore.currentIndex;
     if (this.props.enableSelectedSuggestionAlert) {
       const selectedSuggestion =
@@ -925,7 +1023,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     }
   }
 
-  protected renderCustomAlert(alertClassName: string = legacyStyles.screenReaderOnly) {
+  protected renderCustomAlert(alertClassName: string = legacyStyles.screenReaderOnly): JSXElement {
     const { suggestionRemovedText = 'removed {0}' } = this.props;
     let removedItemText = '';
 
@@ -937,12 +1035,22 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     return (
       <div className={alertClassName} id={this._ariaMap.selectedSuggestionAlert} aria-live="assertive">
         {
-          // eslint-disable-next-line deprecation/deprecation
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           this.getSuggestionsAlert(alertClassName)
         }
         {removedItemText}
       </div>
     );
+  }
+
+  // do not dismiss if the window resizes or scrolls within 100ms of opening
+  // this prevents the Android issue where pickers immediately dismiss on open, because the keyboard appears
+  private _preventDismissOnScrollOrResize(ev: Event) {
+    if (this._overrideScrollDismiss && (ev.type === 'scroll' || ev.type === 'resize')) {
+      return true;
+    }
+
+    return false;
   }
 
   /** If suggestions are still loading after a predefined amount of time, set state to show user alert */
@@ -962,7 +1070,8 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     if (updatedValue !== undefined) {
       this.resolveNewValue(updatedValue, newSuggestions);
     } else {
-      this.suggestionStore.updateSuggestions(newSuggestions, -1);
+      const maxSuggestionsCount = this.props.pickerSuggestionsProps?.resultsMaximumNumber;
+      this.suggestionStore.updateSuggestions(newSuggestions, -1, maxSuggestionsCount);
       if (this.state.suggestionsLoading) {
         this.setState({
           suggestionsLoading: false,
@@ -970,6 +1079,44 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         });
       }
     }
+  }
+
+  private async _getErrorMessage(items: T[]): Promise<string | JSXElement | undefined> {
+    if (this.props.errorMessage) {
+      return this.props.errorMessage;
+    }
+    if (this.props.onGetErrorMessage) {
+      try {
+        const errorMessage = this.props.onGetErrorMessage(items);
+        if (errorMessage) {
+          if ((errorMessage as PromiseLike<string | JSXElement>).then) {
+            return await (errorMessage as PromiseLike<string | JSXElement>);
+          } else {
+            return errorMessage as string | JSXElement;
+          }
+        } else {
+          return undefined;
+        }
+      } catch (err) {
+        /* NO-OP */
+      }
+    }
+  }
+
+  private _updateErrorMessage(items: T[]): void {
+    let newErrorMessage: string | JSXElement | undefined;
+    this._getErrorMessage(items)
+      .then(errorMessage => {
+        newErrorMessage = errorMessage;
+      })
+      .catch(() => {
+        /* NO-OP */
+      })
+      .finally(() => {
+        if (this._isMounted && newErrorMessage !== this.state.errorMessage) {
+          this.setState({ errorMessage: newErrorMessage });
+        }
+      });
   }
 
   /**
@@ -981,7 +1128,8 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
       // If the component is a controlled component then the controlling component will need to add or remove the items.
       this.onChange(items);
     } else {
-      this.setState({ items: items }, () => {
+      this.setState({ items }, () => {
+        this._updateErrorMessage(items);
         this._onSelectedItemsUpdated(items);
       });
     }
@@ -1000,7 +1148,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
     const areSuggestionsVisible =
       this.input.current !== undefined &&
       this.input.current !== null &&
-      this.input.current.inputElement === document.activeElement &&
+      this.input.current.inputElement === getDocumentEx(this.context)?.activeElement &&
       this.input.current.value !== '';
 
     return areSuggestionsVisible;
@@ -1049,7 +1197,7 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
         this.onEmptyInputFocus();
       } else {
         if (this.suggestionStore.suggestions.length === 0) {
-          this._onResolveSuggestions(input);
+          this._onResolveSuggestionsDebounced(input);
         } else {
           this.setState({
             isMostRecentlyUsedVisible: false,
@@ -1061,14 +1209,15 @@ export class BasePicker<T, P extends IBasePickerProps<T>>
   };
 }
 
-export class BasePickerListBelow<T, P extends IBasePickerProps<T>> extends BasePicker<T, P> {
-  public render(): JSX.Element {
-    const { suggestedDisplayValue, isFocused } = this.state;
+export class BasePickerListBelow<T extends {}, P extends IBasePickerProps<T>> extends BasePicker<T, P> {
+  public render(): JSXElement {
+    const { suggestedDisplayValue, isFocused, items } = this.state;
     const { className, inputProps, disabled, selectionAriaLabel, selectionRole = 'list', theme, styles } = this.props;
 
     const suggestionsVisible = !!this.state.suggestionsVisible;
 
     const suggestionsAvailable: string | undefined = suggestionsVisible ? this._ariaMap.suggestionList : undefined;
+    const hasError = !!(this.state.errorMessage ?? this.props.errorMessage);
     // TODO
     // Clean this up by leaving only the first part after removing support for SASS.
     // Currently we can not remove the SASS styles from BasePicker class because it
@@ -1083,10 +1232,13 @@ export class BasePickerListBelow<T, P extends IBasePickerProps<T>> extends BaseP
           theme,
           className,
           isFocused,
+          disabled,
+          hasErrorMessage: hasError,
           inputClassName: inputProps && inputProps.className,
         })
       : {
-          root: css('ms-BasePicker', className ? className : ''),
+          root: css('ms-BasePicker', legacyStyles.picker, className ? className : ''),
+          error: 'ms-BasePicker-error',
           text: css(
             'ms-BasePicker-text',
             legacyStyles.pickerText,
@@ -1099,11 +1251,16 @@ export class BasePickerListBelow<T, P extends IBasePickerProps<T>> extends BaseP
         };
 
     const comboLabel = this.props['aria-label'] || inputProps?.['aria-label'];
+    const inputId = inputProps?.id ?? this._ariaMap.combobox;
 
     return (
       <div ref={this.root} onBlur={this.onBlur} onFocus={this.onFocus}>
+        {this.renderLabel(inputId, classNames.subComponentStyles?.label)}
         <div className={classNames.root} onKeyDown={this.onKeyDown}>
           {this.renderCustomAlert(classNames.screenReaderText)}
+          <span id={`${this._ariaMap.selectedItems}-label`} hidden>
+            {selectionAriaLabel || comboLabel}
+          </span>
           <div className={classNames.text} aria-owns={suggestionsAvailable}>
             <Autofill
               {...(inputProps as any)}
@@ -1119,29 +1276,32 @@ export class BasePickerListBelow<T, P extends IBasePickerProps<T>> extends BaseP
               aria-expanded={suggestionsVisible}
               aria-haspopup="listbox"
               aria-label={comboLabel}
+              aria-describedby={this._getDescribedBy(items, hasError)}
               role="combobox"
-              id={inputProps?.id ? inputProps.id : this._ariaMap.combobox}
+              id={inputId}
               disabled={disabled}
+              // eslint-disable-next-line @typescript-eslint/no-deprecated
               onInputChange={this.props.onInputChange}
             />
           </div>
         </div>
-        {this.renderSuggestions()}
+        {this.renderSuggestions(classNames.subComponentStyles?.callout)}
         <SelectionZone selection={this.selection} selectionMode={SelectionMode.single}>
           <div
             id={this._ariaMap.selectedItems}
             className="ms-BasePicker-selectedItems" // just a className hook without any styles applied to it.
             role={selectionRole}
-            aria-label={selectionAriaLabel || comboLabel}
+            aria-labelledby={`${this._ariaMap.selectedItems}-label`}
           >
             {this.renderItems()}
           </div>
         </SelectionZone>
+        {this.renderError(classNames.error)}
       </div>
     );
   }
 
-  protected onBackspace(ev: React.KeyboardEvent<HTMLElement>) {
+  protected onBackspace(ev: React.KeyboardEvent<HTMLElement>): void {
     // override the existing backspace method to not do anything because the list items appear below.
   }
 }

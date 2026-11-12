@@ -51,7 +51,7 @@ export type IFocusRectsContext = {
   /**
    * Ref to the root element of the provider
    */
-  readonly providerRef: React.RefObject<HTMLElement>;
+  readonly providerRef: React.RefObject<HTMLElement | null>;
 
   /**
    * Array of this and all child provider elements under this one in the React tree.
@@ -60,17 +60,17 @@ export type IFocusRectsContext = {
    * This is needed for Combobox, for example, because the focus events happen on the parent context, but the visual
    * focus indicator is in the combobox callout. The callout needs to be notified on focus events from the parent.
    */
-  readonly registeredProviders: React.RefObject<HTMLElement>[];
+  readonly registeredProviders: React.RefObject<HTMLElement | null>[];
 
   /**
    * Used by child FocusRectsProviders to register their element with the parent provider.
    */
-  readonly registerProvider: (ref: React.RefObject<HTMLElement>) => void;
+  readonly registerProvider: (ref: React.RefObject<HTMLElement | null>) => void;
 
   /**
    * Used by child FocusRectsProviders to unregister their element from the parent provider.
    */
-  readonly unregisterProvider: (ref: React.RefObject<HTMLElement>) => void;
+  readonly unregisterProvider: (ref: React.RefObject<HTMLElement | null>) => void;
 };
 
 export const FocusRectsContext = React.createContext<IFocusRectsContext | undefined>(undefined);
@@ -93,7 +93,7 @@ export const FocusRectsContext = React.createContext<IFocusRectsContext | undefi
  *
  * @param rootRef - A Ref object. Focus rectangle can be applied on itself and all its children.
  */
-export function useFocusRects(rootRef?: React.RefObject<HTMLElement>): void {
+export function useFocusRects(rootRef?: React.RefObject<HTMLElement | null>): void {
   const context = React.useContext(FocusRectsContext);
 
   React.useEffect(() => {
@@ -108,9 +108,15 @@ export function useFocusRects(rootRef?: React.RefObject<HTMLElement>): void {
     let onPointerDown: (ev: PointerEvent) => void;
     let onKeyDown: (ev: KeyboardEvent) => void;
     let onKeyUp: (ev: KeyboardEvent) => void;
-    if (context?.providerRef?.current) {
+    if (
+      context?.providerRef?.current &&
+      (context?.providerRef?.current as Partial<Pick<HTMLElement, 'addEventListener'>>)?.addEventListener
+    ) {
       el = context.providerRef.current;
-      const callbacks = setCallbackMap(context);
+      // The NOINLINE directive tells terser not to move the setCallbackMap implementation into the call site during
+      // minification.
+      // This prevents the function from capturing additional variables in the closure, which can cause memory leaks.
+      const callbacks = /*@__NOINLINE__*/ setCallbackMap(context);
       onMouseDown = callbacks.onMouseDown;
       onPointerDown = callbacks.onPointerDown;
       onKeyDown = callbacks.onKeyDown;
@@ -149,16 +155,16 @@ export function useFocusRects(rootRef?: React.RefObject<HTMLElement>): void {
  * Function Component wrapper which enables calling `useFocusRects` hook.
  * Renders nothing.
  */
-export const FocusRects: React.FunctionComponent<{ rootRef?: React.RefObject<HTMLElement> }> = props => {
+export const FocusRects: React.FunctionComponent<{ rootRef?: React.RefObject<HTMLElement | null> }> = props => {
   useFocusRects(props.rootRef);
   return null;
 };
 
-function _onMouseDown(ev: MouseEvent, registeredProviders?: React.RefObject<HTMLElement>[]): void {
+function _onMouseDown(ev: MouseEvent, registeredProviders?: React.RefObject<HTMLElement | null>[]): void {
   setFocusVisibility(false, ev.target as Element, registeredProviders);
 }
 
-function _onPointerDown(ev: PointerEvent, registeredProviders?: React.RefObject<HTMLElement>[]): void {
+function _onPointerDown(ev: PointerEvent, registeredProviders?: React.RefObject<HTMLElement | null>[]): void {
   if (ev.pointerType !== 'mouse') {
     setFocusVisibility(false, ev.target as Element, registeredProviders);
   }
@@ -173,15 +179,15 @@ function _onPointerDown(ev: PointerEvent, registeredProviders?: React.RefObject<
 // every element that is being tabbed into.
 // This works because `classList.add` is smart and will not duplicate a classname that already exists on the classList
 // when focus visibility is turned on.
-function _onKeyDown(ev: KeyboardEvent, registeredProviders?: React.RefObject<HTMLElement>[]): void {
-  // eslint-disable-next-line deprecation/deprecation
+function _onKeyDown(ev: KeyboardEvent, registeredProviders?: React.RefObject<HTMLElement | null>[]): void {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   if (isDirectionalKeyCode(ev.which)) {
     setFocusVisibility(true, ev.target as Element, registeredProviders);
   }
 }
 
-function _onKeyUp(ev: KeyboardEvent, registeredProviders?: React.RefObject<HTMLElement>[]): void {
-  // eslint-disable-next-line deprecation/deprecation
+function _onKeyUp(ev: KeyboardEvent, registeredProviders?: React.RefObject<HTMLElement | null>[]): void {
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
   if (isDirectionalKeyCode(ev.which)) {
     setFocusVisibility(true, ev.target as Element, registeredProviders);
   }

@@ -1,23 +1,29 @@
 import * as React from 'react';
-import Screener from 'screener-storybook/src/screener';
-import { storiesOf } from '@storybook/react';
-import { TestWrapperDecorator } from '../utilities/index';
+import type { Meta } from '@storybook/react-webpack5';
+import { Steps } from 'storywright';
+import type { StoryParameters } from 'storywright';
+import { getStoryVariant, RTL, TestWrapperDecorator } from '../utilities';
 import { Rating, RatingSize } from '@fluentui/react';
 
-storiesOf('Rating', module)
-  .addDecorator(TestWrapperDecorator)
-  .addDecorator(story => (
-    <Screener
-      steps={new Screener.Steps()
+export default {
+  title: 'Rating',
+
+  decorators: [TestWrapperDecorator],
+  parameters: {
+    storyWright: {
+      steps: new Steps()
         .snapshot('default', { cropTo: '.testWrapper' })
         .click('button.ms-Rating-button:nth-of-type(2)')
         .snapshot('click', { cropTo: '.testWrapper' })
-        .end()}
-    >
-      {story()}
-    </Screener>
-  ))
-  .addStory('Root', () => <Rating min={1} max={5} />)
-  .addStory('Rated', () => <Rating min={1} max={5} rating={2} />, { includeRtl: true })
-  .addStory('Large', () => <Rating min={1} max={5} size={RatingSize.Large} />)
-  .addStory('Disabled', () => <Rating min={1} max={5} disabled />);
+        .end(),
+    },
+  } satisfies StoryParameters,
+} satisfies Meta<typeof Rating>;
+
+export const Root = () => <Rating min={1} max={5} />;
+export const Rated = () => <Rating min={1} max={5} rating={2} />;
+
+export const RatedRTL = getStoryVariant(Rated, RTL);
+
+export const _Large = () => <Rating min={1} max={5} size={RatingSize.Large} />;
+export const Disabled = () => <Rating min={1} max={5} disabled />;

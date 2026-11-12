@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { AreaChart } from '@fluentui/react-charting';
 import * as d3 from 'd3-format';
-import { ILineChartProps } from '@fluentui/react-charting';
+import { ILineChartProps, DataVizPalette } from '@fluentui/react-charting';
+import type { JSXElement } from '@fluentui/utilities';
 
 interface IAreaChartBasicState {
   width: number;
@@ -17,8 +18,8 @@ export class AreaChartMultipleExample extends React.Component<{}, IAreaChartBasi
     };
   }
 
-  public render(): JSX.Element {
-    return <div>{this._basicExample()}</div>;
+  public render(): JSXElement {
+    return <div className="containerDiv">{this._basicExample()}</div>;
   }
 
   private _onWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +29,7 @@ export class AreaChartMultipleExample extends React.Component<{}, IAreaChartBasi
     this.setState({ height: parseInt(e.target.value, 10) });
   };
 
-  private _basicExample(): JSX.Element {
+  private _basicExample(): JSXElement {
     const chart1Points = [
       {
         x: 20,
@@ -162,17 +163,17 @@ export class AreaChartMultipleExample extends React.Component<{}, IAreaChartBasi
       {
         legend: 'legend1',
         data: chart1Points,
-        color: '#0099BC',
+        color: DataVizPalette.color4,
       },
       {
         legend: 'legend2',
         data: chart2Points,
-        color: '#77004D',
+        color: DataVizPalette.color5,
       },
       {
         legend: 'legend3',
         data: chart3Points,
-        color: '#4F68ED',
+        color: DataVizPalette.color6,
       },
     ];
 
@@ -211,9 +212,11 @@ export class AreaChartMultipleExample extends React.Component<{}, IAreaChartBasi
             data={chartData}
             legendsOverflowText={'Overflow Items'}
             yAxisTickFormat={d3.format('$,')}
+            enablePerfOptimization={true}
             legendProps={{
               allowFocusOnLegends: true,
             }}
+            enableReflow={true}
           />
         </div>
       </>

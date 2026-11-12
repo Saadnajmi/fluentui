@@ -3,7 +3,7 @@ import type { IsConformantOptions } from '@fluentui/react-conformance';
 
 export function isConformant<TProps = {}>(
   testInfo: Omit<IsConformantOptions<TProps>, 'componentPath'> & { componentPath?: string },
-) {
+): void {
   const defaultOptions: Partial<IsConformantOptions<TProps>> = {
     disabledTests: ['kebab-aria-attributes', 'component-has-static-classname-exported'],
     testOptions: {
@@ -11,7 +11,7 @@ export function isConformant<TProps = {}>(
         prefix: 'ms-',
       },
     },
-    componentPath: module!.parent!.filename.replace('.test', ''),
+    componentPath: require.main?.filename.replace('.test', ''),
   };
 
   baseIsConformant(defaultOptions, testInfo);
